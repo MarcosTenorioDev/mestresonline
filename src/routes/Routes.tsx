@@ -1,5 +1,4 @@
 import NavBar from "@/components/shared/Navbar";
-import Home from "../pages/home/Home";
 import { Outlet, BrowserRouter, Route, Routes } from "react-router-dom";
 import Publication from "@/pages/publication/publication";
 
