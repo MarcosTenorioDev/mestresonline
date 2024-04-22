@@ -32,7 +32,7 @@ const NavBar = () => {
           <nav className="flex-1 px-7 justify-end hidden lg:flex">
           <ul>
                 <li>
-                  <Link to={"/blog"}>
+                  <Link to={"/publication"}>
                     <Button variant={"outlineBlue"}>Nova Publicação</Button>
                   </Link>
                 </li>
@@ -67,7 +67,7 @@ const NavBar = () => {
             <div className="w-full flex justify-center">
               <ul className="w-full">
                 <li className="w-full">
-                  <Link to={"/blog"} className="w-full">
+                  <Link to={"/publication"} className="w-full">
                     <Button className="w-full" variant={"outlineWhite"}>Nova Publicação</Button>
                   </Link>
                 </li>
