@@ -15,7 +15,7 @@ const Input = (props: any) => {
         name={props.control}
         className={
           props.fieldClassName
-            ? props.fieldClassName
+            ? `${props.fieldClassName} border-2 border-primary h-10 rounded-lg`
             : "border-2 border-primary h-10 rounded-lg"
         }
         placeholder={props.placeholder}
@@ -48,7 +48,7 @@ const Select = (props: any) => {
         className={
           fieldClassName
             ? fieldClassName
-            : "border-2 border-primary h-10 rounded-lg bg-white"
+            : "border-2 border-primary h-10 rounded-lg bg-white px-2"
         }
       >
         {options.map((option: any) => (

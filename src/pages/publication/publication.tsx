@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { Select, Input } from "@/components/shared/Inputs";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const Publication = () => {
@@ -19,7 +19,11 @@ const Publication = () => {
 
   const [hasImage, setHasImage] = useState(false);
   const [showImageValidator, setShowImageValidator] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [paragraphs, setParagraphs] = useState([{ type: 'text', content: '' }]);
+  const [imagePreview, setImagePreview] = useState<any>("");
+  const paragraphInputRefs = useRef<any>([]);
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (values: any) => {
     if (!hasImage) {
@@ -35,15 +39,12 @@ const Publication = () => {
         image,
         ...rest
       },
-      content:[
-
-      ]
+      content: paragraphs
     }
 
+    console.log(payload)
     setLoading(false)
   };
-
-  const [imagePreview, setImagePreview] = useState<any>("");
 
   const handleImageChange = (event: any) => {
     const file = event.currentTarget.files[0];
@@ -58,14 +59,47 @@ const Publication = () => {
     }
   };
 
+  const handleParagraphChange = (index:any, content:any) => {
+    const updatedParagraphs = [...paragraphs];
+    updatedParagraphs[index].content = content;
+    setParagraphs(updatedParagraphs);
+
+    // Verifique se o parágrafo está vazio e remova-o se necessário
+    if (content.trim() === '' && paragraphs.length > 1) {
+      const newParagraphs = paragraphs.filter((_, idx) => idx !== index);
+      setParagraphs(newParagraphs);
+    }
+  };
+
+  const handleAddParagraph = () => {
+    setParagraphs([...paragraphs, { type: 'text', content: '' }]);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(paragraphs);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "Enter") {
+      if (index === paragraphs.length - 1) {
+        handleAddParagraph();
+      }
+      if (index < paragraphInputRefs.current.length - 1) {
+        const nextInputRef = paragraphInputRefs.current[index + 1];
+        nextInputRef.focus();
+      }
+    }
+  };
+
   return (
-    <div className="max-w-screen-2xl mx-auto">
+    <div className="max-w-screen-2xl mx-auto px-10">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        <Form className="w-10/12 flex flex-col justify-between border-b-2 mx-auto py-7">
+        <Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
           <div className="flex justify-between">
             <h1 className="text-2xl mb-10">
               Nova publicação em Clinica Ativamente
@@ -96,7 +130,7 @@ const Publication = () => {
               </div>
               <div className="mb-5">
                 <h2>Assunto da publicação</h2>
-                <Input control="topic" />
+                <Input control="topic" fieldClassName='px-2'/>
               </div>
             </div>
             <div>
@@ -136,6 +170,29 @@ const Publication = () => {
           </div>
         </Form>
       </Formik>
+
+      <div className="max-w-screen-2xl mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="max-w-screen-2xl mt-10">
+            <input type="text" placeholder="TITLE..." className="border-l-2 pl-4 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none" ref={titleInputRef} />
+          </div>
+          {paragraphs.map((paragraph, index) => (
+            <div key={index} className="mt-4">
+              <input
+                type="text"
+                placeholder="Enter paragraph..."
+                className="border-l-2 pl-4 w-full h-auto focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
+                value={paragraph.content}
+                onChange={(e) => handleParagraphChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(input) => {
+                  paragraphInputRefs.current[index] = input;
+                }}
+              />
+            </div>
+          ))}
+        </form>
+      </div>
     </div>
   );
 };
