@@ -94,7 +94,6 @@ const Publication = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-10">
-      <h1>publication</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
