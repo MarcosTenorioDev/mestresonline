@@ -1,4 +1,5 @@
 import NavBar from "@/components/shared/Navbar";
+import Home from "../pages/home/Home";
 import { Outlet, BrowserRouter, Route, Routes } from "react-router-dom";
 import Publication from "@/pages/publication/publication";
 
@@ -16,7 +17,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Publication />} />
+          <Route path="/" element={<Home />} />
           <Route path="/publication" element={<Publication />} />
         </Route>
       </Routes>
