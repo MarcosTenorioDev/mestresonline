@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const Publication = () => {
-  const initialValues = {
+/*   const initialValues = {
     author: "",
     topic: "",
     image: "",
@@ -20,10 +20,10 @@ const Publication = () => {
   const [hasImage, setHasImage] = useState(false);
   const [showImageValidator, setShowImageValidator] = useState(false);
   const [loading, setLoading] = useState(false);
-/*   const [paragraphs, setParagraphs] = useState([{ type: 'text', content: '' }]); */
+  const [paragraphs, setParagraphs] = useState([{ type: 'text', content: '' }]);
   const [imagePreview, setImagePreview] = useState<any>("");
-/*   const paragraphInputRefs = useRef<any>([]);
-  const titleInputRef = useRef<HTMLInputElement>(null); */
+  const paragraphInputRefs = useRef<any>([]);
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (values: any) => {
     if (!hasImage) {
@@ -38,8 +38,8 @@ const Publication = () => {
       info: {
         image,
         ...rest
-      }/* ,
-      content: paragraphs */
+      },
+      content: paragraphs
     }
 
     console.log(payload)
@@ -57,7 +57,7 @@ const Publication = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
+  }; */
 
 /*   const handleParagraphChange = (index:any, content:any) => {
     const updatedParagraphs = [...paragraphs];
@@ -94,7 +94,8 @@ const Publication = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-10">
-      <Formik
+      <h1>publication</h1>
+      {/* <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
@@ -169,7 +170,7 @@ const Publication = () => {
             </div>
           </div>
         </Form>
-      </Formik>
+      </Formik> */}
 
       {/* <div className="max-w-screen-2xl mx-auto">
         <form onSubmit={handleSubmit}>
