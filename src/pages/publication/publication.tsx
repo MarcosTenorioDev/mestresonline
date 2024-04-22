@@ -1,11 +1,11 @@
-/* import * as Yup from "yup";
+import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { Select, Input } from "@/components/shared/Inputs";
-import { useState } from "react";
-import { Button } from "@/components/ui/button"; */
+import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const Publication = () => {
-/*   const initialValues = {
+  const initialValues = {
     author: "",
     topic: "",
     image: "",
@@ -57,9 +57,9 @@ const Publication = () => {
       };
       reader.readAsDataURL(file);
     }
-  }; */
+  };
 
-/*   const handleParagraphChange = (index:any, content:any) => {
+  const handleParagraphChange = (index:any, content:any) => {
     const updatedParagraphs = [...paragraphs];
     updatedParagraphs[index].content = content;
     setParagraphs(updatedParagraphs);
@@ -69,18 +69,18 @@ const Publication = () => {
       const newParagraphs = paragraphs.filter((_, idx) => idx !== index);
       setParagraphs(newParagraphs);
     }
-  }; */
+  };
 
-/*   const handleAddParagraph = () => {
+  const handleAddParagraph = () => {
     setParagraphs([...paragraphs, { type: 'text', content: '' }]);
-  }; */
+  };
 
-/*   const handleSubmit = (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     console.log(paragraphs);
-  }; */
+  };
 
-/*   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
     if (e.key === "Enter") {
       if (index === paragraphs.length - 1) {
         handleAddParagraph();
@@ -90,12 +90,12 @@ const Publication = () => {
         nextInputRef.focus();
       }
     }
-  }; */
+  };
 
   return (
     <div className="max-w-screen-2xl mx-auto px-10">
       <h1>publication</h1>
-      {/* <Formik
+      <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
@@ -170,9 +170,9 @@ const Publication = () => {
             </div>
           </div>
         </Form>
-      </Formik> */}
+      </Formik>
 
-      {/* <div className="max-w-screen-2xl mx-auto">
+      <div className="max-w-screen-2xl mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="max-w-screen-2xl mt-10">
             <input type="text" placeholder="TITLE..." className="border-l-2 pl-4 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none" ref={titleInputRef} />
@@ -193,7 +193,7 @@ const Publication = () => {
             </div>
           ))}
         </form>
-      </div> */}
+      </div>
     </div>
   );
 };
