@@ -3,6 +3,16 @@ import { Formik, Form } from "formik";
 import { Select, Input } from "@/components/shared/Inputs";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ImageIcon, PlusCircle, PlusCircleIcon, XIcon } from "lucide-react";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 
 const Publication = () => {
   const initialValues = {
@@ -20,30 +30,31 @@ const Publication = () => {
   const [hasImage, setHasImage] = useState(false);
   const [showImageValidator, setShowImageValidator] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [paragraphs, setParagraphs] = useState([{ type: 'text', content: '' }]);
+  const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
   const [imagePreview, setImagePreview] = useState<any>("");
   const paragraphInputRefs = useRef<any>([]);
   const titleInputRef = useRef<HTMLInputElement>(null);
+  const [focusedInput, setFocusedInput] = useState<number | null>(null); // Estado para controlar qual input está focado
 
   const onSubmit = async (values: any) => {
     if (!hasImage) {
-      setShowImageValidator(true)
-      return
+      setShowImageValidator(true);
+      return;
     }
-    setLoading(true)
-    let {image, ...rest} = values
+    setLoading(true);
+    let { image, ...rest } = values;
     image = imagePreview;
 
     const payload = {
       info: {
         image,
-        ...rest
+        ...rest,
       },
-      content: paragraphs
-    }
+      content: paragraphs,
+    };
 
-    console.log(payload)
-    setLoading(false)
+    console.log(payload);
+    setLoading(false);
   };
 
   const handleImageChange = (event: any) => {
@@ -53,26 +64,26 @@ const Publication = () => {
       reader.onloadend = () => {
         setImagePreview(reader.result);
         setHasImage(true);
-        setShowImageValidator(false)
+        setShowImageValidator(false);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleParagraphChange = (index:any, content:any) => {
+  const handleParagraphChange = (index: any, content: any) => {
     const updatedParagraphs = [...paragraphs];
     updatedParagraphs[index].content = content;
     setParagraphs(updatedParagraphs);
 
     // Verifique se o parágrafo está vazio e remova-o se necessário
-    if (content.trim() === '' && paragraphs.length > 1) {
+    if (content.trim() === "" && paragraphs.length > 1) {
       const newParagraphs = paragraphs.filter((_, idx) => idx !== index);
       setParagraphs(newParagraphs);
     }
   };
 
   const handleAddParagraph = () => {
-    setParagraphs([...paragraphs, { type: 'text', content: '' }]);
+    setParagraphs([...paragraphs, { type: "text", content: "" }]);
   };
 
   const handleSubmit = (e: any) => {
@@ -80,20 +91,62 @@ const Publication = () => {
     console.log(paragraphs);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     if (e.key === "Enter") {
+      e.preventDefault(); // Impede a ação padrão de pressionar Enter
+  
       if (index === paragraphs.length - 1) {
         handleAddParagraph();
       }
-      if (index < paragraphInputRefs.current.length - 1) {
-        const nextInputRef = paragraphInputRefs.current[index + 1];
+  
+      // Encontra o próximo campo de texto disponível
+      let nextIndex = index + 1;
+      while (nextIndex < paragraphs.length && paragraphs[nextIndex].type !== "text") {
+        nextIndex++;
+      }
+  
+      if (nextIndex < paragraphs.length) {
+        const nextInputRef = paragraphInputRefs.current[nextIndex];
         nextInputRef.focus();
+      } else {
+        handleAddParagraph();
       }
     }
   };
+  
+
+  const handleInsertImage = (index: number) => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.onchange = (e: any) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const updatedParagraphs = [...paragraphs];
+          updatedParagraphs[index] = { type: "image", content: reader.result as string }; // Adiciona imagem
+          updatedParagraphs.splice(index + 1, 0, { type: "text", content: "" }); // Adiciona novo parágrafo de texto abaixo da imagem
+          setParagraphs(updatedParagraphs);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    fileInput.click();
+  };
+  
+  const handleRemoveImage = (index: number) => {
+    const updatedParagraphs = [...paragraphs];
+    updatedParagraphs[index] = { type: "text", content: "" };
+    setParagraphs(updatedParagraphs);
+  };
+  
 
   return (
-    <div className="max-w-screen-2xl mx-auto px-10">
+    <div className="max-w-screen-2xl mx-auto px-10 pb-40">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -130,7 +183,7 @@ const Publication = () => {
               </div>
               <div className="mb-5">
                 <h2>Assunto da publicação</h2>
-                <Input control="topic" fieldClassName='px-2'/>
+                <Input control="topic" fieldClassName="px-2" />
               </div>
             </div>
             <div>
@@ -174,21 +227,73 @@ const Publication = () => {
       <div className="max-w-screen-2xl mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="max-w-screen-2xl mt-10">
-            <input type="text" placeholder="TITLE..." className="border-l-2 pl-4 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none" ref={titleInputRef} />
+            <input
+              type="text"
+              placeholder="TITLE..."
+              className="border-l-2 pl-4 ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
+              ref={titleInputRef}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (paragraphInputRefs.current.length > 0) {
+                    const firstParagraphInputRef =
+                      paragraphInputRefs.current[0];
+                    firstParagraphInputRef.focus();
+                  }
+                }
+              }}
+            />
           </div>
           {paragraphs.map((paragraph, index) => (
-            <div key={index} className="mt-4">
-              <input
-                type="text"
-                placeholder="Enter paragraph..."
-                className="border-l-2 pl-4 w-full h-auto focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
-                value={paragraph.content}
-                onChange={(e) => handleParagraphChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                ref={(input) => {
-                  paragraphInputRefs.current[index] = input;
-                }}
-              />
+            <div key={index} className="mt-4 flex ml-10 relative">
+              {paragraph.type === "text" ? (
+                <input
+                  type="text"
+                  placeholder="Enter paragraph..."
+                  className="border-l-2 pl-4 w-full h-auto focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
+                  value={paragraph.content}
+                  onChange={(e) => handleParagraphChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onFocus={() => setFocusedInput(index)}
+                  ref={(input) => {
+                    paragraphInputRefs.current[index] = input;
+                  }}
+                />
+              ) : (
+                <div className="relative">
+                  <img
+                    src={paragraph.content}
+                    alt={`Image paragraph ${index}`}
+                    className=""
+                  />
+                  <button
+                    className="absolute top-0 right-0 mt-1 mr-1 bg-white bg-opacity-50 p-1 rounded-full border-2 border-red-500"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    <XIcon className="text-red-500"/>
+                  </button>
+                </div>
+              )}
+              {focusedInput === index && (
+                <Menubar>
+                  <MenubarMenu>
+                    <MenubarTrigger className="absolute -left-16 -top-1">
+                      <PlusCircle className="w-8 h-8" />
+                    </MenubarTrigger>
+                    <MenubarContent>
+                      <MenubarItem
+                        className="cursor-pointer"
+                        onClick={() => handleInsertImage(index)}
+                      >
+                        Inserir imagem{" "}
+                        <MenubarShortcut>
+                          <ImageIcon />
+                        </MenubarShortcut>
+                      </MenubarItem>
+                    </MenubarContent>
+                  </MenubarMenu>
+                </Menubar>
+              )}
             </div>
           ))}
         </form>
