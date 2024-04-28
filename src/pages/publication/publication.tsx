@@ -3,13 +3,12 @@ import { Formik, Form } from "formik";
 import { Select, Input } from "@/components/shared/Inputs";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ImageIcon, PlusCircle, PlusCircleIcon, XIcon } from "lucide-react";
+import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
