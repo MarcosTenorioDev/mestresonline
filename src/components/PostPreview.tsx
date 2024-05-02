@@ -1,10 +1,10 @@
 import { DotFilledIcon } from "@radix-ui/react-icons";
 const PostPreview = (props: any) => {
   return (
-    <div className="flex items-center">
+    <div className="flex flex-col lg:flex-row items-center">
       <div className="max-w-[500px] mr-6">
-        <div className="flex">
-          <img src={props.ownerImage} alt="foto do usuário" className="w-12"/>
+        <div className="flex">  
+          <img src={props.ownerImage} alt="foto do usuário" className="w-12 h-12"/>
           <div className="ml-4">
             <div className="flex items-center gap-1">
               <h4 className="">{props.ownerName}</h4>
@@ -25,7 +25,7 @@ const PostPreview = (props: any) => {
         <img
           src={props.imagePreview}
           alt="pré visualização da imagem"
-          className="w-[250px] border-[1px]"
+          className="w-[350px] mt-5 lg:mt-0 lg:w-[250px] border-[1px]"
         />
       </div>
     </div>
