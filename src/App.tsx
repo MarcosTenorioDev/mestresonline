@@ -1,9 +1,9 @@
-import Home from "./pages/home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/shared/Navbar";
 import Publication from "./pages/publication/publication";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Auth } from "./pages/auth/Auth";
+import MyCompanies from "./pages/myCompanies/MyCompanies";
 
 function Layout({ children }: any) {
   return (
@@ -28,7 +28,7 @@ function App() {
             path="/"
             element={
               <Layout>
-                <Home />
+                <MyCompanies />
               </Layout>
             }
           />
