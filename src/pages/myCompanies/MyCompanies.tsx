@@ -43,9 +43,6 @@ const MyCompanies = () => {
 		image: Yup.string().required("Imagem é obrigatória*"),
 	});
 
-	const [orientation, setOrientation] = useState<
-		"horizontal" | "vertical" | undefined
-	>("horizontal");
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const [hasImage, setHasImage] = useState(false);
 	const companiesService = new CompaniesService();
@@ -114,29 +111,12 @@ const MyCompanies = () => {
 		);
 	};
 
-	useEffect(() => {
-		const updateOrientation = () => {
-			if (window.innerWidth >= 700) {
-				setOrientation("horizontal");
-			} else {
-				setOrientation("vertical");
-			}
-		};
-
-		window.addEventListener("resize", updateOrientation);
-		updateOrientation();
-
-		return () => {
-			window.removeEventListener("resize", updateOrientation);
-		};
-	}, []);
-
 	return (
 		<div className="max-w-7xl mx-auto px-10 lg:px-0">
 			<h1 className="font-semibold text-2xl sm:text-4xl sm:px-14 py-20">
 				Minhas Companias
 			</h1>
-			<Carousel className="w-10/12 mx-auto sm:px-14" orientation={orientation}>
+			<Carousel className="w-10/12 mx-auto sm:px-14">
 				<CarouselContent>
 					{isLoading ? (
 						loadingComponent()
@@ -145,7 +125,7 @@ const MyCompanies = () => {
 							{myCompanies.map((company) => (
 								<CarouselItem
 									key={company.id}
-									className="md:basis-1/2 cursor-pointer "
+									className="lg:basis-1/2 cursor-pointer "
 									onClick={() => navigate(`/company/${company.id}`)}
 								>
 									<div className="p-1">
@@ -167,7 +147,7 @@ const MyCompanies = () => {
 									</div>
 								</CarouselItem>
 							))}
-							<CarouselItem className="md:basis-1/2 lg:basis-1/3">
+							<CarouselItem className="lg:basis-1/2 xl:basis-1/3">
 								<div className="p-1">
 									<Dialog onOpenChange={handleDialogClose}>
 										<DialogTrigger className="w-full h-full">
