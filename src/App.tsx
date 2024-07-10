@@ -1,24 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from "./components/shared/Navbar";
-import Publication from "./pages/publication/publication";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { Auth } from "./pages/auth/Auth";
+/* import NavBar from "./components/shared/Navbar";
+ */import Publication from "./pages/publication/publication";
 import MyCompanies from "./pages/myCompanies/MyCompanies";
 import Home from "./pages/home/Home";
+import { LayoutAdmin } from "./components/shared/sidebarComponents";
 
-function Layout({ children }: any) {
-	return (
-		<>
-			<SignedOut>
-				<Auth />
-			</SignedOut>
-			<SignedIn>
-				<NavBar />
-				{children}
-			</SignedIn>
-		</>
-	);
-}
 
 function App() {
 	return (
@@ -28,25 +14,25 @@ function App() {
 					<Route
 						path="/"
 						element={
-							<Layout>
+							<LayoutAdmin>
 								<MyCompanies />
-							</Layout>
+							</LayoutAdmin>
 						}
 					/>
 					<Route
 						path="/publication"
 						element={
-							<Layout>
+							<LayoutAdmin>
 								<Publication />
-							</Layout>
+							</LayoutAdmin>
 						}
 					/>
 					<Route
 						path="/company/:id"
 						element={
-							<Layout>
+							<LayoutAdmin>
 								<Home />
-							</Layout>
+							</LayoutAdmin>
 						}
 					/>
 				</Routes>
