@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { ptBR } from "@clerk/localizations";
+import { ToastContainer } from "react-toastify";
 
 const clerkPubKey = "pk_test_b3JpZW50ZWQtY2hpY2tlbi0zMy5jbGVyay5hY2NvdW50cy5kZXYk";
 if (!clerkPubKey) {
@@ -25,6 +26,7 @@ const ClerkWithRoutes = () => {
 };
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <ToastContainer className="z-[999999999999999999999]"/>
     <ClerkWithRoutes/>
   </React.StrictMode>
 );
