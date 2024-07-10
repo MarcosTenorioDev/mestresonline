@@ -91,6 +91,8 @@ const MyCompanies = () => {
 		const myCompanies = await companiesService.getCompanies();
 		setMyCompanies(myCompanies);
 		setIsLoading(false)
+        console.log(Array.isArray(myCompanies)); // Deve ser true se myCompanies for uma array
+        console.log(myCompanies);
 	};
 
 	const loadingComponent = () => {
