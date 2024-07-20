@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { ptBR } from "@clerk/localizations";
 import { ToastContainer } from "react-toastify";
 
-const clerkPubKey = import.meta.env.VITE_AAA;
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 if (!clerkPubKey) {
   throw new Error("Missing Publishable Key");
 }
