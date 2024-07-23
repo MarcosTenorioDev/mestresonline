@@ -20,7 +20,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="/publication"
+						path="/publication/:id"
 						element={
 							<LayoutAdmin>
 								<Publication />
