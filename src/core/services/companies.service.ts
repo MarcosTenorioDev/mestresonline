@@ -19,10 +19,8 @@ class CompaniesService {
 		return response.data;
 	}
 
-	async getAllTopicsByCompanyId(externalId: string, companyId: string) {
-		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/companies/topics/${companyId}`, {
-			params: { externalId }
-		});
+	async getAllTopicsByCompanyId(companyId: string) {
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/companies/topics/${companyId}`);
 		return response.data;
 	}
 
