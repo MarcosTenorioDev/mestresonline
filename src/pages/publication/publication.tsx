@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { Select, Input } from "@/components/shared/Inputs";
+import { Select } from "@/components/shared/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
@@ -15,6 +15,7 @@ import {
 import CompaniesService from "@/core/services/companies.service";
 import { useParams } from "react-router-dom";
 import { ITopic } from "@/core/interfaces/topic.interface";
+import { IProducerCompany } from "@/core/interfaces/producer.interface";
 
 const Publication = () => {
 	const initialValues = {
@@ -34,6 +35,7 @@ const Publication = () => {
 	const [loading, setLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
+  const [producers, setProducers] = useState<IProducerCompany[]>([])
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const paragraphInputRefs = useRef<any>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
@@ -93,6 +95,7 @@ const Publication = () => {
 
 	useEffect(() => {
 		fetchTopics();
+    fetchProducers()
 	}, []);
 
 	const fetchTopics = async () => {
@@ -101,6 +104,13 @@ const Publication = () => {
 			setTopics([{id:'', description:'Selecione um tópico'}, ...topics]);
 		}
 	};
+
+  const fetchProducers = async () => {
+    if (params.id) {
+			const producers = await companiesService.getAllProducersByCompanyId(params.id);
+			setProducers([{id:'', name:'Selecione um autor'}, ...producers]);
+		}
+  }
 
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
@@ -188,17 +198,12 @@ const Publication = () => {
 								<h2>Autor da publicação</h2>
 								<Select
 									control="author"
-									options={[
-										{ value: "", label: "Selecione um autor" },
-										{
-											value: "Cleyson Batista Monteiro",
-											label: "Cleyson Batista Monteiro",
-										},
-										{
-											value: "Marcia Karine Costa",
-											label: "Marcia Karine Costa",
-										},
-									]}
+									options={producers.map((producer: IProducerCompany) => {
+										return {
+											value: producer.id,
+											label: producer.name,
+										};
+									})}
 								></Select>
 							</div>
 							<div className="mb-5">
