@@ -7,4 +7,5 @@ export interface NavItem {
     color?: string;
     isChidren?: boolean;
     children?: NavItem[];
+    protected?: boolean
 }

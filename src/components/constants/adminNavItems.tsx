@@ -13,18 +13,21 @@ export const NavItems: NavItem[] = [
       icon: FileEditIcon,
       href: "/publication",
       color: "text-primary",
+      protected: true
     },  
     {
       title: "Criar novo tópico",
       icon: Pilcrow,
       href: "/topics",
       color: "text-primary",
+      protected: true
     }, 
     {
       title: "Criar novo autor",
       icon: UserCheck2,
       href: "/topics",
       color: "text-primary",
+      protected: true
     },   
 ];
 
