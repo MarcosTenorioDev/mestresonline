@@ -43,7 +43,7 @@ const Publication = () => {
 
 	const validationSchema = Yup.object({
 		author: Yup.string().required("Autor da publicação é obrigatório*"),
-		topic: Yup.array().required().length(1, "Insira o tópico da publicação*"),
+		topic: Yup.array().required().length(1, "Tópico da publicação é obrigatório*"),
 		image: Yup.string(),
 	});
 
