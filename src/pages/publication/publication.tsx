@@ -16,6 +16,8 @@ import CompaniesService from "@/core/services/companies.service";
 import { useParams } from "react-router-dom";
 import { ITopic } from "@/core/interfaces/topic.interface";
 import { IProducerCompany } from "@/core/interfaces/producer.interface";
+import { PostService } from "@/core/services/post.service";
+import ToastService from "@/core/services/toast.service";
 
 const Publication = () => {
 	const initialValues = {
@@ -35,12 +37,13 @@ const Publication = () => {
 	const [loading, setLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
-  const [producers, setProducers] = useState<IProducerCompany[]>([])
+	const [producers, setProducers] = useState<IProducerCompany[]>([]);
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const paragraphInputRefs = useRef<any>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 	const [focusedInput, setFocusedInput] = useState<number | null>(null); // Estado para controlar qual input está focado
 	const companiesService = new CompaniesService();
+	const postService = new PostService();
 	const params = useParams();
 
 	const onSubmit = async (values: any) => {
@@ -48,32 +51,67 @@ const Publication = () => {
 			setShowImageValidator(true);
 			return;
 		}
+		
+		if(!titleInputRef?.current?.value){
+			ToastService.showError("O Título da postagem é obrigatório.")
+			return
+		}
 		setLoading(true);
-		let { image, ...rest } = values;
+		let { image, author, topic } = values;
 		image = imagePreview;
 
-		const payload = {
-			info: {
-				image,
-				...rest,
-			},
-			content: paragraphs,
+		const formatedParagraphs = await Promise.all(
+			paragraphs.map(async (paragraph: any) => {
+				if (paragraph.type === "image") {
+					const formData = new FormData();
+					formData.append("file", paragraph.content);
+					const response = await postService.uploadFile(formData);
+					return {
+						type: paragraph.type,
+						content: response.url,
+					};
+				}
+				return paragraph;
+			})
+		);
+
+		const formatedImage = async () => {
+			const formData = new FormData();
+			formData.append("file", image);
+			const response = await postService.uploadFile(formData);
+			return response.url;
 		};
 
-		console.log(payload);
+		// Aguarde a formatação da imagem
+		const formattedImageUrl = await formatedImage();
+
+		const payload = {
+			imagePreview: formattedImageUrl,
+			contentPreview:"",
+			authorId:author,
+			topicId:topic,
+			companyId:params.id, 
+			title:titleInputRef?.current?.value,
+			content: JSON.stringify(formatedParagraphs),
+		};
+
+		try {
+			await postService.createPost(payload);
+			ToastService.showSuccess("Postagem criada com sucesso");
+		} catch (error:any) {
+			console.error("Erro ao criar o post", error);
+			ToastService.showError(`Erro ao criar o post: ${error.message}`);
+		}
+
 		setLoading(false);
 	};
 
 	const handleImageChange = (event: any) => {
 		const file = event.currentTarget.files[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result);
-				setHasImage(true);
-				setShowImageValidator(false);
-			};
-			reader.readAsDataURL(file);
+			setImagePreview(file);
+			setHasImage(true);
+			setShowImageValidator(false);
 		}
 	};
 
@@ -95,26 +133,23 @@ const Publication = () => {
 
 	useEffect(() => {
 		fetchTopics();
-    fetchProducers()
+		fetchProducers();
 	}, []);
 
 	const fetchTopics = async () => {
 		if (params.id) {
 			const topics = await companiesService.getAllTopicsByCompanyId(params.id);
-			setTopics([{id:'', description:'Selecione um tópico'}, ...topics]);
+			setTopics([{ id: "", description: "Selecione um tópico" }, ...topics]);
 		}
 	};
 
-  const fetchProducers = async () => {
-    if (params.id) {
-			const producers = await companiesService.getAllProducersByCompanyId(params.id);
-			setProducers([{id:'', name:'Selecione um autor'}, ...producers]);
+	const fetchProducers = async () => {
+		if (params.id) {
+			const producers = await companiesService.getAllProducersByCompanyId(
+				params.id
+			);
+			setProducers([{ id: "", name: "Selecione um autor" }, ...producers]);
 		}
-  }
-
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		console.log(paragraphs);
 	};
 
 	const handleKeyDown = (
@@ -153,17 +188,13 @@ const Publication = () => {
 		fileInput.onchange = (e: any) => {
 			const file = e.target.files[0];
 			if (file) {
-				const reader = new FileReader();
-				reader.onloadend = () => {
-					const updatedParagraphs = [...paragraphs];
-					updatedParagraphs[index] = {
-						type: "image",
-						content: reader.result as string,
-					}; // Adiciona imagem
-					updatedParagraphs.splice(index + 1, 0, { type: "text", content: "" }); // Adiciona novo parágrafo de texto abaixo da imagem
-					setParagraphs(updatedParagraphs);
-				};
-				reader.readAsDataURL(file);
+				const updatedParagraphs = [...paragraphs];
+				updatedParagraphs[index] = {
+					type: "image",
+					content: file,
+				}; // Adiciona imagem
+				updatedParagraphs.splice(index + 1, 0, { type: "text", content: "" }); // Adiciona novo parágrafo de texto abaixo da imagem
+				setParagraphs(updatedParagraphs);
 			}
 		};
 		fileInput.click();
@@ -232,7 +263,7 @@ const Publication = () => {
 							<div>
 								{imagePreview ? (
 									<img
-										src={imagePreview}
+										src={URL.createObjectURL(imagePreview)}
 										alt="Preview"
 										className="max-w-[240px] h-36 mb-2 mx-auto"
 									/>
@@ -258,7 +289,7 @@ const Publication = () => {
 			</Formik>
 
 			<div className="max-w-screen-2xl mx-auto">
-				<form onSubmit={handleSubmit}>
+				<form>
 					<div className="max-w-screen-2xl mt-10">
 						<input
 							type="text"
@@ -295,7 +326,7 @@ const Publication = () => {
 							) : (
 								<div className="relative">
 									<img
-										src={paragraph.content}
+										src={URL.createObjectURL(paragraph.content as any)}
 										alt={`Image paragraph ${index}`}
 										className=""
 									/>
