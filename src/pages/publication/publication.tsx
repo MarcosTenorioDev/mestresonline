@@ -59,7 +59,7 @@ const Publication = () => {
 		author: Yup.string().required("Autor da publicação é obrigatório*"),
 		topic: Yup.array()
 			.required()
-			.length(1, "Tópico da publicação é obrigatório*"),
+			.min(1, "Tópico da publicação é obrigatório*"),
 		image: Yup.string(),
 		contentPreview: Yup.string().required(
 			"A pré-visualização do conteúdo é obrigatório*"
