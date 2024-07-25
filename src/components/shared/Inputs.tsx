@@ -60,7 +60,7 @@ const TextAreaFormik = (props: any) => {
     fieldClassName,
     placeholder,
     info,
-    rows, // Adicionando a prop rows
+    rows,
   } = props;
 
   const handleValueChange = (input: any) => {
@@ -97,43 +97,6 @@ const TextAreaFormik = (props: any) => {
       />
     </div>
   );
-};
-
-const Select = (props: any) => {
-	const { control, options, className, fieldClassName, info } = props;
-
-	return (
-		<div className={`flex flex-col ${props.componentClassName}`}>
-			<label
-				htmlFor={control}
-				className={`${className} font-primary font-semibold`}
-			>
-				{props.children}
-			</label>
-			<Field
-				as="select"
-				id={control}
-				name={control}
-				className={
-					fieldClassName
-						? fieldClassName
-						: "border-2 border-primary h-10 rounded-lg bg-white px-2"
-				}
-			>
-				{options.map((option: any) => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</Field>
-			{info ? info : ""}
-			<ErrorMessage
-				name={control}
-				component="p"
-				className="text-red-500 font-medium"
-			/>
-		</div>
-	);
 };
 
 const FormikMultiSelect = (props: FormikMultiSelectProps) => {
@@ -186,4 +149,4 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 	);
 };
 
-export { Input, Select, FormikMultiSelect, TextAreaFormik };
+export { Input, FormikMultiSelect, TextAreaFormik };

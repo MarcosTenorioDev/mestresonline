@@ -1,10 +1,6 @@
 import * as Yup from "yup";
-import { Formik, Form } from "formik";
-import {
-	FormikMultiSelect,
-	Select,
-	TextAreaFormik,
-} from "@/components/shared/Inputs";
+import { Formik, Form, Field } from "formik";
+import { FormikMultiSelect, TextAreaFormik } from "@/components/shared/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
@@ -22,6 +18,14 @@ import { ITopic } from "@/core/interfaces/topic.interface";
 import { IProducerCompany } from "@/core/interfaces/producer.interface";
 import { PostService } from "@/core/services/post.service";
 import ToastService from "@/core/services/toast.service";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const Publication = () => {
 	const [hasImage, setHasImage] = useState(false);
@@ -37,13 +41,15 @@ const Publication = () => {
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const paragraphInputRefs = useRef<any>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
-	const [focusedInput, setFocusedInput] = useState<number | null>(null); // Estado para controlar qual input está focado
+	const [focusedInput, setFocusedInput] = useState<number | null>(null);
 	const companiesService = new CompaniesService();
 	const postService = new PostService();
 	const params = useParams();
+	const [author, setAuthor] = useState("");
+
 
 	const initialValues = {
-		author: "",
+		author: author,
 		topic: selectecTopics,
 		image: "",
 		contentPreview: contentPreview,
@@ -162,7 +168,7 @@ const Publication = () => {
 			const producers = await companiesService.getAllProducersByCompanyId(
 				params.id
 			);
-			setProducers([{ id: "", name: "Selecione um autor" }, ...producers]);
+			setProducers([...producers]);
 		}
 	};
 
@@ -247,15 +253,30 @@ const Publication = () => {
 						<div className="w-full lg:w-auto">
 							<div className="mb-5">
 								<h2>Autor da publicação</h2>
-								<Select
-									control="author"
-									options={producers.map((producer: IProducerCompany) => {
-										return {
-											value: producer.id,
-											label: producer.name,
-										};
-									})}
-								></Select>
+								<Field name="author">
+									{({ field, form }: any) => (
+										<Select
+											value={author}
+											onValueChange={(value: string) => {
+												form.setFieldValue(field.name, value);
+												setAuthor(value)
+											}}
+										>
+											<SelectTrigger className="border-2 border-primary rounded-lg focus:ring-0 focus:ring-transparent">
+												<SelectValue placeholder="Selecione um autor" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectGroup>
+													{producers.map((producer) => (
+														<SelectItem key={producer.id} value={producer.id}>
+															{producer.name}
+														</SelectItem>
+													))}
+												</SelectGroup>
+											</SelectContent>
+										</Select>
+									)}
+								</Field>
 							</div>
 							<div className="mb-5">
 								<h2>Assunto da publicação</h2>
