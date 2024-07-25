@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { Select } from "@/components/shared/Inputs";
+import { FormikMultiSelect, Select } from "@/components/shared/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
@@ -20,23 +20,12 @@ import { PostService } from "@/core/services/post.service";
 import ToastService from "@/core/services/toast.service";
 
 const Publication = () => {
-	const initialValues = {
-		author: "",
-		topic: "",
-		image: "",
-	};
-
-	const validationSchema = Yup.object({
-		author: Yup.string().required("Autor da publicação é obrigatório*"),
-		topic: Yup.string().required("Insira o tópico da publicação*"),
-		image: Yup.string(),
-	});
-
 	const [hasImage, setHasImage] = useState(false);
 	const [showImageValidator, setShowImageValidator] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
+	const [selectecTopics, setSelectedTopics] = useState<{topicId:string}[]>([])
 	const [producers, setProducers] = useState<IProducerCompany[]>([]);
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const paragraphInputRefs = useRef<any>([]);
@@ -46,15 +35,27 @@ const Publication = () => {
 	const postService = new PostService();
 	const params = useParams();
 
+	const initialValues = {
+		author: "",
+		topic: selectecTopics,
+		image: "",
+	};
+
+	const validationSchema = Yup.object({
+		author: Yup.string().required("Autor da publicação é obrigatório*"),
+		topic: Yup.array().required().length(1, "Insira o tópico da publicação*"),
+		image: Yup.string(),
+	});
+
 	const onSubmit = async (values: any) => {
 		if (!hasImage) {
 			setShowImageValidator(true);
 			return;
 		}
-		
-		if(!titleInputRef?.current?.value){
-			ToastService.showError("O Título da postagem é obrigatório.")
-			return
+
+		if (!titleInputRef?.current?.value) {
+			ToastService.showError("O Título da postagem é obrigatório.");
+			return;
 		}
 		setLoading(true);
 		let { image, author, topic } = values;
@@ -87,23 +88,25 @@ const Publication = () => {
 
 		const payload = {
 			imagePreview: formattedImageUrl,
-			contentPreview:"",
-			authorId:author,
-			topicId:topic,
-			companyId:params.id, 
-			title:titleInputRef?.current?.value,
+			contentPreview: "",
+			authorId: author,
+			topicIds: topic,
+			companyId: params.id,
+			title: titleInputRef?.current?.value,
 			content: JSON.stringify(formatedParagraphs),
 		};
 
 		try {
 			await postService.createPost(payload);
 			ToastService.showSuccess("Postagem criada com sucesso");
-		} catch (error:any) {
+		} catch (error: any) {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
+		}finally{
+			setLoading(false);
 		}
 
-		setLoading(false);
+		
 	};
 
 	const handleImageChange = (event: any) => {
@@ -139,7 +142,7 @@ const Publication = () => {
 	const fetchTopics = async () => {
 		if (params.id) {
 			const topics = await companiesService.getAllTopicsByCompanyId(params.id);
-			setTopics([{ id: "", description: "Selecione um tópico" }, ...topics]);
+			setTopics([...topics]);
 		}
 	};
 
@@ -206,12 +209,19 @@ const Publication = () => {
 		setParagraphs(updatedParagraphs);
 	};
 
+	const onTopicsChange = (topicIds: string[]) => {
+		console.log(topicIds)
+		const formattedTopics = topicIds.map(id => ({ topicId: id }));
+		setSelectedTopics(formattedTopics)
+	  };
+
 	return (
 		<div className="max-w-screen-2xl mx-auto px-10 pb-40">
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
 				onSubmit={onSubmit}
+				enableReinitialize={true}
 			>
 				<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
 					<div className="flex justify-between">
@@ -222,9 +232,9 @@ const Publication = () => {
 							{loading ? "Enviando..." : "Publicar"}
 						</Button>
 					</div>
-					<div className="flex-col flex sm:flex-row sm:gap-32 md:gap-48 items-center">
+					<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
 						{" "}
-						<div className="w-full sm:w-auto">
+						<div className="w-full lg:w-auto">
 							<div className="mb-5">
 								<h2>Autor da publicação</h2>
 								<Select
@@ -239,7 +249,7 @@ const Publication = () => {
 							</div>
 							<div className="mb-5">
 								<h2>Assunto da publicação</h2>
-								<Select
+								<FormikMultiSelect
 									control="topic"
 									options={topics.map((topic: ITopic) => {
 										return {
@@ -247,7 +257,13 @@ const Publication = () => {
 											label: topic.description,
 										};
 									})}
-								></Select>
+									placeholder="Selecione os tópicos da publicação"
+									variant="inverted"
+									animation={0}
+									onValueChange={(topicIds:string[]) => {
+										onTopicsChange(topicIds)
+									}}
+								></FormikMultiSelect>
 							</div>
 						</div>
 						<div>
@@ -265,7 +281,7 @@ const Publication = () => {
 									<img
 										src={URL.createObjectURL(imagePreview)}
 										alt="Preview"
-										className="max-w-[240px] h-36 mb-2 mx-auto"
+										className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
 									/>
 								) : (
 									<>

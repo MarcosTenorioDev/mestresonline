@@ -1,4 +1,5 @@
-import { Field, ErrorMessage } from "formik";
+import { Field, ErrorMessage, useField } from "formik";
+import { MultiSelect } from "../ui/multi-select";
 
 const Input = (props: any) => {
   return (
@@ -67,5 +68,55 @@ const Select = (props: any) => {
   );
 };
 
+interface FormikMultiSelectProps {
+  control: string;
+  options: {
+    label: string;
+    value: string;
+    icon?: React.ComponentType<{ className?: string }>;
+  }[];
+  placeholder?: string;
+  variant?: string;
+  animation?: number;
+  className?: string;
+  fieldClassName?: string;
+  info?: React.ReactNode;
+  componentClassName?:string,
+  children?:any,
+  onValueChange?: (value: any[]) => void; // Função personalizada recebida via props
+}
 
-export { Input, Select};
+const FormikMultiSelect = (props: FormikMultiSelectProps) => {
+  const { control, options, placeholder, variant, animation, className, fieldClassName, info, onValueChange } = props;
+  const [field]:any = useField(control);
+
+  const handleValueChange = (value: any[]) => {
+    if (onValueChange) {
+      onValueChange(value);
+    }
+  };
+
+  return (
+    <div className={`flex flex-col ${props.componentClassName}`}>
+      <label htmlFor={control} className={`${className} font-primary font-semibold`}>
+        {props.children}
+      </label>
+      <MultiSelect
+        {...field}
+        options={options}
+        onValueChange={handleValueChange}
+        defaultValue={field.value}
+        placeholder={placeholder}
+        variant={variant}
+        animation={animation}
+        className={fieldClassName ? fieldClassName : "border-2 border-primary rounded-lg"}
+      />
+      {info ? info : ""}
+      <ErrorMessage name={control} component="p" className="text-red-500 font-medium" />
+    </div>
+  );
+};
+
+
+
+export { Input, Select, FormikMultiSelect };
