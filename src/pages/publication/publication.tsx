@@ -1,6 +1,10 @@
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { FormikMultiSelect, Select } from "@/components/shared/Inputs";
+import {
+	FormikMultiSelect,
+	Select,
+	TextAreaFormik,
+} from "@/components/shared/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
@@ -25,8 +29,11 @@ const Publication = () => {
 	const [loading, setLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
-	const [selectecTopics, setSelectedTopics] = useState<{topicId:string}[]>([])
+	const [selectecTopics, setSelectedTopics] = useState<{ topicId: string }[]>(
+		[]
+	);
 	const [producers, setProducers] = useState<IProducerCompany[]>([]);
+	const [contentPreview, setContentPreview] = useState("");
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const paragraphInputRefs = useRef<any>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
@@ -39,12 +46,18 @@ const Publication = () => {
 		author: "",
 		topic: selectecTopics,
 		image: "",
+		contentPreview: contentPreview,
 	};
 
 	const validationSchema = Yup.object({
 		author: Yup.string().required("Autor da publicação é obrigatório*"),
-		topic: Yup.array().required().length(1, "Tópico da publicação é obrigatório*"),
+		topic: Yup.array()
+			.required()
+			.length(1, "Tópico da publicação é obrigatório*"),
 		image: Yup.string(),
+		contentPreview: Yup.string().required(
+			"A pré-visualização do conteúdo é obrigatório*"
+		),
 	});
 
 	const onSubmit = async (values: any) => {
@@ -58,7 +71,7 @@ const Publication = () => {
 			return;
 		}
 		setLoading(true);
-		let { image, author, topic } = values;
+		let { image, author, topic, contentPreview } = values;
 		image = imagePreview;
 
 		const formatedParagraphs = await Promise.all(
@@ -88,7 +101,7 @@ const Publication = () => {
 
 		const payload = {
 			imagePreview: formattedImageUrl,
-			contentPreview: "",
+			contentPreview: contentPreview,
 			authorId: author,
 			topicIds: topic,
 			companyId: params.id,
@@ -102,11 +115,9 @@ const Publication = () => {
 		} catch (error: any) {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
-		}finally{
+		} finally {
 			setLoading(false);
 		}
-
-		
 	};
 
 	const handleImageChange = (event: any) => {
@@ -210,10 +221,9 @@ const Publication = () => {
 	};
 
 	const onTopicsChange = (topicIds: string[]) => {
-		console.log(topicIds)
-		const formattedTopics = topicIds.map(id => ({ topicId: id }));
-		setSelectedTopics(formattedTopics)
-	  };
+		const formattedTopics = topicIds.map((id) => ({ topicId: id }));
+		setSelectedTopics(formattedTopics);
+	};
 
 	return (
 		<div className="max-w-screen-2xl mx-auto px-10 pb-40">
@@ -260,45 +270,60 @@ const Publication = () => {
 									placeholder="Selecione os tópicos da publicação"
 									variant="inverted"
 									animation={0}
-									onValueChange={(topicIds:string[]) => {
-										onTopicsChange(topicIds)
+									onValueChange={(topicIds: string[]) => {
+										onTopicsChange(topicIds);
 									}}
 								></FormikMultiSelect>
 							</div>
 						</div>
-						<div>
-							<h2>Insira a imagem de capa da publicação</h2>
-							<input
-								type="file"
-								id="image"
-								name="image"
-								className="mb-8 text-xs"
-								accept="image/*"
-								onChange={handleImageChange}
-							/>
+						<div className="w-full flex flex-col xl:flex-row xl:justify-end xl:items-end items-center">
 							<div>
-								{imagePreview ? (
-									<img
-										src={URL.createObjectURL(imagePreview)}
-										alt="Preview"
-										className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
-									/>
-								) : (
+								<h2>Insira a imagem de capa da publicação</h2>
+								<input
+									type="file"
+									id="image"
+									name="image"
+									className="mb-8 text-xs"
+									accept="image/*"
+									onChange={handleImageChange}
+								/>
+								<div>
+									{imagePreview ? (
+										<img
+											src={URL.createObjectURL(imagePreview)}
+											alt="Preview"
+											className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
+										/>
+									) : (
+										<>
+											<label htmlFor="">Pré-visualização da imagem:</label>
+											<div className="bg-gray-200 h-36 w-[240px] mb-2 flex justify-center items-center">
+												<p className="text-gray-400">Selecione uma imagem</p>
+											</div>
+										</>
+									)}
+								</div>
+								{showImageValidator && (
 									<>
-										<label htmlFor="">Pré-visualização :</label>
-										<div className="bg-gray-200 h-36 w-[240px] mb-2 flex justify-center items-center">
-											<p className="text-gray-400">Selecione uma imagem</p>
-										</div>
+										<p className="text-red-500 font-medium">
+											Imagem é obrigatória
+										</p>
 									</>
 								)}
 							</div>
-							{showImageValidator && (
-								<>
-									<p className="text-red-500 font-medium">
-										Imagem é obrigatória
-									</p>
-								</>
-							)}
+							<TextAreaFormik
+								onValueChange={(value: string) => {
+									console.log(value);
+									setContentPreview(value);
+								}}
+								className="text-black font-normal mb-0"
+								fieldClassName="lg:mb-2 lg:max-w-[450px]"
+								rows={6}
+								control="contentPreview"
+								placeholder="Insira aqui a pré-visualização do seu conteúdo, coloque uma descrição que chame a atenção das pessoas"
+							>
+								Pré visualização do conteúdo :
+							</TextAreaFormik>
 						</div>
 					</div>
 				</Form>
