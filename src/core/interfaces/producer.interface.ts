@@ -9,6 +9,7 @@ export interface IProducer {
 	imageProfile: string;
 	email: string;
 	office: string | "";
+	companyId?: string
 }
 
 export interface IProducerCreate {

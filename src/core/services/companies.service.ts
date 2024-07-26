@@ -12,10 +12,8 @@ class CompaniesService {
 		return response.data;
 	}
 
-	async getCompanyById(id: string, externalId: string) {
-		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`, {
-			params: { externalId }
-		});
+	async getCompanyById(id: string) {
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`);
 		return response.data;
 	}
 

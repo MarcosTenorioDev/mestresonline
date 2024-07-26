@@ -1,3 +1,5 @@
+import { IOwner, IPost } from "./posts.interface";
+
 export interface CompanyCreate {
     name: string;
     image: string
@@ -11,3 +13,13 @@ export interface CompanyHomePage {
     image: string
     ownerId: string;
 }
+
+export interface ICompany {
+    id: string;
+    name: string;
+    ownerId: string;
+    image: string;
+    description: string;
+    owner: IOwner;
+    posts: IPost[];
+  }
