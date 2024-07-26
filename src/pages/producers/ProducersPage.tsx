@@ -20,14 +20,20 @@ import {
 import { IProducer } from "@/core/interfaces/producer.interface";
 import CompaniesService from "@/core/services/companies.service";
 import { useParams } from "react-router-dom";
+import { PostService } from "@/core/services/post.service";
+import { ProducerService } from "@/core/services/producer.service";
+import ToastService from "@/core/services/toast.service";
 
 const ProducersPage = () => {
 	const [imagePreview, setImagePreview] = useState<File | null>(null);
 	const companyService = new CompaniesService();
+	const postService = new PostService();
+	const producerService = new ProducerService();
 	const params = useParams();
 	const id = params.id;
 	const [producers, setProducers] = useState<IProducer[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
+	const [isSending, setIsSending] = useState<boolean>(false)
 
 	useEffect(() => {
 		fetchProducers();
@@ -56,8 +62,46 @@ const ProducersPage = () => {
 		office: Yup.string(),
 	});
 
-	const onSubmit = (values: any) => {
-		console.log(values);
+	const onSubmit = async (values: {
+		email: string;
+		name: string;
+		imageProfile: string;
+		office: string;
+	}) => {
+		if (id) {
+			setIsSending(true);
+			const formatedImage = async () => {
+				if (imagePreview) {
+					const formData = new FormData();
+					formData.append("file", imagePreview);
+					const response = await postService.uploadFile(formData);
+					return response.url;
+				}
+				return null;
+			};
+
+			// Aguarde a formatação da imagem
+			const formattedImageUrl = await formatedImage();
+
+			const payload = {
+				companyId: id,
+				email: values.email,
+				name: values.name,
+				imageProfile: formattedImageUrl,
+				office: values.office,
+			};
+
+			try {
+				await producerService.PostProducer(payload);
+				ToastService.showSuccess("Autor criado com sucesso");
+			} catch (error: any) {
+				console.error("Erro ao criar o autor", error);
+				ToastService.showError(`Erro ao criar o autor: ${error.message}`);
+			} finally {
+				setIsSending(false);
+				fetchProducers()
+			}
+		}
 	};
 
 	const filteredProducers = producers.filter((producer) =>
@@ -77,25 +121,15 @@ const ProducersPage = () => {
 						<Form className="space-y-4 mt-10">
 							<div className="flex flex-col lg:flex-row justify-center items-center lg:items-start">
 								<div className="w-72 flex flex-col justify-center">
-									<Avatar className="w-52 h-52 mx-auto">
-										<AvatarImage
-											src={
-												imagePreview
-													? URL.createObjectURL(imagePreview)
-													: defaultImage
-											}
-										/>
-										<AvatarFallback>
-											<img
-												src={
-													imagePreview
-														? URL.createObjectURL(imagePreview)
-														: defaultImage
-												}
-												alt="Imagem de perfil"
-											/>
-										</AvatarFallback>
-									</Avatar>
+									<img
+										className="w-48 h-48 mx-auto rounded-full"
+										src={
+											imagePreview
+												? URL.createObjectURL(imagePreview)
+												: defaultImage
+										}
+										alt="Imagem de perfil"
+									/>
 
 									<Button
 										asChild
@@ -176,8 +210,9 @@ const ProducersPage = () => {
 								<Button
 									type="submit"
 									className="bg-green-500 hover:bg-green-500/80 w-full md:w-auto"
+									disabled={isSending}
 								>
-									Cadastrar novo autor
+									{isSending ? "Criando...": "Cadastrar novo autor"}
 								</Button>
 							</div>
 						</Form>
@@ -186,7 +221,9 @@ const ProducersPage = () => {
 			</div>
 			<div className="container">
 				<div className="flex flex-col sm:flex-row justify-between items-center sm:gap-10">
-					<h2 className="text-2xl font-bold mb-4 text-nowrap">Lista de autores</h2>
+					<h2 className="text-2xl font-bold mb-4 text-nowrap">
+						Lista de autores
+					</h2>
 					<div className="relative flex w-full max-w-lg items-center space-x-2">
 						<SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 ml-2" />
 						<Input
