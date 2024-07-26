@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MyCompanies from "./pages/myCompanies/MyCompanies";
 import Home from "./pages/home/Home";
 import { LayoutAdmin } from "./components/shared/sidebarComponents";
+import ProducersPage from "./pages/producers/ProducersPage";
 
 
 function App() {
@@ -32,6 +33,14 @@ function App() {
 						element={
 							<LayoutAdmin>
 								<Home />
+							</LayoutAdmin>
+						}
+					/>
+					<Route
+						path="/author/:id"
+						element={
+							<LayoutAdmin>
+								<ProducersPage />
 							</LayoutAdmin>
 						}
 					/>

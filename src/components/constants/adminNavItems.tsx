@@ -25,7 +25,7 @@ export const NavItems: NavItem[] = [
     {
       title: "Criar novo autor",
       icon: UserCheck2,
-      href: "/topics",
+      href: "/author",
       color: "text-primary",
       protected: true
     },   
