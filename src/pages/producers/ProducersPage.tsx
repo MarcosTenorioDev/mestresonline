@@ -7,7 +7,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import defaultImage from "@/assets/images/userImage.png";
-import { CameraIcon, SearchIcon, XIcon } from "lucide-react";
+import {
+	CameraIcon,
+	PenBoxIcon,
+	SearchIcon,
+	Trash2Icon,
+	XIcon,
+} from "lucide-react";
 import {
 	Table,
 	TableCaption,
@@ -24,6 +30,18 @@ import { PostService } from "@/core/services/post.service";
 import { ProducerService } from "@/core/services/producer.service";
 import ToastService from "@/core/services/toast.service";
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 const ProducersPage = () => {
 	const [imagePreview, setImagePreview] = useState<File | null>(null);
 	const companyService = new CompaniesService();
@@ -33,7 +51,7 @@ const ProducersPage = () => {
 	const id = params.id;
 	const [producers, setProducers] = useState<IProducer[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
-	const [isSending, setIsSending] = useState<boolean>(false)
+	const [isSending, setIsSending] = useState<boolean>(false);
 
 	useEffect(() => {
 		fetchProducers();
@@ -99,7 +117,7 @@ const ProducersPage = () => {
 				ToastService.showError(`Erro ao criar o autor: ${error.message}`);
 			} finally {
 				setIsSending(false);
-				fetchProducers()
+				fetchProducers();
 			}
 		}
 	};
@@ -107,6 +125,74 @@ const ProducersPage = () => {
 	const filteredProducers = producers.filter((producer) =>
 		producer.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
+
+	const deleteAuthorById = async (id: string) => {
+		try {
+			await producerService.DeleteProducer(id);
+			ToastService.showSuccess("Autor excluído com sucesso");
+		} catch (error: any) {
+			ToastService.showError(
+				`Houve um erro ao excluir o seu author ${error.message}`
+			);
+		} finally {
+			fetchProducers();
+		}
+	};
+
+	const DeleteDialog = (props: { producer: IProducer }) => {
+		const { producer } = props;
+
+		return (
+			<AlertDialog>
+				<Button asChild variant={"destructive"}>
+					<AlertDialogTrigger>
+						<Trash2Icon />
+					</AlertDialogTrigger>
+				</Button>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Você tem certeza disso?</AlertDialogTitle>
+						<AlertDialogDescription>
+							Essa ação não pode ser desfeita, uma vez que o autor tenha sido
+							excluído, todos os posts criados pelo mesmo também serão.
+						</AlertDialogDescription>
+						<div className="text-sm text-muted-foreground">
+							<div className="flex flex-col justify-center sm:flex-row sm:justify-start">
+								<div>
+									<p className="mb-4 font-semibold text-black">
+										Dados do autor:
+									</p>
+									<Avatar className="w-14 h-14 mx-auto sm:mx-0">
+										<AvatarImage
+											src={producer.imageProfile}
+											alt="Imagem de perfil"
+										/>
+										<AvatarFallback>null</AvatarFallback>
+									</Avatar>
+								</div>
+
+								<div className="pt-8">
+									<p>nome: {producer.name}</p>
+									<p>email: {producer.email}</p>
+									<p>{producer.office ? `cargo: ${producer.office}` : ""}</p>
+								</div>
+							</div>
+						</div>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancelar</AlertDialogCancel>
+						<Button
+							asChild
+							variant={"destructive"}
+							onClick={() => deleteAuthorById(producer.id)}
+						>
+							<AlertDialogAction>Confirmar Exclusão</AlertDialogAction>
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
+	};
 
 	return (
 		<>
@@ -134,7 +220,7 @@ const ProducersPage = () => {
 									<Button
 										asChild
 										variant={"default"}
-										className="mx-auto mb-10 mt-4"
+										className="mx-auto mb-10 mt-4 cursor-pointer"
 									>
 										<Label
 											htmlFor="imageProfile"
@@ -212,7 +298,7 @@ const ProducersPage = () => {
 									className="bg-green-500 hover:bg-green-500/80 w-full md:w-auto"
 									disabled={isSending}
 								>
-									{isSending ? "Criando...": "Cadastrar novo autor"}
+									{isSending ? "Criando..." : "Cadastrar novo autor"}
 								</Button>
 							</div>
 						</Form>
@@ -271,6 +357,14 @@ const ProducersPage = () => {
 								<TableCell>{producer.name}</TableCell>
 								<TableCell>{producer.email}</TableCell>
 								<TableCell>{producer.office}</TableCell>
+								<TableCell className="w-20">
+									<Button variant={"outlineWhite"}>
+										<PenBoxIcon />
+									</Button>
+								</TableCell>
+								<TableCell className="w-20">
+									<DeleteDialog producer={producer} />
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
