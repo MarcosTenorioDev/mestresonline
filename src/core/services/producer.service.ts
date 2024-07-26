@@ -15,7 +15,7 @@ class ProducerService {
 		return response.data;
 	}
     async DeleteProducer(id: string) {
-		const response = await this.axios.post(
+		const response = await this.axios.delete(
 			`${import.meta.env.VITE_API_DEV_URL}/producers/${id}`
 		);
 		return response.data;

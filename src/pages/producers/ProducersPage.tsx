@@ -52,6 +52,7 @@ const ProducersPage = () => {
 	const [producers, setProducers] = useState<IProducer[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [isSending, setIsSending] = useState<boolean>(false);
+	const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
 	useEffect(() => {
 		fetchProducers();
@@ -61,6 +62,7 @@ const ProducersPage = () => {
 		if (id) {
 			const result = await companyService.getAllProducersByCompanyId(id);
 			setProducers(result);
+			setIsDeleting(false)
 		}
 	};
 
@@ -127,6 +129,7 @@ const ProducersPage = () => {
 	);
 
 	const deleteAuthorById = async (id: string) => {
+		setIsDeleting(true)
 		try {
 			await producerService.DeleteProducer(id);
 			ToastService.showSuccess("Autor excluído com sucesso");
@@ -144,7 +147,7 @@ const ProducersPage = () => {
 
 		return (
 			<AlertDialog>
-				<Button asChild variant={"destructive"}>
+				<Button asChild variant={"destructive"} disabled={isDeleting}>
 					<AlertDialogTrigger>
 						<Trash2Icon />
 					</AlertDialogTrigger>
