@@ -5,6 +5,7 @@ import MyCompanies from "./pages/myCompanies/MyCompanies";
 import Home from "./pages/home/Home";
 import { LayoutAdmin } from "./components/shared/sidebarComponents";
 import ProducersPage from "./pages/producers/ProducersPage";
+import TopicsPage from "./pages/topics/TopicsPage";
 
 
 function App() {
@@ -41,6 +42,14 @@ function App() {
 						element={
 							<LayoutAdmin>
 								<ProducersPage />
+							</LayoutAdmin>
+						}
+					/>
+					<Route
+						path="/topics/:id"
+						element={
+							<LayoutAdmin>
+								<TopicsPage />
 							</LayoutAdmin>
 						}
 					/>
