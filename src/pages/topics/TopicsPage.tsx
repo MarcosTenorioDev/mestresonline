@@ -45,7 +45,10 @@ const TopicsPage = () => {
 		if (id) {
 			const data = await companyServices.getAllTopicsByCompanyId(id);
 			setTopics(data);
+            setIsDeleting(false)
+            return
 		}
+        setIsDeleting(false)
 	};
 
 	const filteredTopic = topics.filter((topic: ITopic) =>
@@ -62,7 +65,7 @@ const TopicsPage = () => {
 				`Houve um erro ao excluir o respectivo tópico ${error.message}`
 			);
 		}finally{
-            setIsDeleting(false)
+            fetchTopics()
         }
 	};
 
