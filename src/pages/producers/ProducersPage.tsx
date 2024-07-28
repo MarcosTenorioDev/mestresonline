@@ -204,8 +204,8 @@ const ProducersPage = () => {
 	const SkeletonLoading = () => {
 		return (
 			<>
-			{Array.from({ length: 4 }).map((_) => (
-				<TableRow>
+			{Array.from({ length: 4 }).map((_, index) => (
+				<TableRow key={index}>
 					{Array.from({ length: 6 }).map((_, index) => (
 						<TableCell key={index}>
 							<div
