@@ -261,7 +261,7 @@ const TopicsPage = () => {
 				</Button>
 			</div>
 			<Table className="mt-4">
-				<TableCaption>A Lista tópicos da Clinica Ativamente</TableCaption>
+				<TableCaption>A Lista tópicos - {localStorage.getItem('companyName')}</TableCaption>
 				<TableHeader>
 					<TableRow>
 						<TableHead>Nome</TableHead>

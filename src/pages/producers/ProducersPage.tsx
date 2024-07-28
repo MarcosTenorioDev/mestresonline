@@ -363,7 +363,7 @@ const ProducersPage = () => {
 					</div>
 				</div>
 				<Table>
-					<TableCaption>A Lista de autores da Clinica ativamente</TableCaption>
+					<TableCaption>A Lista de autores - {localStorage.getItem('companyName')}</TableCaption>
 					<TableHeader>
 						<TableRow>
 							<TableHead className="w-[100px]">Imagem</TableHead>

@@ -126,7 +126,10 @@ const MyCompanies = () => {
 								<CarouselItem
 									key={company.id}
 									className="lg:basis-1/2 cursor-pointer "
-									onClick={() => navigate(`/company/${company.id}`)}
+									onClick={() => {
+										navigate(`/company/${company.id}`)
+										localStorage.setItem('companyName', company.name)
+									}}
 								>
 									<div className="p-1">
 										<Card className="w-full cursor-pointer">

@@ -242,7 +242,7 @@ const Publication = () => {
 				<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
 					<div className="flex justify-between">
 						<h1 className="text-2xl mb-10">
-							Nova publicação em Clinica Ativamente
+							Nova publicação em {localStorage.getItem('companyName')}
 						</h1>
 						<Button variant={"default"} type="submit" disabled={loading}>
 							{loading ? "Enviando..." : "Publicar"}
