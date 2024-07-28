@@ -25,7 +25,7 @@ const Input = (props: any) => {
 		<div className={`flex flex-col ${props.componentClassName}`}>
 			<label
 				htmlFor={props.control}
-				className={`${props.className} font-primary font-semibold mb-1"`}
+				className={`${props.className} font-primary font-semibold pb-2`}
 			>
 				{props.children}
 			</label>
@@ -35,8 +35,8 @@ const Input = (props: any) => {
 				name={props.control}
 				className={
 					props.fieldClassName
-						? `${props.fieldClassName} border-2 border-primary h-10 rounded-lg`
-						: "border-2 border-primary h-10 rounded-lg"
+						? `${props.fieldClassName} border-2 border-primary h-10 rounded-lg px-4`
+						: "border-2 border-primary h-10 rounded-lg px-4"
 				}
 				placeholder={props.placeholder}
 			/>

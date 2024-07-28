@@ -1,5 +1,5 @@
 import { AxiosInterceptor } from "../interceptor/axios.interceptor";
-import { ITopicCreate } from "../interfaces/topic.interface";
+import { ITopic, ITopicCreate } from "../interfaces/topic.interface";
 
 class TopicService{
     private axiosInterceptor: AxiosInterceptor = new AxiosInterceptor();
@@ -16,6 +16,11 @@ class TopicService{
         const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/topics/${id}`)
         return response.data
     }
+
+    async updateTopic(topic: ITopic) {
+		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/topics/${topic.id}`, topic);
+		return response.data;
+	}
 
 }
 
