@@ -40,19 +40,25 @@ const TopicsPage = () => {
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const topicService = new TopicService();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		fetchTopics();
 	}, []);
 
 	const fetchTopics = async () => {
-		if (id) {
-			const data = await companyServices.getAllTopicsByCompanyId(id);
-			setTopics(data);
+		setIsLoading(true);
+		try {
+			if (id) {
+				const data = await companyServices.getAllTopicsByCompanyId(id);
+				setTopics(data);
+			}
+		} catch (error) {
+			ToastService.showError("Erro ao buscar tópicos.");
+		} finally {
+			setIsLoading(false);
 			setIsDeleting(false);
-			return;
 		}
-		setIsDeleting(false);
 	};
 
 	const filteredTopic = topics.filter((topic: ITopic) =>
@@ -125,27 +131,29 @@ const TopicsPage = () => {
 			const { id, companyId, description } = values;
 
 			try {
-				if(props?.topic){
+				if (props?.topic) {
 					const payload = {
 						id,
 						companyId,
 						description,
 					};
-					await topicService.updateTopic(payload)
+					await topicService.updateTopic(payload);
 					ToastService.showSuccess(`Tópico editado com sucesso`);
-					return
+					return;
 				}
 				const payload = {
-					companyId:id,
+					companyId: id,
 					description,
 				};
-				await topicService.createTopic(payload)
+				await topicService.createTopic(payload);
 				ToastService.showSuccess(`Tópico criado com sucesso`);
-				return
+				return;
 			} catch (err) {
-				ToastService.showError(`Houve um erro ao ${props?.topic ? "editar" : "criar"} o Tópico`);
-			}finally{
-				fetchTopics()
+				ToastService.showError(
+					`Houve um erro ao ${props?.topic ? "editar" : "criar"} o Tópico`
+				);
+			} finally {
+				fetchTopics();
 			}
 			return;
 		};
@@ -173,7 +181,7 @@ const TopicsPage = () => {
 							{props?.topic?.id ? "Editando tópico" : "Criar novo tópico"}
 						</AlertDialogTitle>
 					</AlertDialogHeader>
-					<div >
+					<div>
 						<Formik
 							initialValues={initialValues}
 							onSubmit={onSubmit}
@@ -195,7 +203,9 @@ const TopicsPage = () => {
 										type="submit"
 										onClick={() => {}}
 									>
-										<AlertDialogAction>{props?.topic?.id ? "Editar" : "Criar"}</AlertDialogAction>
+										<AlertDialogAction>
+											{props?.topic?.id ? "Editar" : "Criar"}
+										</AlertDialogAction>
 									</Button>
 								</AlertDialogFooter>
 							</Form>
@@ -205,6 +215,20 @@ const TopicsPage = () => {
 			</AlertDialog>
 		);
 	};
+
+	const SkeletonRow = () => (
+		<TableRow>
+			<TableCell>
+				<div className="h-4 bg-gray-200 rounded w-3/4"></div>
+			</TableCell>
+			<TableCell className="w-20">
+				<div className="h-4 bg-gray-200 rounded w-full"></div>
+			</TableCell>
+			<TableCell className="w-20">
+				<div className="h-4 bg-gray-200 rounded w-full"></div>
+			</TableCell>
+		</TableRow>
+	);
 
 	return (
 		<div className="max-w-screen-2xl mx-auto p-10 pb-40">
@@ -246,17 +270,25 @@ const TopicsPage = () => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{filteredTopic.map((topic: ITopic) => (
-						<TableRow key={topic.id}>
-							<TableCell>{topic.description}</TableCell>
-							<TableCell className="w-20">
-								<TopicDialog topic={topic} />
-							</TableCell>
-							<TableCell className="w-20">
-								<DeleteDialog topic={topic} />
-							</TableCell>
-						</TableRow>
-					))}
+					{isLoading ? (
+						<>
+							<SkeletonRow />
+							<SkeletonRow />
+							<SkeletonRow />
+						</>
+					) : (
+						filteredTopic.map((topic: ITopic) => (
+							<TableRow key={topic.id}>
+								<TableCell>{topic.description}</TableCell>
+								<TableCell className="w-20">
+									<TopicDialog topic={topic} />
+								</TableCell>
+								<TableCell className="w-20">
+									<DeleteDialog topic={topic} />
+								</TableCell>
+							</TableRow>
+						))
+					)}
 				</TableBody>
 			</Table>
 		</div>
