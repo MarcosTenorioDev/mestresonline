@@ -52,18 +52,22 @@ const ProducersPage = () => {
 	const [producers, setProducers] = useState<IProducer[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [isSending, setIsSending] = useState<boolean>(false);
-	const [isDeleting, setIsDeleting] = useState<boolean>(false)
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		fetchProducers();
 	}, []);
 
 	const fetchProducers = async () => {
+		setIsLoading(true);
 		if (id) {
 			const result = await companyService.getAllProducersByCompanyId(id);
 			setProducers(result);
-			setIsDeleting(false)
+			setIsDeleting(false);
+			setIsLoading(false);
 		}
+		setIsLoading(false);
 	};
 
 	const initialValues = {
@@ -129,7 +133,7 @@ const ProducersPage = () => {
 	);
 
 	const deleteAuthorById = async (id: string) => {
-		setIsDeleting(true)
+		setIsDeleting(true);
 		try {
 			await producerService.DeleteProducer(id);
 			ToastService.showSuccess("Autor excluído com sucesso");
@@ -194,6 +198,29 @@ const ProducersPage = () => {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+		);
+	};
+
+	const SkeletonLoading = () => {
+		return (
+			<>
+			{Array.from({ length: 4 }).map((_, index) => (
+				<TableRow>
+					{Array.from({ length: 6 }).map((_, index) => (
+						<TableCell key={index}>
+							<div
+								className={
+									index === 0
+										? "animate-pulse w-14 h-14 bg-gray-200 rounded-full"
+										: "animate-pulse h-6 bg-gray-200 rounded"
+								}
+							></div>
+						</TableCell>
+					))}
+				</TableRow>
+			))}
+			
+			</>
 		);
 	};
 
@@ -343,33 +370,37 @@ const ProducersPage = () => {
 							<TableHead>Nome</TableHead>
 							<TableHead>Email</TableHead>
 							<TableHead>Cargo</TableHead>
+							<TableHead>Editar</TableHead>
+							<TableHead>Excluir</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{filteredProducers.map((producer: IProducer) => (
-							<TableRow key={producer.id}>
-								<TableCell className="font-medium">
-									<Avatar className="w-14 h-14 mx-auto">
-										<AvatarImage
-											src={producer.imageProfile}
-											alt="Imagem de perfil"
-										/>
-										<AvatarFallback>null</AvatarFallback>
-									</Avatar>
-								</TableCell>
-								<TableCell>{producer.name}</TableCell>
-								<TableCell>{producer.email}</TableCell>
-								<TableCell>{producer.office}</TableCell>
-								<TableCell className="w-20">
-									<Button variant={"outlineWhite"}>
-										<PenBoxIcon />
-									</Button>
-								</TableCell>
-								<TableCell className="w-20">
-									<DeleteDialog producer={producer} />
-								</TableCell>
-							</TableRow>
-						))}
+						{isLoading
+							? SkeletonLoading()
+							: filteredProducers.map((producer: IProducer) => (
+									<TableRow key={producer.id}>
+										<TableCell className="font-medium">
+											<Avatar className="w-14 h-14 mx-auto">
+												<AvatarImage
+													src={producer.imageProfile}
+													alt="Imagem de perfil"
+												/>
+												<AvatarFallback>null</AvatarFallback>
+											</Avatar>
+										</TableCell>
+										<TableCell>{producer.name}</TableCell>
+										<TableCell>{producer.email}</TableCell>
+										<TableCell>{producer.office}</TableCell>
+										<TableCell className="w-20">
+											<Button variant={"outlineWhite"}>
+												<PenBoxIcon />
+											</Button>
+										</TableCell>
+										<TableCell className="w-20">
+											<DeleteDialog producer={producer} />
+										</TableCell>
+									</TableRow>
+							  ))}
 					</TableBody>
 				</Table>
 			</div>
