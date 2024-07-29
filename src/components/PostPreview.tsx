@@ -35,7 +35,7 @@ const PostPreview = ({ post }: { post: IPost }) => {
 									{new Date(post.publishedAt).toLocaleDateString()}
 								</p>
 							</div>
-							<div className="flex gap-1 justify-center sm:justify-start">
+							<div className="flex gap-1 flex-wrap justify-center sm:justify-start">
 								{post.topics.reduce((acc: any[], topic: any, index: number) => {
 									if (index > 0) {
 										acc.push(
