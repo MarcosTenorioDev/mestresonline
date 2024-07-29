@@ -26,11 +26,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Publication = () => {
 	const [hasImage, setHasImage] = useState(false);
 	const [showImageValidator, setShowImageValidator] = useState(false);
-	const [loading, setLoading] = useState(false);
+	const [sending, setIsSending] = useState(false);
+	const [loading, setIsLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
 	const [selectecTopics, setSelectedTopics] = useState<{ topicId: string }[]>(
@@ -47,7 +49,6 @@ const Publication = () => {
 	const params = useParams();
 	const [author, setAuthor] = useState("");
 
-
 	const initialValues = {
 		author: author,
 		topic: selectecTopics,
@@ -57,9 +58,7 @@ const Publication = () => {
 
 	const validationSchema = Yup.object({
 		author: Yup.string().required("Autor da publicação é obrigatório*"),
-		topic: Yup.array()
-			.required()
-			.min(1, "Tópico da publicação é obrigatório*"),
+		topic: Yup.array().required().min(1, "Tópico da publicação é obrigatório*"),
 		image: Yup.string(),
 		contentPreview: Yup.string().required(
 			"A pré-visualização do conteúdo é obrigatório*"
@@ -76,7 +75,7 @@ const Publication = () => {
 			ToastService.showError("O Título da postagem é obrigatório.");
 			return;
 		}
-		setLoading(true);
+		setIsSending(true);
 		let { image, author, topic, contentPreview } = values;
 		image = imagePreview;
 
@@ -122,7 +121,7 @@ const Publication = () => {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
 		} finally {
-			setLoading(false);
+			setIsSending(false);
 		}
 	};
 
@@ -157,19 +156,25 @@ const Publication = () => {
 	}, []);
 
 	const fetchTopics = async () => {
+		setIsLoading(true);
 		if (params.id) {
 			const topics = await companiesService.getAllTopicsByCompanyId(params.id);
 			setTopics([...topics]);
+			setIsLoading(false);
 		}
+		setIsLoading(false);
 	};
 
 	const fetchProducers = async () => {
+		setIsLoading(true);
 		if (params.id) {
 			const producers = await companiesService.getAllProducersByCompanyId(
 				params.id
 			);
 			setProducers([...producers]);
+			setIsLoading(false);
 		}
+		setIsLoading(false);
 	};
 
 	const handleKeyDown = (
@@ -231,204 +236,237 @@ const Publication = () => {
 		setSelectedTopics(formattedTopics);
 	};
 
+	const LoadingSkeleton = () => {
+		return (
+			<>
+				<div className="flex gap-10">
+					<Skeleton className="w-96 h-40 bg-gray-200"></Skeleton>
+					<div className="flex flex-col gap-5 w-full">
+						<Skeleton className="h-8 bg-gray-200 w-full"></Skeleton>
+						<Skeleton className="h-8 bg-gray-200 w-full"></Skeleton>
+						<Skeleton className="h-8 bg-gray-200 w-full"></Skeleton>
+					</div>
+				</div>
+				<Skeleton className="h-2 bg-gray-200 w-full my-10"></Skeleton>
+				<div className="flex flex-col gap-12 flex-1">
+					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
+					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
+					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
+					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<div className="max-w-screen-2xl mx-auto px-10 pb-40">
-			<Formik
-				initialValues={initialValues}
-				validationSchema={validationSchema}
-				onSubmit={onSubmit}
-				enableReinitialize={true}
-			>
-				<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
-					<div className="flex justify-between">
-						<h1 className="text-2xl mb-10">
-							Nova publicação em {localStorage.getItem('companyName')}
-						</h1>
-						<Button variant={"default"} type="submit" disabled={loading}>
-							{loading ? "Enviando..." : "Publicar"}
-						</Button>
-					</div>
-					<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
-						{" "}
-						<div className="w-full lg:w-auto">
-							<div className="mb-5">
-								<h2>Autor da publicação</h2>
-								<Field name="author">
-									{({ field, form }: any) => (
-										<Select
-											value={author}
-											onValueChange={(value: string) => {
-												form.setFieldValue(field.name, value);
-												setAuthor(value)
+			{loading ? (
+				LoadingSkeleton()
+			) : (
+				<>
+					<Formik
+						initialValues={initialValues}
+						validationSchema={validationSchema}
+						onSubmit={onSubmit}
+						enableReinitialize={true}
+					>
+						<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
+							<div className="flex justify-between">
+								<h1 className="text-2xl mb-10">
+									Nova publicação em {localStorage.getItem("companyName")}
+								</h1>
+								<Button variant={"default"} type="submit" disabled={sending}>
+									{sending ? "Enviando..." : "Publicar"}
+								</Button>
+							</div>
+							<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
+								{" "}
+								<div className="w-full lg:w-auto">
+									<div className="mb-5">
+										<h2>Autor da publicação</h2>
+										<Field name="author">
+											{({ field, form }: any) => (
+												<Select
+													value={author}
+													onValueChange={(value: string) => {
+														form.setFieldValue(field.name, value);
+														setAuthor(value);
+													}}
+												>
+													<SelectTrigger className="border-2 border-primary rounded-lg focus:ring-0 focus:ring-transparent">
+														<SelectValue placeholder="Selecione um autor" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectGroup>
+															{producers.map((producer) => (
+																<SelectItem
+																	key={producer.id}
+																	value={producer.id}
+																>
+																	{producer.name}
+																</SelectItem>
+															))}
+														</SelectGroup>
+													</SelectContent>
+												</Select>
+											)}
+										</Field>
+									</div>
+									<div className="mb-5">
+										<h2>Assunto da publicação</h2>
+										<FormikMultiSelect
+											control="topic"
+											options={topics.map((topic: ITopic) => {
+												return {
+													value: topic.id,
+													label: topic.description,
+												};
+											})}
+											placeholder="Selecione os tópicos da publicação"
+											variant="inverted"
+											animation={0}
+											onValueChange={(topicIds: string[]) => {
+												onTopicsChange(topicIds);
 											}}
-										>
-											<SelectTrigger className="border-2 border-primary rounded-lg focus:ring-0 focus:ring-transparent">
-												<SelectValue placeholder="Selecione um autor" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectGroup>
-													{producers.map((producer) => (
-														<SelectItem key={producer.id} value={producer.id}>
-															{producer.name}
-														</SelectItem>
-													))}
-												</SelectGroup>
-											</SelectContent>
-										</Select>
-									)}
-								</Field>
+										></FormikMultiSelect>
+									</div>
+								</div>
+								<div className="w-full flex flex-col xl:flex-row xl:justify-end xl:items-end items-center">
+									<div>
+										<h2>Insira a imagem de capa da publicação</h2>
+										<input
+											type="file"
+											id="image"
+											name="image"
+											className="mb-8 text-xs"
+											accept="image/*"
+											onChange={handleImageChange}
+										/>
+										<div>
+											{imagePreview ? (
+												<img
+													src={URL.createObjectURL(imagePreview)}
+													alt="Preview"
+													className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
+												/>
+											) : (
+												<>
+													<label htmlFor="">Pré-visualização da imagem:</label>
+													<div className="bg-gray-200 h-36 w-[240px] mb-2 flex justify-center items-center">
+														<p className="text-gray-400">
+															Selecione uma imagem
+														</p>
+													</div>
+												</>
+											)}
+										</div>
+										{showImageValidator && (
+											<>
+												<p className="text-red-500 font-medium">
+													Imagem é obrigatória
+												</p>
+											</>
+										)}
+									</div>
+									<TextAreaFormik
+										onValueChange={(value: string) => {
+											console.log(value);
+											setContentPreview(value);
+										}}
+										className="text-black font-normal mb-0"
+										fieldClassName="lg:mb-2 lg:max-w-[450px]"
+										rows={6}
+										control="contentPreview"
+										placeholder="Insira aqui a pré-visualização do seu conteúdo, coloque uma descrição que chame a atenção das pessoas"
+									>
+										Pré visualização do conteúdo :
+									</TextAreaFormik>
+								</div>
 							</div>
-							<div className="mb-5">
-								<h2>Assunto da publicação</h2>
-								<FormikMultiSelect
-									control="topic"
-									options={topics.map((topic: ITopic) => {
-										return {
-											value: topic.id,
-											label: topic.description,
-										};
-									})}
-									placeholder="Selecione os tópicos da publicação"
-									variant="inverted"
-									animation={0}
-									onValueChange={(topicIds: string[]) => {
-										onTopicsChange(topicIds);
-									}}
-								></FormikMultiSelect>
-							</div>
-						</div>
-						<div className="w-full flex flex-col xl:flex-row xl:justify-end xl:items-end items-center">
-							<div>
-								<h2>Insira a imagem de capa da publicação</h2>
+						</Form>
+					</Formik>
+
+					<div className="max-w-screen-2xl mx-auto">
+						<form>
+							<div className="max-w-screen-2xl mt-10">
 								<input
-									type="file"
-									id="image"
-									name="image"
-									className="mb-8 text-xs"
-									accept="image/*"
-									onChange={handleImageChange}
+									type="text"
+									placeholder="Título..."
+									className="border-l-2 pl-4 ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
+									ref={titleInputRef}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											e.preventDefault();
+											if (paragraphInputRefs.current.length > 0) {
+												const firstParagraphInputRef =
+													paragraphInputRefs.current[0];
+												firstParagraphInputRef.focus();
+											}
+										}
+									}}
 								/>
-								<div>
-									{imagePreview ? (
-										<img
-											src={URL.createObjectURL(imagePreview)}
-											alt="Preview"
-											className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
+							</div>
+							{paragraphs.map((paragraph, index) => (
+								<div key={index} className="mt-4 flex ml-10 relative">
+									{paragraph.type === "text" ? (
+										<textarea
+											placeholder="Insira um novo parágrafo..."
+											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none"
+											value={paragraph.content}
+											onChange={(e) =>
+												handleParagraphChange(index, e.target.value)
+											}
+											onKeyDown={(e) => handleKeyDown(e, index)}
+											onFocus={() => setFocusedInput(index)}
+											ref={(textarea) => {
+												if (textarea) {
+													paragraphInputRefs.current[index] = textarea;
+													textarea.style.height = "auto";
+													textarea.style.height = `${textarea.scrollHeight}px`;
+												}
+											}}
 										/>
 									) : (
-										<>
-											<label htmlFor="">Pré-visualização da imagem:</label>
-											<div className="bg-gray-200 h-36 w-[240px] mb-2 flex justify-center items-center">
-												<p className="text-gray-400">Selecione uma imagem</p>
-											</div>
-										</>
+										<div className="relative">
+											<img
+												src={URL.createObjectURL(paragraph.content as any)}
+												alt={`Image paragraph ${index}`}
+												className=""
+											/>
+											<button
+												className="absolute top-0 right-0 mt-1 mr-1 bg-white bg-opacity-50 p-1 rounded-full border-2 border-red-500"
+												onClick={() => handleRemoveImage(index)}
+											>
+												<XIcon className="text-red-500" />
+											</button>
+										</div>
+									)}
+									{focusedInput === index && (
+										<Menubar>
+											<MenubarMenu>
+												<MenubarTrigger className="absolute -left-16 -top-1">
+													<PlusCircle className="w-8 h-8" />
+												</MenubarTrigger>
+												<MenubarContent>
+													<MenubarItem
+														className="cursor-pointer"
+														onClick={() => handleInsertImage(index)}
+													>
+														Inserir imagem{" "}
+														<MenubarShortcut>
+															<ImageIcon />
+														</MenubarShortcut>
+													</MenubarItem>
+												</MenubarContent>
+											</MenubarMenu>
+										</Menubar>
 									)}
 								</div>
-								{showImageValidator && (
-									<>
-										<p className="text-red-500 font-medium">
-											Imagem é obrigatória
-										</p>
-									</>
-								)}
-							</div>
-							<TextAreaFormik
-								onValueChange={(value: string) => {
-									console.log(value);
-									setContentPreview(value);
-								}}
-								className="text-black font-normal mb-0"
-								fieldClassName="lg:mb-2 lg:max-w-[450px]"
-								rows={6}
-								control="contentPreview"
-								placeholder="Insira aqui a pré-visualização do seu conteúdo, coloque uma descrição que chame a atenção das pessoas"
-							>
-								Pré visualização do conteúdo :
-							</TextAreaFormik>
-						</div>
+							))}
+						</form>
 					</div>
-				</Form>
-			</Formik>
-
-			<div className="max-w-screen-2xl mx-auto">
-				<form>
-					<div className="max-w-screen-2xl mt-10">
-						<input
-							type="text"
-							placeholder="Título..."
-							className="border-l-2 pl-4 ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
-							ref={titleInputRef}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									e.preventDefault();
-									if (paragraphInputRefs.current.length > 0) {
-										const firstParagraphInputRef =
-											paragraphInputRefs.current[0];
-										firstParagraphInputRef.focus();
-									}
-								}
-							}}
-						/>
-					</div>
-					{paragraphs.map((paragraph, index) => (
-						<div key={index} className="mt-4 flex ml-10 relative">
-							{paragraph.type === "text" ? (
-								<textarea
-								placeholder="Insira um novo parágrafo..."
-								className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none"
-								value={paragraph.content}
-								onChange={(e) => handleParagraphChange(index, e.target.value)}
-								onKeyDown={(e) => handleKeyDown(e, index)}
-								onFocus={() => setFocusedInput(index)}
-								ref={(textarea) => {
-								  if (textarea) {
-									paragraphInputRefs.current[index] = textarea;
-									textarea.style.height = 'auto';
-									textarea.style.height = `${textarea.scrollHeight}px`;
-								  }
-								}}
-							  />
-							  
-							  
-							) : (
-								<div className="relative">
-									<img
-										src={URL.createObjectURL(paragraph.content as any)}
-										alt={`Image paragraph ${index}`}
-										className=""
-									/>
-									<button
-										className="absolute top-0 right-0 mt-1 mr-1 bg-white bg-opacity-50 p-1 rounded-full border-2 border-red-500"
-										onClick={() => handleRemoveImage(index)}
-									>
-										<XIcon className="text-red-500" />
-									</button>
-								</div>
-							)}
-							{focusedInput === index && (
-								<Menubar>
-									<MenubarMenu>
-										<MenubarTrigger className="absolute -left-16 -top-1">
-											<PlusCircle className="w-8 h-8" />
-										</MenubarTrigger>
-										<MenubarContent>
-											<MenubarItem
-												className="cursor-pointer"
-												onClick={() => handleInsertImage(index)}
-											>
-												Inserir imagem{" "}
-												<MenubarShortcut>
-													<ImageIcon />
-												</MenubarShortcut>
-											</MenubarItem>
-										</MenubarContent>
-									</MenubarMenu>
-								</Menubar>
-							)}
-						</div>
-					))}
-				</form>
-			</div>
+				</>
+			)}
 		</div>
 	);
 };
