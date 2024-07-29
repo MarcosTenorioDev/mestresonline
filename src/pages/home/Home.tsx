@@ -1,13 +1,14 @@
 import PostPreview from "@/components/PostPreview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CompaniesService from "@/core/services/companies.service";
 import ToastService from "@/core/services/toast.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ICompany } from "@/core/interfaces/company.interface";
+import { IPost } from "@/core/interfaces/posts.interface";
 
 const Home = () => {
 	const params = useParams();
@@ -17,6 +18,11 @@ const Home = () => {
 	const companyService = new CompaniesService();
 	const [loading, setLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
+	const [searchTerm, setSearchTerm] = useState<string>("");
+	
+	const filteredPosts = posts.filter((post: IPost) =>
+		post.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
 	useEffect(() => {
 		fetchAgency();
@@ -31,9 +37,7 @@ const Home = () => {
 				setPosts(result.posts);
 				setLoading(false);
 			} catch (error: any) {
-				ToastService.showError(
-					`Houve um erro ao abrir a seguradora`
-				);
+				ToastService.showError(`Houve um erro ao abrir a seguradora`);
 				setTimeout(() => {
 					navigate("/");
 				}, 2000);
@@ -82,20 +86,34 @@ const Home = () => {
 							<div className="border-b-2 pb-10">
 								<h2 className="text-2xl mt-5">Minhas postagens</h2>
 
-								<p className="mt-6 text-xs">Pesquise suas postagens</p>
-								<div className="flex">
+								<p className="mt-6 text-sm font-semibold mb-2">
+									Pesquise suas postagens
+								</p>
+								<div className="relative flex w-full max-w-lg items-center">
+									<SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 ml-2" />
 									<Input
-										className=" w-80 h-8 mr-3 border-2"
-										placeholder="Pesquise pelo título, autor ou tema"
+										className="max-w-xl border-primary w-full py-2 pl-12 pr-16 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+										placeholder="Pesquisar tópicos..."
+										value={searchTerm}
+										onChange={(e) => setSearchTerm(e.target.value)}
 									/>
-									<Button className="p-2 h-8">
-										<SearchIcon className="w-4" />
+									<Button
+										type="button"
+										variant="ghost"
+										size="icon"
+										className={`absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 ${
+											searchTerm ? "" : "hidden"
+										}`}
+										onClick={() => setSearchTerm("")}
+									>
+										<XIcon className="h-4 w-4" />
+										<span className="sr-only">Clear</span>
 									</Button>
 								</div>
 							</div>
 
 							<div className="mt-8 flex flex-col gap-16">
-								{posts.map((post: any) => (
+								{filteredPosts.map((post: any) => (
 									<PostPreview key={post.id} post={post} />
 								))}
 							</div>
