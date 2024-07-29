@@ -176,9 +176,9 @@ const MyCompanies = () => {
 													>
 														{({ setFieldValue }) => (
 															<Form className="space-y-6">
-																<div className="flex flex-col gap-4">
-																	<Input control="name" />
-																	<Input control="description" />
+																<div className="flex flex-col gap-4 mt-10">
+																	<Input control="name">Nome da compania</Input>
+																	<Input control="description">Descrição da compania</Input>
 																	<div>
 																		<label
 																			htmlFor="image"
