@@ -13,7 +13,7 @@ import {
 	MenubarTrigger,
 } from "@/components/ui/menubar";
 import CompaniesService from "@/core/services/companies.service";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ITopic } from "@/core/interfaces/topic.interface";
 import { IProducerCompany } from "@/core/interfaces/producer.interface";
 import { PostService } from "@/core/services/post.service";
@@ -48,6 +48,7 @@ const Publication = () => {
 	const postService = new PostService();
 	const params = useParams();
 	const [author, setAuthor] = useState("");
+	const navigate = useNavigate()
 
 	const initialValues = {
 		author: author,
@@ -117,6 +118,7 @@ const Publication = () => {
 		try {
 			await postService.createPost(payload);
 			ToastService.showSuccess("Postagem criada com sucesso");
+			navigate(`/company/${params.id}`)
 		} catch (error: any) {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
@@ -370,7 +372,6 @@ const Publication = () => {
 									</div>
 									<TextAreaFormik
 										onValueChange={(value: string) => {
-											console.log(value);
 											setContentPreview(value);
 										}}
 										className="text-black font-normal mb-0"
