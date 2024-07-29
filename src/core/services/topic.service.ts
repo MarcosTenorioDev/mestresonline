@@ -18,7 +18,7 @@ class TopicService{
     }
 
     async updateTopic(topic: ITopic) {
-		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/topics/${topic.id}`, topic);
+		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/topics`, topic);
 		return response.data;
 	}
 
