@@ -173,7 +173,7 @@ const Publication = () => {
 	};
 
 	const handleKeyDown = (
-		e: React.KeyboardEvent<HTMLInputElement>,
+		e: React.KeyboardEvent<HTMLTextAreaElement>,
 		index: number
 	) => {
 		if (e.key === "Enter") {
@@ -355,7 +355,7 @@ const Publication = () => {
 					<div className="max-w-screen-2xl mt-10">
 						<input
 							type="text"
-							placeholder="TITLE..."
+							placeholder="Título..."
 							className="border-l-2 pl-4 ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
 							ref={titleInputRef}
 							onKeyDown={(e) => {
@@ -373,18 +373,23 @@ const Publication = () => {
 					{paragraphs.map((paragraph, index) => (
 						<div key={index} className="mt-4 flex ml-10 relative">
 							{paragraph.type === "text" ? (
-								<input
-									type="text"
-									placeholder="Enter paragraph..."
-									className="border-l-2 pl-4 w-full h-auto focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
-									value={paragraph.content}
-									onChange={(e) => handleParagraphChange(index, e.target.value)}
-									onKeyDown={(e) => handleKeyDown(e, index)}
-									onFocus={() => setFocusedInput(index)}
-									ref={(input) => {
-										paragraphInputRefs.current[index] = input;
-									}}
-								/>
+								<textarea
+								placeholder="Insira um novo parágrafo..."
+								className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none"
+								value={paragraph.content}
+								onChange={(e) => handleParagraphChange(index, e.target.value)}
+								onKeyDown={(e) => handleKeyDown(e, index)}
+								onFocus={() => setFocusedInput(index)}
+								ref={(textarea) => {
+								  if (textarea) {
+									paragraphInputRefs.current[index] = textarea;
+									textarea.style.height = 'auto';
+									textarea.style.height = `${textarea.scrollHeight}px`;
+								  }
+								}}
+							  />
+							  
+							  
 							) : (
 								<div className="relative">
 									<img
