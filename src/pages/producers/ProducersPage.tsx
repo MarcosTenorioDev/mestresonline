@@ -251,12 +251,15 @@ const ProducersPage = () => {
 				office: values.UpdatedOffice,
 				companyId: values.UpdatedCompanyId,
 			};
+			setIsLoading(true)
 			try {
 				await producerService.UpdateProducer(payload);
 				ToastService.showSuccess("Autor atualizado com sucesso");
 			} catch (error: any) {
 				console.error("Erro ao atualizar o autor", error);
 				ToastService.showError(`Erro ao atualizar o autor: ${error.message}`);
+			}finally{
+				fetchProducers()
 			}
 		};
 
