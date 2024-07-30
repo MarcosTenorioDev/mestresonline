@@ -67,6 +67,7 @@ const TopicsPage = () => {
 
 	const deleteTopicById = async (id: string) => {
 		setIsDeleting(true);
+		setIsLoading(true)
 		try {
 			await topicService.deleteTopicById(id);
 			ToastService.showSuccess("Tópico excluído com sucesso");
@@ -131,6 +132,7 @@ const TopicsPage = () => {
 			const { id, companyId, description } = values;
 
 			try {
+				setIsLoading(true)
 				if (props?.topic) {
 					const payload = {
 						id,
