@@ -201,25 +201,212 @@ const ProducersPage = () => {
 		);
 	};
 
+	const ProducerUpdateDialog = ({
+		producer,
+	}: {
+		producer: IProducer | null;
+	}) => {
+		const formatedImage = async (image: File) => {
+			if (image) {
+				const formData = new FormData();
+				formData.append("file", image);
+				const response = await postService.uploadFile(formData);
+				return response.url;
+			}
+			ToastService.showError(
+				`Erro ao atualizar a imagem do autor, por favor, verifique o tipo do arquivo da imagem`
+			);
+			return null;
+		};
+		const [newImage, setNewImage] = useState<File>()
+
+		const initialValues = {
+			UpdatedEmail: producer ? producer.email : "",
+			UpdatedName: producer ? producer.name : "",
+			UpdatedImageProfile: producer ? producer.imageProfile : "",
+			UpdatedOffice: producer ? producer.office : "",
+			UpdatedCompanyId: producer!.companyId!,
+		};
+
+		const validationSchema = Yup.object({
+			UpdatedEmail: Yup.string()
+				.email("Email inválido")
+				.required("Email é obrigatório *"),
+			UpdatedName: Yup.string().required("Nome é obrigatório *"),
+			UpdatedOffice: Yup.string(),
+		});
+
+		const onSubmit = async (values: {
+			UpdatedEmail: string;
+			UpdatedName: string;
+			UpdatedImageProfile: string;
+			UpdatedOffice: string;
+			UpdatedCompanyId: string;
+		}) => {
+			const payload = {
+				id: producer?.id || "",
+				email: values.UpdatedEmail,
+				name: values.UpdatedName,
+				imageProfile: newImage ? await formatedImage(newImage) : values.UpdatedImageProfile,
+				office: values.UpdatedOffice,
+				companyId: values.UpdatedCompanyId,
+			};
+			try {
+				await producerService.UpdateProducer(payload);
+				ToastService.showSuccess("Autor atualizado com sucesso");
+			} catch (error: any) {
+				console.error("Erro ao atualizar o autor", error);
+				ToastService.showError(`Erro ao atualizar o autor: ${error.message}`);
+			}
+		};
+
+		return (
+			<AlertDialog>
+				<Button asChild variant="outlineWhite">
+					<AlertDialogTrigger>
+						<PenBoxIcon />
+					</AlertDialogTrigger>
+				</Button>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle className="text-2xl font-semibold">
+							Editando autor
+						</AlertDialogTitle>
+					</AlertDialogHeader>
+					<div>
+						<Formik
+							initialValues={initialValues}
+							onSubmit={onSubmit}
+							validationSchema={validationSchema}
+						>
+							{({ setFieldValue }) => (
+								<Form>
+									<div className="flex flex-col justify-center items-center lg:items-start">
+										<div className="flex flex-col justify-center mx-auto">
+											<Avatar className="w-24 h-24 lg:w-32 lg:h-32 mx-auto rounded-full">
+												<AvatarImage
+													src={newImage? URL.createObjectURL(newImage) : producer?.imageProfile || ''}
+													alt="Imagem de perfil"
+												/>
+												<AvatarFallback>null</AvatarFallback>
+											</Avatar>
+
+											<Button
+												asChild
+												variant={"default"}
+												className="mx-auto mb-4 mt-4 cursor-pointer"
+											>
+												<Label
+													htmlFor="UpdatedImageProfile"
+													className="flex justify-center"
+												>
+													Adicionar imagem <CameraIcon className="w-5 ml-2" />
+												</Label>
+											</Button>
+
+											<input
+												id="UpdatedImageProfile"
+												name="UpdatedImageProfile"
+												type="file"
+												accept="image/*"
+												className="hidden"
+												onChange={(
+													event: React.ChangeEvent<HTMLInputElement>
+												) => {
+													const file = event.currentTarget.files?.[0] || null;
+													if (file) {
+														setFieldValue(
+															"UpdatedImageProfile",
+															URL.createObjectURL(file)
+														);
+														setNewImage(file)
+													}
+												}}
+											/>
+										</div>
+										<div className="w-full">
+											<div className="flex flex-col sm:flex-row sm:gap-4">
+												<div className="w-full">
+													<Label htmlFor="UpdatedEmail">Email</Label>
+													<Field
+														id="UpdatedEmail"
+														name="UpdatedEmail"
+														as={Input}
+														className="mt-1 w-full"
+													/>
+													<ErrorMessage
+														name="UpdatedEmail"
+														component="div"
+														className="text-red-500 mt-1"
+													/>
+												</div>
+
+												<div className="w-full">
+													<Label htmlFor="UpdatedName">Nome</Label>
+													<Field
+														id="UpdatedName"
+														name="UpdatedName"
+														as={Input}
+														className="w-full mt-1"
+													/>
+													<ErrorMessage
+														name="UpdatedName"
+														component="div"
+														className="text-red-500 mt-1"
+													/>
+												</div>
+											</div>
+
+											<div>
+												<Label htmlFor="UpdatedOffice">Cargo (opcional)</Label>
+												<Field
+													id="UpdatedOffice"
+													name="UpdatedOffice"
+													as={Input}
+													className="mt-1 w-full"
+												/>
+												<ErrorMessage
+													name="UpdatedOffice"
+													component="div"
+													className="text-red-500 mt-1"
+												/>
+											</div>
+										</div>
+									</div>
+
+									<AlertDialogFooter className="mt-10">
+										<AlertDialogCancel>Cancelar</AlertDialogCancel>
+										<Button asChild variant={"default"} type="submit">
+											<AlertDialogAction>Editar</AlertDialogAction>
+										</Button>
+									</AlertDialogFooter>
+								</Form>
+							)}
+						</Formik>
+					</div>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
+	};
+
 	const SkeletonLoading = () => {
 		return (
 			<>
-			{Array.from({ length: 4 }).map((_, index) => (
-				<TableRow key={index}>
-					{Array.from({ length: 6 }).map((_, index) => (
-						<TableCell key={index}>
-							<div
-								className={
-									index === 0
-										? "animate-pulse w-14 h-14 bg-gray-200 rounded-full"
-										: "animate-pulse h-6 bg-gray-200 rounded"
-								}
-							></div>
-						</TableCell>
-					))}
-				</TableRow>
-			))}
-			
+				{Array.from({ length: 4 }).map((_, index) => (
+					<TableRow key={index}>
+						{Array.from({ length: 6 }).map((_, index) => (
+							<TableCell key={index}>
+								<div
+									className={
+										index === 0
+											? "animate-pulse w-14 h-14 bg-gray-200 rounded-full"
+											: "animate-pulse h-6 bg-gray-200 rounded"
+									}
+								></div>
+							</TableCell>
+						))}
+					</TableRow>
+				))}
 			</>
 		);
 	};
@@ -363,7 +550,9 @@ const ProducersPage = () => {
 					</div>
 				</div>
 				<Table>
-					<TableCaption>A Lista de autores - {localStorage.getItem('companyName')}</TableCaption>
+					<TableCaption>
+						A Lista de autores - {localStorage.getItem("companyName")}
+					</TableCaption>
 					<TableHeader>
 						<TableRow>
 							<TableHead className="w-[100px]">Imagem</TableHead>
@@ -392,9 +581,10 @@ const ProducersPage = () => {
 										<TableCell>{producer.email}</TableCell>
 										<TableCell>{producer.office}</TableCell>
 										<TableCell className="w-20">
-											<Button variant={"outlineWhite"}>
-												<PenBoxIcon />
-											</Button>
+											<ProducerUpdateDialog
+												producer={producer}
+												key={producer.id}
+											/>
 										</TableCell>
 										<TableCell className="w-20">
 											<DeleteDialog producer={producer} />

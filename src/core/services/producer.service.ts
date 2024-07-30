@@ -1,5 +1,5 @@
 import { AxiosInterceptor } from "../interceptor/axios.interceptor";
-import { IProducerCreate } from "../interfaces/producer.interface";
+import { IProducer, IProducerCreate } from "../interfaces/producer.interface";
 
 class ProducerService {
 	private axiosInterceptor: AxiosInterceptor = new AxiosInterceptor();
@@ -17,6 +17,13 @@ class ProducerService {
     async DeleteProducer(id: string) {
 		const response = await this.axios.delete(
 			`${import.meta.env.VITE_API_DEV_URL}/producers/${id}`
+		);
+		return response.data;
+	}
+
+	async UpdateProducer(producer:IProducer){
+		const response = await this.axios.put(
+			`${import.meta.env.VITE_API_DEV_URL}/producers`, producer
 		);
 		return response.data;
 	}
