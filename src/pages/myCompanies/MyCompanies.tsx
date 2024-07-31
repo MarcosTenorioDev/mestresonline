@@ -29,6 +29,7 @@ import defaultImage from "@/assets/images/defaultImage.jpg";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PostService } from "@/core/services/post.service";
 
 const MyCompanies = () => {
 	const initialValues = {
@@ -49,25 +50,29 @@ const MyCompanies = () => {
 	const [myCompanies, setMyCompanies] = useState<CompanyHomePage[]>([]);
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const postService = new PostService()
 
 	const handleImageChange = (event: any) => {
 		const file = event.currentTarget.files[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result);
-				setHasImage(true);
-			};
-			reader.readAsDataURL(file);
+			setImagePreview(file);
+			setHasImage(true);
 		}
 	};
 
 	const onSubmit = async (values: any) => {
 		const { name, description } = values;
 
+		const formatedImage = async () => {
+			const formData = new FormData();
+			formData.append("file", imagePreview);
+			const response = await postService.uploadFile(formData);
+			return response.url;
+		};
+
 		const payload: CompanyCreate = {
 			description,
-			image: imagePreview,
+			image: await formatedImage(),
 			name,
 		};
 		companiesService.createCompany(payload).then(() => {
@@ -213,7 +218,7 @@ const MyCompanies = () => {
 																		{hasImage && (
 																			<div className="mt-2">
 																				<img
-																					src={imagePreview}
+																					src={URL.createObjectURL(imagePreview)}
 																					alt="Preview"
 																					className="max-w-xs"
 																				/>
