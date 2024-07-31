@@ -13,7 +13,7 @@ import {
 	MenubarTrigger,
 } from "@/components/ui/menubar";
 import CompaniesService from "@/core/services/companies.service";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ITopic } from "@/core/interfaces/topic.interface";
 import { IProducerCompany } from "@/core/interfaces/producer.interface";
 import { PostService } from "@/core/services/post.service";
@@ -46,8 +46,10 @@ const Publication = () => {
 	const [focusedInput, setFocusedInput] = useState<number | null>(null);
 	const companiesService = new CompaniesService();
 	const postService = new PostService();
+	const [searchParams] = useSearchParams();
+	const postId = searchParams.get("post");
 	const params = useParams();
-	const [author, setAuthor] = useState("");
+	const [author, setAuthor] = useState<any>();
 	const navigate = useNavigate()
 
 	const initialValues = {
@@ -58,7 +60,6 @@ const Publication = () => {
 	};
 
 	const validationSchema = Yup.object({
-		author: Yup.string().required("Autor da publicação é obrigatório*"),
 		topic: Yup.array().required().min(1, "Tópico da publicação é obrigatório*"),
 		image: Yup.string(),
 		contentPreview: Yup.string().required(
@@ -76,9 +77,16 @@ const Publication = () => {
 			ToastService.showError("O Título da postagem é obrigatório.");
 			return;
 		}
-		setIsSending(true);
+
 		let { image, author, topic, contentPreview } = values;
 		image = imagePreview;
+
+		if(!author){
+			ToastService.showError("Autor da publicação é obrigatório*");
+			return
+		}
+
+		setIsSending(true);
 
 		const formatedParagraphs = await Promise.all(
 			paragraphs.map(async (paragraph: any) => {
@@ -108,12 +116,12 @@ const Publication = () => {
 		const payload = {
 			imagePreview: formattedImageUrl,
 			contentPreview: contentPreview,
-			authorId: author,
+			authorId: author?.id ? author?.id : author,
 			topicIds: topic,
 			companyId: params.id,
 			title: titleInputRef?.current?.value,
 			content: JSON.stringify(formatedParagraphs),
-		};
+		};	
 
 		try {
 			await postService.createPost(payload);
@@ -155,6 +163,7 @@ const Publication = () => {
 	useEffect(() => {
 		fetchTopics();
 		fetchProducers();
+		fetchPost()
 	}, []);
 
 	const fetchTopics = async () => {
@@ -178,6 +187,17 @@ const Publication = () => {
 		}
 		setIsLoading(false);
 	};
+
+	const fetchPost = async () => {
+		try{
+			if(postId){
+				const result = await postService.getPostById(postId)
+				setAuthor(result.author)
+			}
+		}catch(err){
+			/*Criar exibição de toast de erro e navegação até a home */
+		}
+	}
 
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -289,9 +309,9 @@ const Publication = () => {
 										<Field name="author">
 											{({ field, form }: any) => (
 												<Select
-													value={author}
-													onValueChange={(value: string) => {
-														form.setFieldValue(field.name, value);
+													value={author?.id}
+													onValueChange={(value: any) => {
+														form.setFieldValue(field.name, value.id);
 														setAuthor(value);
 													}}
 												>

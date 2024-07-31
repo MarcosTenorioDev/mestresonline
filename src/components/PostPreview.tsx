@@ -2,10 +2,15 @@ import { IPost } from "@/core/interfaces/posts.interface";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardHeader } from "./ui/card";
+import { useNavigate } from "react-router-dom";
 
 const PostPreview = ({ post }: { post: IPost }) => {
+	const navigate = useNavigate();
 	return (
-		<Card className="lg:max-w-[1000px] px-4 sm:px-10 py-6 lg:flex-row items-center justify-between">
+		<Card
+			className="lg:max-w-[1000px] px-4 sm:px-10 py-6 lg:flex-row items-center justify-between transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+			onClick={() => navigate(`/publication/${post.companyId}?post=${post.id}`)}
+		>
 			<div className="w-full flex justify-end">
 				<div
 					className={`${
@@ -14,7 +19,7 @@ const PostPreview = ({ post }: { post: IPost }) => {
 							: "bg-red-500/30 text-red-600"
 					} py-1 px-6 rounded-full font-semibold mb-4`}
 				>
-					{post.isActive ? "Ativo" : "inativo"}
+					{post.isActive ? "Ativo" : "Inativo"}
 				</div>
 			</div>
 			<div className="flex flex-col xl:flex-row items-center xl:items-start justify-between w-full">
@@ -71,7 +76,7 @@ const PostPreview = ({ post }: { post: IPost }) => {
 						<h2 className="text-md text-center md:text-start sm:text-lg md:text-2xl font-bold mt-4">
 							{post.title}
 						</h2>
-						<h3 className="text-xs text-center md:text-start  sm:text-sm font-normal mt-4">
+						<h3 className="text-xs text-center md:text-start sm:text-sm font-normal mt-4">
 							{post.contentPreview}
 						</h3>
 					</div>
