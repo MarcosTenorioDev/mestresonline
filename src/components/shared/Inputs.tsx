@@ -15,6 +15,7 @@ interface FormikMultiSelectProps {
 	className?: string;
 	fieldClassName?: string;
 	info?: React.ReactNode;
+	defaultValue?: string[]
 	componentClassName?: string;
 	children?: any;
 	onValueChange?: (value: any[]) => void; // Função personalizada recebida via props
@@ -110,6 +111,7 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 		fieldClassName,
 		info,
 		onValueChange,
+		defaultValue,
 	} = props;
 	const [field]: any = useField(control);
 
@@ -131,7 +133,7 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 				{...field}
 				options={options}
 				onValueChange={handleValueChange}
-				defaultValue={field.value}
+				defaultValue={defaultValue ? defaultValue : field.value}
 				placeholder={placeholder}
 				variant={variant}
 				animation={animation}

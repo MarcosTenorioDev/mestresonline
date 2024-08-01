@@ -35,7 +35,7 @@ const Publication = () => {
 	const [loading, setIsLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
-	const [selectecTopics, setSelectedTopics] = useState<{ topicId: string }[]>(
+	const [selectecTopics, setSelectedTopics] = useState<string[]>(
 		[]
 	);
 	const [producers, setProducers] = useState<IProducerCompany[]>([]);
@@ -50,7 +50,7 @@ const Publication = () => {
 	const postId = searchParams.get("post");
 	const params = useParams();
 	const [author, setAuthor] = useState<any>();
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const initialValues = {
 		author: author,
@@ -117,7 +117,7 @@ const Publication = () => {
 			imagePreview: formattedImageUrl,
 			contentPreview: contentPreview,
 			authorId: author?.id ? author?.id : author,
-			topicIds: topic,
+			topicIds: topic.map((id:string) => ({topicId: id})),
 			companyId: params.id,
 			title: titleInputRef?.current?.value,
 			content: JSON.stringify(formatedParagraphs),
@@ -163,7 +163,7 @@ const Publication = () => {
 	useEffect(() => {
 		fetchTopics();
 		fetchProducers();
-		fetchPost()
+		fetchPost();
 	}, []);
 
 	const fetchTopics = async () => {
@@ -189,15 +189,16 @@ const Publication = () => {
 	};
 
 	const fetchPost = async () => {
-		try{
-			if(postId){
-				const result = await postService.getPostById(postId)
-				setAuthor(result.author)
+		try {
+			if (postId) {
+				const result = await postService.getPostById(postId);
+				setAuthor(result.author);
+				setSelectedTopics(result.topics.map((topic:{topic:ITopic}) => topic.topic.id))
 			}
-		}catch(err){
+		} catch (err) {
 			/*Criar exibição de toast de erro e navegação até a home */
 		}
-	}
+	};
 
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -254,8 +255,7 @@ const Publication = () => {
 	};
 
 	const onTopicsChange = (topicIds: string[]) => {
-		const formattedTopics = topicIds.map((id) => ({ topicId: id }));
-		setSelectedTopics(formattedTopics);
+		setSelectedTopics(topicIds);
 	};
 
 	const LoadingSkeleton = () => {
@@ -346,6 +346,7 @@ const Publication = () => {
 											})}
 											placeholder="Selecione os tópicos da publicação"
 											variant="inverted"
+											defaultValue={selectecTopics}
 											animation={0}
 											onValueChange={(topicIds: string[]) => {
 												onTopicsChange(topicIds);
