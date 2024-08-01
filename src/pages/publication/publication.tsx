@@ -35,12 +35,11 @@ const Publication = () => {
 	const [loading, setIsLoading] = useState(false);
 	const [paragraphs, setParagraphs] = useState([{ type: "text", content: "" }]);
 	const [topics, setTopics] = useState<ITopic[]>([]);
-	const [selectecTopics, setSelectedTopics] = useState<string[]>(
-		[]
-	);
+	const [selectecTopics, setSelectedTopics] = useState<string[]>([]);
 	const [producers, setProducers] = useState<IProducerCompany[]>([]);
 	const [contentPreview, setContentPreview] = useState("");
 	const [imagePreview, setImagePreview] = useState<any>("");
+	const [hasNewImage, setHasNewImage] = useState(false);
 	const paragraphInputRefs = useRef<any>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 	const [focusedInput, setFocusedInput] = useState<number | null>(null);
@@ -67,6 +66,55 @@ const Publication = () => {
 		),
 	});
 
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	const fetchData = async () => {
+		try {
+			setIsLoading(true);
+			if (params.id) {
+				const topics = await companiesService.getAllTopicsByCompanyId(
+					params.id
+				);
+				setTopics([...topics]);
+
+				const producers = await companiesService.getAllProducersByCompanyId(
+					params.id
+				);
+				setProducers([...producers]);
+
+				try {
+					if (postId) {
+						const result = await postService.getPostById(postId);
+						setAuthor(result.author);
+						setSelectedTopics(
+							result.topics.map((topic: { topic: ITopic }) => topic.topic.id)
+						);
+						setContentPreview(result.contentPreview);
+						setImagePreview(result.imagePreview);
+						if (titleInputRef.current) {
+							titleInputRef.current.value = result.title;
+						}
+						setParagraphs(JSON.parse(result.content));
+					}
+				} catch (err) {
+					ToastService.showError(
+						"Não foi possível encontrar o respectivo post"
+					);
+					navigate(`/company/${params.id}`);
+				}
+			}
+		} catch (err) {
+			ToastService.showError(
+				"Houve algum erro ao processar os dados, por favor, tente novamente"
+			);
+			navigate(`/`);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	const onSubmit = async (values: any) => {
 		if (!hasImage) {
 			setShowImageValidator(true);
@@ -81,9 +129,9 @@ const Publication = () => {
 		let { image, author, topic, contentPreview } = values;
 		image = imagePreview;
 
-		if(!author){
+		if (!author) {
 			ToastService.showError("Autor da publicação é obrigatório*");
-			return
+			return;
 		}
 
 		setIsSending(true);
@@ -117,16 +165,16 @@ const Publication = () => {
 			imagePreview: formattedImageUrl,
 			contentPreview: contentPreview,
 			authorId: author?.id ? author?.id : author,
-			topicIds: topic.map((id:string) => ({topicId: id})),
+			topicIds: topic.map((id: string) => ({ topicId: id })),
 			companyId: params.id,
 			title: titleInputRef?.current?.value,
 			content: JSON.stringify(formatedParagraphs),
-		};	
+		};
 
 		try {
 			await postService.createPost(payload);
 			ToastService.showSuccess("Postagem criada com sucesso");
-			navigate(`/company/${params.id}`)
+			navigate(`/company/${params.id}`);
 		} catch (error: any) {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
@@ -140,6 +188,7 @@ const Publication = () => {
 		if (file) {
 			setImagePreview(file);
 			setHasImage(true);
+			setHasNewImage(true);
 			setShowImageValidator(false);
 		}
 	};
@@ -159,41 +208,6 @@ const Publication = () => {
 	const handleAddParagraph = () => {
 		setParagraphs([...paragraphs, { type: "text", content: "" }]);
 	};
-
-	useEffect(() => {
-		fetchData()
-	}, []);
-
-	const fetchData = async () => {
-		try{
-			setIsLoading(true);
-			if (params.id) {
-				const topics = await companiesService.getAllTopicsByCompanyId(params.id);
-				setTopics([...topics]);
-
-				const producers = await companiesService.getAllProducersByCompanyId(
-					params.id
-				);
-				setProducers([...producers]);
-
-				try {
-					if (postId) {
-						const result = await postService.getPostById(postId);
-						setAuthor(result.author);
-						setSelectedTopics(result.topics.map((topic:{topic:ITopic}) => topic.topic.id))
-					}
-				} catch (err) {
-					ToastService.showError("Não foi possível encontrar o respectivo post")
-					navigate(`/company/${params.id}`)
-				}
-			}
-		}catch(err){
-			ToastService.showError("Houve algum erro ao processar os dados, por favor, tente novamente")
-			navigate(`/`)
-		}finally{
-			setIsLoading(false);
-		}
-	}
 
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -275,6 +289,31 @@ const Publication = () => {
 		);
 	};
 
+	const getParagraphImage = (content: any) => {
+		// Verifica se o conteúdo é uma string e se parece com uma URL
+		const isValidUrl = (string: string) => {
+		  try {
+			new URL(string);
+			return true;
+		  } catch (_) {
+			return false;
+		  }
+		};
+	  
+		// Se o conteúdo for uma string e for uma URL válida, retorne a URL
+		if (typeof content === "string" && isValidUrl(content)) {
+		  return content;
+		}
+	  
+		// Se o conteúdo for uma instância de File, crie um URL usando URL.createObjectURL
+		if (content instanceof File) {
+		  return URL.createObjectURL(content);
+		}
+	  
+		// Se não for nenhum dos casos acima, retorne o conteúdo original
+		return content;
+	  };
+
 	return (
 		<div className="max-w-screen-2xl mx-auto px-10 pb-40">
 			{loading ? (
@@ -290,10 +329,11 @@ const Publication = () => {
 						<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
 							<div className="flex justify-between">
 								<h1 className="text-2xl mb-10">
-									Nova publicação em {localStorage.getItem("companyName")}
+									{postId ? "Editando publicação de" : "Nova publicação de"}{" "}
+									{localStorage.getItem("companyName")}
 								</h1>
 								<Button variant={"default"} type="submit" disabled={sending}>
-									{sending ? "Enviando..." : "Publicar"}
+									{sending ? "Enviando..." : postId ? "Editar" : "Publicar"}
 								</Button>
 							</div>
 							<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
@@ -363,7 +403,11 @@ const Publication = () => {
 										<div>
 											{imagePreview ? (
 												<img
-													src={URL.createObjectURL(imagePreview)}
+													src={
+														postId && !hasNewImage
+															? imagePreview
+															: URL.createObjectURL(imagePreview)
+													}
 													alt="Preview"
 													className="w-full lg:max-w-[240px] lg:h-36 mb-2 mx-auto"
 												/>
@@ -446,7 +490,7 @@ const Publication = () => {
 									) : (
 										<div className="relative">
 											<img
-												src={URL.createObjectURL(paragraph.content as any)}
+												src={getParagraphImage(paragraph.content)}
 												alt={`Image paragraph ${index}`}
 												className=""
 											/>
