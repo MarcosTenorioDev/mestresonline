@@ -161,44 +161,39 @@ const Publication = () => {
 	};
 
 	useEffect(() => {
-		fetchTopics();
-		fetchProducers();
-		fetchPost();
+		fetchData()
 	}, []);
 
-	const fetchTopics = async () => {
-		setIsLoading(true);
-		if (params.id) {
-			const topics = await companiesService.getAllTopicsByCompanyId(params.id);
-			setTopics([...topics]);
-			setIsLoading(false);
-		}
-		setIsLoading(false);
-	};
+	const fetchData = async () => {
+		try{
+			setIsLoading(true);
+			if (params.id) {
+				const topics = await companiesService.getAllTopicsByCompanyId(params.id);
+				setTopics([...topics]);
 
-	const fetchProducers = async () => {
-		setIsLoading(true);
-		if (params.id) {
-			const producers = await companiesService.getAllProducersByCompanyId(
-				params.id
-			);
-			setProducers([...producers]);
-			setIsLoading(false);
-		}
-		setIsLoading(false);
-	};
+				const producers = await companiesService.getAllProducersByCompanyId(
+					params.id
+				);
+				setProducers([...producers]);
 
-	const fetchPost = async () => {
-		try {
-			if (postId) {
-				const result = await postService.getPostById(postId);
-				setAuthor(result.author);
-				setSelectedTopics(result.topics.map((topic:{topic:ITopic}) => topic.topic.id))
+				try {
+					if (postId) {
+						const result = await postService.getPostById(postId);
+						setAuthor(result.author);
+						setSelectedTopics(result.topics.map((topic:{topic:ITopic}) => topic.topic.id))
+					}
+				} catch (err) {
+					ToastService.showError("Não foi possível encontrar o respectivo post")
+					navigate(`/company/${params.id}`)
+				}
 			}
-		} catch (err) {
-			/*Criar exibição de toast de erro e navegação até a home */
+		}catch(err){
+			ToastService.showError("Houve algum erro ao processar os dados, por favor, tente novamente")
+			navigate(`/`)
+		}finally{
+			setIsLoading(false);
 		}
-	};
+	}
 
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLTextAreaElement>,
