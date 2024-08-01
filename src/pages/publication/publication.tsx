@@ -387,7 +387,7 @@ const Publication = () => {
 								</h1>
 								<div className="flex gap-4 sm:ml-6">
 									<Button variant={"default"} type="submit" disabled={sending}>
-										{sending ? "Enviando..." : postId ? "Editar" : "Publicar"}
+										{sending ? "Enviando..." : postId ? "Salvar alterações" : "Publicar"}
 									</Button>
 									{postId && DeleteDialog(postId)}
 								</div>
