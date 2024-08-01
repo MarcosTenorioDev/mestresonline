@@ -509,7 +509,7 @@ const Publication = () => {
 								<input
 									type="text"
 									placeholder="Título..."
-									className="border-l-2 pl-4 ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
+									className="border-l-2 pl-4 font-semibold ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
 									ref={titleInputRef}
 									onKeyDown={(e) => {
 										if (e.key === "Enter") {
@@ -528,7 +528,7 @@ const Publication = () => {
 									{paragraph.type === "text" ? (
 										<textarea
 											placeholder="Insira um novo parágrafo..."
-											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none"
+											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none text-justify"
 											value={paragraph.content}
 											onChange={(e) =>
 												handleParagraphChange(index, e.target.value)
@@ -544,7 +544,7 @@ const Publication = () => {
 											}}
 										/>
 									) : (
-										<div className="relative">
+										<div className="relative mx-auto">
 											<img
 												src={getParagraphImage(paragraph.content)}
 												alt={`Image paragraph ${index}`}
