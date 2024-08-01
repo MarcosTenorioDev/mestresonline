@@ -104,7 +104,7 @@ const Publication = () => {
 						);
 						setContentPreview(result.contentPreview);
 						setImagePreview(result.imagePreview);
-						if(result.imagePreview){
+						if (result.imagePreview) {
 							setHasImage(true);
 						}
 						if (titleInputRef.current) {
@@ -166,10 +166,13 @@ const Publication = () => {
 		);
 
 		const formatedImage = async () => {
-			const formData = new FormData();
-			formData.append("file", image);
-			const response = await postService.uploadFile(formData);
-			return response.url;
+			if (image instanceof File) {
+				const formData = new FormData();
+				formData.append("file", image);
+				const response = await postService.uploadFile(formData);
+				return response.url;
+			}
+			return image
 		};
 
 		// Aguarde a formatação da imagem
