@@ -27,6 +27,17 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Publication = () => {
 	const [hasImage, setHasImage] = useState(false);
@@ -270,7 +281,7 @@ const Publication = () => {
 	const LoadingSkeleton = () => {
 		return (
 			<>
-				<div className="flex gap-10">
+				<div className="flex gap-10 mt-10">
 					<Skeleton className="w-96 h-40 bg-gray-200"></Skeleton>
 					<div className="flex flex-col gap-5 w-full">
 						<Skeleton className="h-8 bg-gray-200 w-full"></Skeleton>
@@ -292,27 +303,69 @@ const Publication = () => {
 	const getParagraphImage = (content: any) => {
 		// Verifica se o conteúdo é uma string e se parece com uma URL
 		const isValidUrl = (string: string) => {
-		  try {
-			new URL(string);
-			return true;
-		  } catch (_) {
-			return false;
-		  }
+			try {
+				new URL(string);
+				return true;
+			} catch (_) {
+				return false;
+			}
 		};
-	  
+
 		// Se o conteúdo for uma string e for uma URL válida, retorne a URL
 		if (typeof content === "string" && isValidUrl(content)) {
-		  return content;
+			return content;
 		}
-	  
+
 		// Se o conteúdo for uma instância de File, crie um URL usando URL.createObjectURL
 		if (content instanceof File) {
-		  return URL.createObjectURL(content);
+			return URL.createObjectURL(content);
 		}
-	  
+
 		// Se não for nenhum dos casos acima, retorne o conteúdo original
 		return content;
-	  };
+	};
+
+	const deletePostById = async (id: string) => {;
+		try {
+			await postService.deletePostById(id);
+			ToastService.showSuccess("Postagem excluída com sucesso");
+		} catch (error: any) {
+			ToastService.showError(
+				`Houve um erro ao excluir a respectiva postagem ${error.message}`
+			);
+		}
+	};
+
+	const DeleteDialog = (id: string) => {
+		return (
+			<AlertDialog>
+				<Button asChild variant={"destructive"}>
+					<AlertDialogTrigger>Excluir postagem</AlertDialogTrigger>
+				</Button>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Você tem certeza disso?</AlertDialogTitle>
+						<AlertDialogDescription>
+							Essa ação não pode ser desfeita, uma vez que o seu post tenha sido
+							excluído, não poderá ser recuperado posteriormente. Caso você
+							apenas deseja tirar a visibilidade do post, você pode desativar o
+							checkbox 'ativo'
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancelar</AlertDialogCancel>
+						<Button
+							asChild
+							variant={"destructive"}
+							onClick={() => deletePostById(id)}
+						>
+							<AlertDialogAction>Confirmar Exclusão</AlertDialogAction>
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
+	};
 
 	return (
 		<div className="max-w-screen-2xl mx-auto px-10 pb-40">
@@ -327,14 +380,17 @@ const Publication = () => {
 						enableReinitialize={true}
 					>
 						<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
-							<div className="flex justify-between">
-								<h1 className="text-2xl mb-10">
+							<div className="flex flex-col items-end sm:items-start text-start my-4 sm:my-0 sm:flex-row justify-between">
+								<h1 className="text-2xl mb-10 w-full text-center sm:text-start">
 									{postId ? "Editando publicação de" : "Nova publicação de"}{" "}
 									{localStorage.getItem("companyName")}
 								</h1>
-								<Button variant={"default"} type="submit" disabled={sending}>
-									{sending ? "Enviando..." : postId ? "Editar" : "Publicar"}
-								</Button>
+								<div className="flex gap-4 sm:ml-6">
+									<Button variant={"default"} type="submit" disabled={sending}>
+										{sending ? "Enviando..." : postId ? "Editar" : "Publicar"}
+									</Button>
+									{postId && DeleteDialog(postId)}
+								</div>
 							</div>
 							<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
 								{" "}
