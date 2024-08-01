@@ -104,6 +104,9 @@ const Publication = () => {
 						);
 						setContentPreview(result.contentPreview);
 						setImagePreview(result.imagePreview);
+						if(result.imagePreview){
+							setHasImage(true);
+						}
 						if (titleInputRef.current) {
 							titleInputRef.current.value = result.title;
 						}
@@ -149,7 +152,7 @@ const Publication = () => {
 
 		const formatedParagraphs = await Promise.all(
 			paragraphs.map(async (paragraph: any) => {
-				if (paragraph.type === "image") {
+				if (paragraph.type === "image" && paragraph.content instanceof File) {
 					const formData = new FormData();
 					formData.append("file", paragraph.content);
 					const response = await postService.uploadFile(formData);
