@@ -325,7 +325,7 @@ const Publication = () => {
 		return content;
 	};
 
-	const deletePostById = async (id: string) => {;
+	const deletePostById = async (id: string) => {
 		try {
 			await postService.deletePostById(id);
 			ToastService.showSuccess("Postagem excluída com sucesso");
@@ -387,7 +387,11 @@ const Publication = () => {
 								</h1>
 								<div className="flex gap-4 sm:ml-6">
 									<Button variant={"default"} type="submit" disabled={sending}>
-										{sending ? "Enviando..." : postId ? "Salvar alterações" : "Publicar"}
+										{sending
+											? "Enviando..."
+											: postId
+											? "Salvar alterações"
+											: "Publicar"}
 									</Button>
 									{postId && DeleteDialog(postId)}
 								</div>
@@ -503,10 +507,11 @@ const Publication = () => {
 						</Form>
 					</Formik>
 
-					<div className="max-w-screen-2xl mx-auto">
+					<div className="max-w-screen-xl mx-auto">
 						<form>
 							<div className="max-w-screen-2xl mt-10">
 								<input
+									spellCheck={false}
 									type="text"
 									placeholder="Título..."
 									className="border-l-2 pl-4 font-semibold ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
@@ -527,6 +532,7 @@ const Publication = () => {
 								<div key={index} className="mt-4 flex ml-10 relative">
 									{paragraph.type === "text" ? (
 										<textarea
+											spellCheck={false}
 											placeholder="Insira um novo parágrafo..."
 											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none text-justify"
 											value={paragraph.content}
