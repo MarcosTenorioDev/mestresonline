@@ -4,6 +4,7 @@ import { FormikMultiSelect, TextAreaFormik } from "@/components/shared/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, PlusCircle, XIcon } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Menubar,
 	MenubarContent,
@@ -61,6 +62,7 @@ const Publication = () => {
 	const params = useParams();
 	const [author, setAuthor] = useState<any>();
 	const navigate = useNavigate();
+	const [isActive, setIsActive] = useState<boolean>(false);
 
 	const initialValues = {
 		author: author,
@@ -102,8 +104,10 @@ const Publication = () => {
 						setSelectedTopics(
 							result.topics.map((topic: { topic: ITopic }) => topic.topic.id)
 						);
+						console.log(result)
 						setContentPreview(result.contentPreview);
 						setImagePreview(result.imagePreview);
+						setIsActive(result.isActive);
 						if (result.imagePreview) {
 							setHasImage(true);
 						}
@@ -172,7 +176,7 @@ const Publication = () => {
 				const response = await postService.uploadFile(formData);
 				return response.url;
 			}
-			return image
+			return image;
 		};
 
 		// Aguarde a formatação da imagem
@@ -386,20 +390,37 @@ const Publication = () => {
 						enableReinitialize={true}
 					>
 						<Form className="flex flex-col justify-between border-b-2 mx-auto py-7">
-							<div className="flex flex-col items-end sm:items-start text-start my-4 sm:my-0 sm:flex-row justify-between">
-								<h1 className="text-2xl mb-10 w-full text-center sm:text-start">
+							<div className="flex flex-col items-center lg:flex-row text-start my-4 justify-between">
+								<h1 className="text-2xl mb-10 w-full text-center lg:text-start">
 									{postId ? "Editando publicação de" : "Nova publicação de"}{" "}
 									{localStorage.getItem("companyName")}
 								</h1>
-								<div className="flex gap-4 sm:ml-6">
-									<Button variant={"default"} type="submit" disabled={sending}>
-										{sending
-											? "Enviando..."
-											: postId
-											? "Salvar alterações"
-											: "Publicar"}
-									</Button>
-									{postId && DeleteDialog(postId)}
+								<div className="flex flex-col sm:flex-row gap-4 lg:ml-6">
+									{postId && (
+										<div
+											className={`${
+												isActive
+													? "bg-green-500/30 text-green-600"
+													: "bg-red-500/30 text-red-600"
+											} py-1 px-6 rounded-full font-semibold mb-4 mt-1 text-center`}
+										>
+											{isActive ? "Ativo" : "Inativo"}
+										</div>
+									)}
+									<div className="flex gap-4">
+										<Button
+											variant={"default"}
+											type="submit"
+											disabled={sending}
+										>
+											{sending
+												? "Enviando..."
+												: postId
+												? "Salvar alterações"
+												: "Publicar"}
+										</Button>
+										{postId && DeleteDialog(postId)}
+									</div>
 								</div>
 							</div>
 							<div className="flex-col flex lg:flex-row lg:gap-32 items-center">
@@ -454,6 +475,21 @@ const Publication = () => {
 											}}
 										></FormikMultiSelect>
 									</div>
+									{postId && (
+										<div className="flex items-center gap-2">
+											<Checkbox
+												id="isActive"
+												checked={isActive}
+												onCheckedChange={() => setIsActive(!isActive)}
+											/>
+											<label
+												htmlFor="isActive"
+												className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+											>
+												Ativo
+											</label>
+										</div>
+									)}
 								</div>
 								<div className="w-full flex flex-col xl:flex-row xl:justify-end xl:items-end items-center">
 									<div>
