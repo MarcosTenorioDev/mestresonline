@@ -25,6 +25,11 @@ class PostService{
         const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/posts/${id}`)
         return response.data
     }
+
+	async updatePost(post: any) {
+		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/posts`, post);
+		return response.data;
+	}
 }
 
 export {PostService}

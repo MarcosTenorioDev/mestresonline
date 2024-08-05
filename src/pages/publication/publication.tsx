@@ -104,7 +104,6 @@ const Publication = () => {
 						setSelectedTopics(
 							result.topics.map((topic: { topic: ITopic }) => topic.topic.id)
 						);
-						console.log(result)
 						setContentPreview(result.contentPreview);
 						setImagePreview(result.imagePreview);
 						setIsActive(result.isActive);
@@ -182,6 +181,29 @@ const Publication = () => {
 		// Aguarde a formatação da imagem
 		const formattedImageUrl = await formatedImage();
 
+		if(postId){
+			const payload = {
+				id:postId,
+				imagePreview: formattedImageUrl,
+				contentPreview: contentPreview,
+				authorId: author?.id ? author?.id : author,
+				topicIds: topic.map((id: string) => ({ topicId: id })),
+				companyId: params.id,
+				title: titleInputRef?.current?.value,
+				content: JSON.stringify(formatedParagraphs),
+			};
+
+			try {
+				await postService.updatePost(payload);
+				ToastService.showSuccess("Postagem editada com sucesso");
+			} catch (error: any) {
+				console.error("Erro ao editar o post", error);
+				ToastService.showError(`Erro ao editar o post: ${error.message}`);
+			} finally {
+				setIsSending(false);
+				return
+			}
+		}
 		const payload = {
 			imagePreview: formattedImageUrl,
 			contentPreview: contentPreview,
