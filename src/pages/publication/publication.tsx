@@ -63,6 +63,7 @@ const Publication = () => {
 	const [author, setAuthor] = useState<any>();
 	const navigate = useNavigate();
 	const [isActive, setIsActive] = useState<boolean>(false);
+	const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
 	const initialValues = {
 		author: author,
@@ -191,6 +192,7 @@ const Publication = () => {
 				companyId: params.id,
 				title: titleInputRef?.current?.value,
 				content: JSON.stringify(formatedParagraphs),
+				isActive: isActive
 			};
 
 			try {
@@ -359,20 +361,24 @@ const Publication = () => {
 
 	const deletePostById = async (id: string) => {
 		try {
+			setIsDeleting(true)
 			await postService.deletePostById(id);
 			ToastService.showSuccess("Postagem excluída com sucesso");
+			navigate(`/company/${params.id}`);
 		} catch (error: any) {
 			ToastService.showError(
 				`Houve um erro ao excluir a respectiva postagem ${error.message}`
 			);
+		}finally{
+			setIsDeleting(false)
 		}
 	};
 
 	const DeleteDialog = (id: string) => {
 		return (
 			<AlertDialog>
-				<Button asChild variant={"destructive"}>
-					<AlertDialogTrigger>Excluir postagem</AlertDialogTrigger>
+				<Button asChild variant={"destructive"} disabled={isDeleting}>
+					<AlertDialogTrigger>{isDeleting ? "Excluindo..." : "Excluir postagem"}</AlertDialogTrigger>
 				</Button>
 				<AlertDialogContent>
 					<AlertDialogHeader>
