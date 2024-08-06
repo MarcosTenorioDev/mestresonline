@@ -6,7 +6,7 @@
 ### Com a possibilidade de adicionar tópicos para filtragem de conteúdos, adicionar diferentes autores para a sua compania, clínica, curso ou até mesmo grupo produtor de conteúdo.
 ![image](https://github.com/user-attachments/assets/e7f56e1b-5ec3-49f8-9aa0-782f56327576)
 
-### Na homepage é possível visualizar seus posts, modificá-los, desativá-los ou até mesmo excluí-los, o que fará com que ele não possa mais ser exibido as pessoas que acessam o seu blog.
+### Na homepage é possível visualizar seus posts, modificá-los, desativá-los ou até mesmo excluí-los, o que fará com que ele não possa mais ser exibido às pessoas que acessam o seu blog.
 ![image](https://github.com/user-attachments/assets/2e3375d0-129c-41d4-bc83-73dca41ee113)
 
 ## Crie os seus Autores e tópicos e os visualize nas suas respectivas sessões:
