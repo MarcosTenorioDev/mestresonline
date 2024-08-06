@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+# Mestres_Online - Crie seu blog pessoal, faça suas postagens e seja mestre.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Mestres_Online é uma aplicação fullstack que é destinada a todos que desejam criar conteúdo informativo, com as funcionalidades de criar posts totalmente customizados, com imagens, gifs, trechos do youtube, etc.. 
+![image](https://github.com/user-attachments/assets/ebb13d78-9f2b-44f1-b4c5-549d5448cf8c)
 
-Currently, two official plugins are available:
+### Com a possibilidade de adicionar tópicos para filtragem de conteúdos, adicionar diferentes autores para a sua compania, clínica, curso ou até mesmo grupo produtor de conteúdo.
+![image](https://github.com/user-attachments/assets/e7f56e1b-5ec3-49f8-9aa0-782f56327576)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Na homepage é possível visualizar seus posts, modificá-los, desativá-los ou até mesmo excluí-los, o que fará com que ele não possa mais ser exibido às pessoas que acessam o seu blog.
+![image](https://github.com/user-attachments/assets/2e3375d0-129c-41d4-bc83-73dca41ee113)
 
-## Expanding the ESLint configuration
+## Crie os seus Autores e tópicos e os visualize nas suas respectivas sessões:
+![image](https://github.com/user-attachments/assets/1f406a24-5c36-4b7f-b4c6-a91fdbe7b004)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tecnologias usadas:
+- **TypeScript**
+- **React.js**
+- **Prisma**
+- **Node.js**
+- **AWS S3**
 
-- Configure the top-level `parserOptions` property like this:
+## Roadmap:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- [ ] **Adição de vídeos** : Implementar a adição de vídeos .mp4 no post
+- [ ] **Adição de iframe** : Implementar a possibilidade de adicionar pedaços de outros sites na sua postagem
+- [ ] **Listas** : Implementar a construção de listas
+- [ ] **Links**: Adicioanr links em determinados trechos de texto
+- [ ] **Perfil público** : Criar uma sessão + link personalizado para exibição do seu blog, postagens e perfil
+- [ ] **API** : Criação de uma API pública com os seus posts para que seja possível desenvolvedores ou pessoas adicionarem os posts a seus blogs pessoais da forma como desejar.
+- [ ] **Meios de pagamento** : Criação de planos e meios de pagamentos para que seja possível a disponibilização da API pública.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Feito com carinho &#10084; por MarcosTenorio &#128640;
