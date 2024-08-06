@@ -53,7 +53,7 @@ const Publication = () => {
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const [hasNewImage, setHasNewImage] = useState(false);
 	const paragraphInputRefs = useRef<any>([]);
-	const titleInputRef = useRef<HTMLInputElement>(null);
+	const [postTitle, setPostTitle] = useState<string>("")
 	const [focusedInput, setFocusedInput] = useState<number | null>(null);
 	const companiesService = new CompaniesService();
 	const postService = new PostService();
@@ -111,9 +111,7 @@ const Publication = () => {
 						if (result.imagePreview) {
 							setHasImage(true);
 						}
-						if (titleInputRef.current) {
-							titleInputRef.current.value = result.title;
-						}
+						setPostTitle(result.title)
 						setParagraphs(JSON.parse(result.content));
 					}
 				} catch (err) {
@@ -139,7 +137,7 @@ const Publication = () => {
 			return;
 		}
 
-		if (!titleInputRef?.current?.value) {
+		if (!postTitle) {
 			ToastService.showError("O Título da postagem é obrigatório.");
 			return;
 		}
@@ -190,7 +188,7 @@ const Publication = () => {
 				authorId: author?.id ? author?.id : author,
 				topicIds: topic.map((id: string) => ({ topicId: id })),
 				companyId: params.id,
-				title: titleInputRef?.current?.value,
+				title: postTitle,
 				content: JSON.stringify(formatedParagraphs),
 				isActive: isActive
 			};
@@ -212,7 +210,7 @@ const Publication = () => {
 			authorId: author?.id ? author?.id : author,
 			topicIds: topic.map((id: string) => ({ topicId: id })),
 			companyId: params.id,
-			title: titleInputRef?.current?.value,
+			title: postTitle,
 			content: JSON.stringify(formatedParagraphs),
 		};
 
@@ -584,8 +582,9 @@ const Publication = () => {
 									spellCheck={false}
 									type="text"
 									placeholder="Título..."
-									className="border-l-2 pl-4 font-semibold ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none"
-									ref={titleInputRef}
+									className="border-l-2 pl-4 font-semibold md:ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none text-wrap"
+									onChange={(e:any) => setPostTitle(e.target.value)}
+									defaultValue={postTitle}
 									onKeyDown={(e) => {
 										if (e.key === "Enter") {
 											e.preventDefault();
@@ -599,7 +598,7 @@ const Publication = () => {
 								/>
 							</div>
 							{paragraphs.map((paragraph, index) => (
-								<div key={index} className="mt-4 flex ml-10 relative">
+								<div key={index} className="mt-4 flex md:ml-10 relative">
 									{paragraph.type === "text" ? (
 										<textarea
 											spellCheck={false}
@@ -637,7 +636,7 @@ const Publication = () => {
 									{focusedInput === index && (
 										<Menubar>
 											<MenubarMenu>
-												<MenubarTrigger className="absolute -left-16 -top-1">
+												<MenubarTrigger className="absolute -left-12 md:-left-16 -top-1 cursor-pointer hover:bg-muted">
 													<PlusCircle className="w-8 h-8" />
 												</MenubarTrigger>
 												<MenubarContent>
