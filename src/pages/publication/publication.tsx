@@ -577,12 +577,11 @@ const Publication = () => {
 
 					<div className="max-w-screen-xl mx-auto">
 						<form>
-							<div className="max-w-screen-2xl mt-10">
-								<input
+							<div className="max-w-screen-2xl mt-10 md:ml-10">
+								<textarea
 									spellCheck={false}
-									type="text"
 									placeholder="Título..."
-									className="border-l-2 pl-4 font-semibold md:ml-10 text-3xl w-full focus:border-transparent focus:outline-nonefocus:border-transparent focus:outline-none text-wrap"
+									className="border-l-2 pl-4 text-center font-semibold text-3xl w-full focus:outline-nonefocus:border-transparent text-wrap resize-none overflow-hidden focus:border-transparent focus:outline-none md:text-justify"
 									onChange={(e:any) => setPostTitle(e.target.value)}
 									defaultValue={postTitle}
 									onKeyDown={(e) => {
@@ -595,6 +594,12 @@ const Publication = () => {
 											}
 										}
 									}}
+									ref={(textarea) => {
+										if (textarea) {
+											textarea.style.height = "auto";
+											textarea.style.height = `${textarea.scrollHeight}px`;
+										}
+									}}
 								/>
 							</div>
 							{paragraphs.map((paragraph, index) => (
@@ -603,13 +608,14 @@ const Publication = () => {
 										<textarea
 											spellCheck={false}
 											placeholder="Insira um novo parágrafo..."
-											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none text-justify"
+											className="border-l-2 pl-4 w-full resize-none overflow-hidden focus:border-transparent focus:outline-none text-center md:text-justify"
 											value={paragraph.content}
 											onChange={(e) =>
 												handleParagraphChange(index, e.target.value)
 											}
 											onKeyDown={(e) => handleKeyDown(e, index)}
 											onFocus={() => setFocusedInput(index)}
+											onBlur={() => setFocusedInput(null)}
 											ref={(textarea) => {
 												if (textarea) {
 													paragraphInputRefs.current[index] = textarea;
