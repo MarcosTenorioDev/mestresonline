@@ -19,14 +19,14 @@
 - **Node.js**
 - **AWS S3**
 
-## Implementações Futuras
+## Roadmap:
 
-- **Adição de vídeos** : Implementar a adição de vídeos .mp4 no post
-- **Adição de iframe** : Implementar a possibilidade de adicionar pedaços de outros sites na sua postagem
-- **Listas** : Implementar a construção de listas
-- **Links**: Adicioanr links em determinados trechos de texto
-- **Perfil público** : Criar uma sessão + link personalizado para exibição do seu blog, postagens e perfil
-- **API** : Criação de uma API pública com os seus posts para que seja possível desenvolvedores ou pessoas adicionarem os posts a seus blogs pessoais da forma como desejar.
-- **Meios de pagamento** : Criação de planos e meios de pagamentos para que seja possível a disponibilização da API pública.
+- [ ] **Adição de vídeos** : Implementar a adição de vídeos .mp4 no post
+- [ ] **Adição de iframe** : Implementar a possibilidade de adicionar pedaços de outros sites na sua postagem
+- [ ] **Listas** : Implementar a construção de listas
+- [ ] **Links**: Adicioanr links em determinados trechos de texto
+- [ ] **Perfil público** : Criar uma sessão + link personalizado para exibição do seu blog, postagens e perfil
+- [ ] **API** : Criação de uma API pública com os seus posts para que seja possível desenvolvedores ou pessoas adicionarem os posts a seus blogs pessoais da forma como desejar.
+- [ ] **Meios de pagamento** : Criação de planos e meios de pagamentos para que seja possível a disponibilização da API pública.
 
 ## Feito com carinho &#10084; por MarcosTenorio &#128640;
