@@ -6,6 +6,7 @@ import {
 	UserButton,
 } from "@clerk/clerk-react";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const CaptationPageNavbar = () => {
 	return (
@@ -20,21 +21,33 @@ const CaptationPageNavbar = () => {
 				<div>
 					<ul className="flex gap-6">
 						<li>
-							<Button variant={"link"} className="text-[#333] text-md">Home</Button>
+							<Button variant={"link"} className="text-[#333] text-md">
+								Início
+							</Button>
 						</li>
 
 						<li>
-							<Button variant={"link"} className="text-[#333] text-md">Plans</Button>
+							<Button variant={"link"} className="text-[#333] text-md">
+								Planos
+							</Button>
 						</li>
 						<li>
-							<Button variant={"link"} className="text-[#333] text-md">API Docs</Button>
+							<Button variant={"link"} className="text-[#333] text-md">
+								Documentação de API
+							</Button>
 						</li>
 						<SignedIn>
 							<li>
-								{" "}
-								<li>
-									<Button variant={"link"} className="text-[#333] text-md">My Plan</Button>
-								</li>
+								<Button variant={"link"} className="text-[#333] text-md">
+									Meu plano
+								</Button>
+							</li>
+							<li>
+								<Link to={"/myCompanies"}>
+									<Button variant={"link"} className="text-[#333] text-md">
+										Minhas postagens
+									</Button>
+								</Link>
 							</li>
 						</SignedIn>
 					</ul>

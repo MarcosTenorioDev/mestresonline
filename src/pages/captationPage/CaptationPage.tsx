@@ -1,7 +1,8 @@
+import  StripePricingTable  from "@/components/Stripe/StripePricingTable";
 const CaptationPage = () => {
 	return (
 		<div>
-			{/* <StripePricingTable /> */}
+			<StripePricingTable />
 		</div>
 	);
 };
