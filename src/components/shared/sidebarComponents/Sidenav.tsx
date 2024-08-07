@@ -98,7 +98,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>
-				) : item.protected && path === "/" ? (
+				) : item.protected && path.toLowerCase() ===  "/myCompanies".toLowerCase() ? (
 					""
 				) : (
 					<Link

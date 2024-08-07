@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 /* import NavBar from "./components/shared/Navbar";
- */import Publication from "./pages/publication/publication";
+ */ import Publication from "./pages/publication/publication";
 import MyCompanies from "./pages/myCompanies/MyCompanies";
 import Home from "./pages/home/Home";
 import { LayoutAdmin } from "./components/shared/sidebarComponents";
 import ProducersPage from "./pages/producers/ProducersPage";
 import TopicsPage from "./pages/topics/TopicsPage";
-
+import CaptationPageNavbar from "./components/shared/CaptationPageNavbar";
+import CaptationPage from "./pages/captationPage/CaptationPage";
 
 function App() {
 	return (
@@ -15,6 +16,15 @@ function App() {
 				<Routes>
 					<Route
 						path="/"
+						element={
+							<>
+								<CaptationPageNavbar />
+								<CaptationPage />
+							</>
+						}
+					/>
+					<Route
+						path="/myCompanies"
 						element={
 							<LayoutAdmin>
 								<MyCompanies />
