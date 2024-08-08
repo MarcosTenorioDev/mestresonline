@@ -18,7 +18,7 @@ const PlanCard = ({ plan }: any) => {
 		<Card className="border-primary w-full max-w-[400px] mx-auto">
 			<CardHeader className="text-center pb-2">
 				{plan.mostEconomic && (
-					<Badge className="uppercase w-max self-center mb-3">
+					<Badge className="uppercase w-max self-center mb-3 cursor-default">
 						Mais econômico
 					</Badge>
 				)}
