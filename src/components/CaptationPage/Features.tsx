@@ -8,6 +8,9 @@ import {
 import brand from "@/assets/images/branding_6980738.png";
 import handPhone from "@/assets/images/hand-phone_103674.png"
 import userInterface from "@/assets/images/user-interface_10401429.png"
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 interface FeatureProps {
 	title: string;
@@ -43,8 +46,13 @@ const featureList: string[] = [
 ];
 
 export const Features = () => {
+
+	useEffect(() => {
+		AOS.init({ duration: 1200 });
+	});
+
 	return (
-		<section id="features" className="container py-24 sm:py-32 space-y-8">
+		<section id="features" className="container py-24 sm:py-32 space-y-8" data-aos="fade-up">
 			<h2 className="text-3xl lg:text-4xl font-bold md:text-center">
 				<span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
 					Publique{" "}

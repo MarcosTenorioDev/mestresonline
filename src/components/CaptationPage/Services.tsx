@@ -9,6 +9,9 @@ import securityIcon from "@/assets/images/lock_15120215.png";
 import documentIcon from "@/assets/images/doc-file-format_2889438.png";
 import endpointIcon from "@/assets/images/api_3234053.png";
 import { Button } from "../ui/button";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 interface FeatureProps {
 	title: string;
@@ -38,8 +41,12 @@ const features: FeatureProps[] = [
 ];
 
 export const Services = () => {
+	useEffect(() => {
+		AOS.init({ duration: 1200 });
+	});
+
 	return (
-		<section className="container py-24 sm:py-32">
+		<section className="container py-24 sm:py-32" data-aos="zoom-in">
 			<div className="grid lg:grid-cols-[1fr,1fr] gap-8 place-items-center">
 				<div className="flex flex-col justify-between">
 					<h2 className="text-3xl lg:text-4xl font-bold">
