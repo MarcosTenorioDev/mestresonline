@@ -43,7 +43,7 @@ const CaptationPageNavbar = () => {
 								</Button>
 							</li>
 							<li>
-								<Link to={"/myCompanies"}>
+								<Link to={"/myProfiles"}>
 									<Button variant={"link"} className="text-[#333] text-md">
 										Minhas postagens
 									</Button>

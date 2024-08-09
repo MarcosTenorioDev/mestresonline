@@ -119,7 +119,7 @@ const MyCompanies = () => {
 	return (
 		<div className="max-w-7xl mx-auto px-10 lg:px-0">
 			<h1 className="font-semibold text-2xl sm:text-4xl sm:px-14 py-20">
-				Minhas Companias
+				Meus Perfis
 			</h1>
 			<Carousel className="w-10/12 mx-auto sm:px-14">
 				<CarouselContent>
@@ -132,7 +132,7 @@ const MyCompanies = () => {
 									key={company.id}
 									className="lg:basis-1/2 cursor-pointer "
 									onClick={() => {
-										navigate(`/company/${company.id}`)
+										navigate(`/profile/${company.id}`)
 										localStorage.setItem('companyName', company.name)
 									}}
 								>

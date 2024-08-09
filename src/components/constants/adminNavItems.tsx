@@ -3,7 +3,7 @@ import { Building2, FileEditIcon, UserCheck2, Pilcrow } from "lucide-react";
 
 export const NavItems: NavItem[] = [
     {
-      title: "Minhas companias",
+      title: "Meus perfis",
       icon: Building2,
       href: "/",
       color: "text-primary",

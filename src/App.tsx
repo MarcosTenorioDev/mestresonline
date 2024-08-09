@@ -24,7 +24,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="/myCompanies"
+						path="/myProfiles"
 						element={
 							<LayoutAdmin>
 								<MyCompanies />
@@ -40,7 +40,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="/company/:id"
+						path="/profile/:id"
 						element={
 							<LayoutAdmin>
 								<Home />
