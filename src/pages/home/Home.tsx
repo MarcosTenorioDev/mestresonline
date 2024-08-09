@@ -9,6 +9,7 @@ import ToastService from "@/core/services/toast.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ICompany } from "@/core/interfaces/company.interface";
 import { IPost } from "@/core/interfaces/posts.interface";
+import placeholder from "@/assets/images/placeholder.png"
 
 const Home = () => {
 	const params = useParams();
@@ -19,7 +20,7 @@ const Home = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const [searchTerm, setSearchTerm] = useState<string>("");
-	
+
 	const filteredPosts = posts.filter((post: IPost) =>
 		post.title.toLowerCase().includes(searchTerm.toLowerCase())
 	);
@@ -47,7 +48,7 @@ const Home = () => {
 
 	const LoadingSkeleton = () => {
 		return (
-			<>
+			<div className="p-10">
 				<div className="flex gap-10">
 					<Skeleton className="w-40 h-40 bg-gray-200 rounded-full"></Skeleton>
 					<div className="flex flex-col gap-5 w-full">
@@ -63,27 +64,41 @@ const Home = () => {
 					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
 					<Skeleton className="h-28 bg-gray-200 rounded w-full"></Skeleton>
 				</div>
-			</>
+			</div>
 		);
 	};
 
 	return (
-		<div className="max-w-screen-2xl mx-auto py-10 min-h-screen px-4 sm:px-10">
+		<div className="max-w-screen-2xl mx-auto pb-10 min-h-screen">
 			{loading ? (
 				<LoadingSkeleton />
 			) : (
 				<>
 					{company && (
 						<>
-							<div className="flex flex-col sm:flex-row items-center gap-10">
+							<div className="relative w-full h-[500px]">
 								<img
-									src={company.image}
-									className="w-40 h-40 rounded-full"
-									alt="imagem da compania"
+									src={company.banner ? company.banner : placeholder}
+									className="aspect-video w-full h-full object-cover"
+									alt="banner do perfil"
+									style={{
+										maskImage:
+											"linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))",
+										WebkitMaskImage:
+											"linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))",
+									}}
 								/>
-								<h1 className="text-5xl mb-12">{company.name}</h1>
+								<div className="flex flex-col sm:flex-row items-center gap-10 absolute bottom-2  px-4 sm:px-10">
+									<img
+										src={company.image}
+										className="w-40 h-40 rounded-full"
+										alt="imagem do perfil"
+									/>
+									<h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl mb-12">{company.name}</h1>
+								</div>
 							</div>
-							<div className="border-b-2 pb-10">
+
+							<div className="border-b-2 pb-10 px-4 sm:px-10">
 								<h2 className="text-2xl mt-5">Minhas postagens</h2>
 
 								<p className="mt-6 text-sm font-semibold mb-2">
@@ -112,7 +127,7 @@ const Home = () => {
 								</div>
 							</div>
 
-							<div className="mt-8 flex flex-col gap-16">
+							<div className="mt-8 flex flex-col gap-16 px-4 sm:px-10">
 								{filteredPosts.map((post: any) => (
 									<PostPreview key={post.id} post={post} />
 								))}

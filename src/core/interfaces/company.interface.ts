@@ -19,6 +19,7 @@ export interface ICompany {
     name: string;
     ownerId: string;
     image: string;
+    banner:string;
     description: string;
     owner: IOwner;
     posts: IPost[];
