@@ -1,34 +1,47 @@
 import { NavItem } from "@/core/interfaces/navbarTypes";
-import { Building2, FileEditIcon, UserCheck2, Pilcrow } from "lucide-react";
+import {
+	Users2Icon,
+	FileEditIcon,
+	UserCheck2,
+	Pilcrow,
+	HomeIcon,
+} from "lucide-react";
 
 export const NavItems: NavItem[] = [
-    {
-      title: "Meus perfis",
-      icon: Building2,
-      href: "/",
-      color: "text-primary",
-    },  
-    {
-      title: "Nova publicação",
-      icon: FileEditIcon,
-      href: "/publication",
-      color: "text-primary",
-      protected: true
-    },  
-    {
-      title: "Criar novo tópico",
-      icon: Pilcrow,
-      href: "/topics",
-      color: "text-primary",
-      protected: true
-    }, 
-    {
-      title: "Criar novo autor",
-      icon: UserCheck2,
-      href: "/author",
-      color: "text-primary",
-      protected: true
-    },   
+	{
+		title: "Meus perfis",
+		icon: Users2Icon,
+		href: "/myProfiles",
+		color: "text-primary",
+	},
+	{
+		title: "Página inicial",
+		icon: HomeIcon,
+		href: "/profile",
+		color: "text-primary",
+    protected:true
+	},
+	{
+		title: "Nova publicação",
+		icon: FileEditIcon,
+		href: "/publication",
+		color: "text-primary",
+		protected: true,
+	},
+	{
+		title: "Criar novo tópico",
+		icon: Pilcrow,
+		href: "/topics",
+		color: "text-primary",
+		protected: true,
+	},
+	{
+		title: "Criar novo autor",
+		icon: UserCheck2,
+		href: "/author",
+		color: "text-primary",
+		protected: true,
+	},
 ];
 
 /*   {

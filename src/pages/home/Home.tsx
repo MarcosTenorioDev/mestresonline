@@ -40,7 +40,7 @@ const Home = () => {
 			} catch (error: any) {
 				ToastService.showError(`Houve um erro ao abrir a seguradora`);
 				setTimeout(() => {
-					navigate("/");
+					navigate("/myProfiles");
 				}, 2000);
 			}
 		}
