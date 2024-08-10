@@ -3,6 +3,7 @@ import { IOwner, IPost } from "./posts.interface";
 export interface CompanyCreate {
     name: string;
     image: string
+    banner: string
     description:string
 }
 
@@ -10,6 +11,7 @@ export interface CompanyHomePage {
     id: string;
     name: string;
     description:string;
+    banner:string;
     image: string
     ownerId: string;
 }
