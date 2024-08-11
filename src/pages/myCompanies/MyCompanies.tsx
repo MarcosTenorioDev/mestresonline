@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { ErrorMessage, Form, Formik } from "formik";
-import { Input, TextAreaFormik } from "@/components/shared/Inputs";
+import { Input } from "@/components/shared/Inputs";
 import { Button } from "@/components/ui/button";
 import CompaniesService from "@/core/services/companies.service";
 import {
