@@ -615,7 +615,6 @@ const Publication = () => {
 											}
 											onKeyDown={(e) => handleKeyDown(e, index)}
 											onFocus={() => setFocusedInput(index)}
-											onBlur={() => setFocusedInput(null)}
 											ref={(textarea) => {
 												if (textarea) {
 													paragraphInputRefs.current[index] = textarea;
