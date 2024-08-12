@@ -1,5 +1,5 @@
 import { AxiosInterceptor } from "../interceptor/axios.interceptor";
-import { CompanyCreate } from "@/core/interfaces/company.interface";
+import { CompanyCreate, CompanyUpdate } from "@/core/interfaces/company.interface";
 
 class CompaniesService {
 	private axiosInterceptor: AxiosInterceptor = new AxiosInterceptor();
@@ -33,12 +33,12 @@ class CompaniesService {
 	}
 
     /* AINDA NÃO EXISTE NO BACKEND */
-	/* async updateCompany(id: string, company: Partial<CompanyCreate>) {
-		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`, company);
+	async updateCompany(company: CompanyUpdate) {
+		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/companies`, company);
 		return response.data;
 	}
 
-	async deleteCompany(id: string) {
+	/* async deleteCompany(id: string) {
 		const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`);
 		return response.data;
 	} */

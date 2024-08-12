@@ -9,7 +9,8 @@ import ToastService from "@/core/services/toast.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ICompany } from "@/core/interfaces/company.interface";
 import { IPost } from "@/core/interfaces/posts.interface";
-import placeholder from "@/assets/images/placeholder.png"
+import placeholder from "@/assets/images/placeholder.png";
+import EditCompanyButton from "@/components/EditCompanyButton";
 
 const Home = () => {
 	const params = useParams();
@@ -88,13 +89,18 @@ const Home = () => {
 											"linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))",
 									}}
 								/>
-								<div className="flex flex-col sm:flex-row items-center gap-10 absolute bottom-2  px-4 sm:px-10">
+								<div className="w-full flex flex-col sm:flex-row items-center gap-10 absolute bottom-2 px-4 sm:px-10">
 									<img
 										src={company.image}
 										className="w-40 h-40 rounded-full"
 										alt="imagem do perfil"
 									/>
-									<h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl mb-12">{company.name}</h1>
+									<div className="flex gap-2">
+										<h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
+											{company.name}
+										</h1>
+										<EditCompanyButton company={company} />
+									</div>
 								</div>
 							</div>
 

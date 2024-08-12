@@ -7,6 +7,15 @@ export interface CompanyCreate {
     description:string
 }
 
+export interface CompanyUpdate {
+    id:string
+    name: string;
+    image: string
+    banner: string
+    description:string
+    ownerId: string;
+}
+
 export interface CompanyHomePage {
     id: string;
     name: string;
