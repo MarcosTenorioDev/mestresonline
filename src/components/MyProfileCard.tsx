@@ -39,13 +39,13 @@ const MyProfileCard: React.FC<MyProfileCardProps> = ({ company, placeholder }) =
                 {company.name}
               </h1>
             </div>
-            <p className="text-sm font-semibold hidden lg:block tracking-tight text-center w-full">
+            <p className="text-sm font-semibold hidden lg:block tracking-tight text-center w-full truncate">
               {company.description}
             </p>
           </div>
         </div>
-        <div className="p-4 lg:hidden">
-          <p className="text-xs font-medium text-muted-foreground lg:hidden tracking-tight text-center w-full">
+        <div className="p-4 lg:hidden w-full">
+          <p className="text-xs font-medium text-muted-foreground lg:hidden tracking-tight text-center w-full truncate">
             {company.description}
           </p>
         </div>
