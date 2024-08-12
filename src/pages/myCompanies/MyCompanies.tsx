@@ -25,11 +25,11 @@ import {
 	CompanyCreate,
 	CompanyHomePage,
 } from "@/core/interfaces/company.interface";
-import defaultImage from "@/assets/images/defaultImage.jpg";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PostService } from "@/core/services/post.service";
+import MyProfileCard from "@/components/MyProfileCard";
 
 const MyCompanies = () => {
 	const initialValues = {
@@ -39,7 +39,9 @@ const MyCompanies = () => {
 	};
 
 	const validationSchema = Yup.object({
-		name: Yup.string().required("Nome é obrigatório*").max(70,"No máximo 70 caracteres*"),
+		name: Yup.string()
+			.required("Nome é obrigatório*")
+			.max(70, "No máximo 70 caracteres*"),
 		description: Yup.string().required("Descrição é obrigatória*"),
 		image: Yup.string().required("Imagem de perfil é obrigatória*"),
 	});
@@ -75,7 +77,7 @@ const MyCompanies = () => {
 			const response = await postService.uploadFile(formData);
 			return response.url;
 		};
-		
+
 		const payload: CompanyCreate = {
 			description,
 			image: await formatedImage(imagePreview),
@@ -137,28 +139,14 @@ const MyCompanies = () => {
 							{myCompanies.map((company) => (
 								<CarouselItem
 									key={company.id}
-									className="lg:basis-1/2 cursor-pointer "
+									className="lg:basis-[80%] xl:basis-[60%] cursor-pointer "
 									onClick={() => {
 										navigate(`/profile/${company.id}`);
 										localStorage.setItem("companyName", company.name);
 									}}
 								>
-									<div className="p-1">
-										<Card className="w-full cursor-pointer">
-											<CardContent className="flex flex-col items-center justify-center p-6 hover:bg-gray-100 transition duration-300">
-												<img
-													src={company.image || defaultImage}
-													alt={company.name}
-													className="w-full max-h-48 object-contain mb-4"
-												/>
-												<h2 className="text-xl font-semibold">
-													{company.name}
-												</h2>
-												<p className="text-gray-500 text-center">
-													{company.description}
-												</p>
-											</CardContent>
-										</Card>
+									<div className="">
+										<MyProfileCard company={company} placeholder={placeholder} key={company.id}/>
 									</div>
 								</CarouselItem>
 							))}
