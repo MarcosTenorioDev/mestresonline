@@ -105,6 +105,9 @@ const Home = () => {
 							</div>
 
 							<div className="border-b-2 pb-10 px-4 sm:px-10">
+								<h1 className="text-sm font-normal tracking-tight">
+									{company.description}
+								</h1>
 								<h2 className="text-2xl mt-5">Minhas postagens</h2>
 
 								<p className="mt-6 text-sm font-semibold mb-2">
