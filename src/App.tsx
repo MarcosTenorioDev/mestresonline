@@ -8,6 +8,7 @@ import ProducersPage from "./pages/producers/ProducersPage";
 import TopicsPage from "./pages/topics/TopicsPage";
 import CaptationPageNavbar from "./components/shared/CaptationPageNavbar";
 import CaptationPage from "./pages/captationPage/CaptationPage";
+import BlogPage from "./pages/BlogPage/BlogPage";
 
 function App() {
 	return (
@@ -23,6 +24,11 @@ function App() {
 							</>
 						}
 					/>
+					<Route 
+					path="/:profile"
+					element={
+						<BlogPage />
+					}/>
 					<Route
 						path="/myProfiles"
 						element={
