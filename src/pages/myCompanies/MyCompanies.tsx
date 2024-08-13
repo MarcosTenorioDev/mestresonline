@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { ErrorMessage, Form, Formik } from "formik";
-import { Input } from "@/components/shared/Inputs";
+import { Input, TextAreaFormik } from "@/components/shared/Inputs";
 import { Button } from "@/components/ui/button";
 import CompaniesService from "@/core/services/companies.service";
 import {
@@ -146,7 +146,11 @@ const MyCompanies = () => {
 									}}
 								>
 									<div className="">
-										<MyProfileCard company={company} placeholder={placeholder} key={company.id}/>
+										<MyProfileCard
+											company={company}
+											placeholder={placeholder}
+											key={company.id}
+										/>
 									</div>
 								</CarouselItem>
 							))}
@@ -178,9 +182,15 @@ const MyCompanies = () => {
 															<Form className="space-y-6">
 																<div className="flex flex-col gap-4 mt-10">
 																	<Input control="name">Nome do perfil</Input>
-																	<Input control="description">
+																	<TextAreaFormik
+																		control="description"
+																		onValueChange={(value: string) => {
+																			setFieldValue("description", value);
+																		}}
+																		rows={6}
+																	>
 																		Descrição do perfil
-																	</Input>
+																	</TextAreaFormik>
 																	<div>
 																		<input
 																			id="image"

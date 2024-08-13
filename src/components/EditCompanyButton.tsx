@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Formik, ErrorMessage, Form } from "formik";
 import { PenBoxIcon, UploadIcon } from "lucide-react";
-import { Input } from "./shared/Inputs";
+import { Input, TextAreaFormik } from "./shared/Inputs";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { DialogHeader } from "./ui/dialog";
@@ -127,7 +127,15 @@ const EditCompanyButton = (props: { company: ICompany }) => {
 									<Form className="space-y-6">
 										<div className="flex flex-col gap-4 mt-10">
 											<Input control="name">Nome do perfil</Input>
-											<Input control="description">Descrição do perfil</Input>
+											<TextAreaFormik
+												control="description"
+												rows={6}
+												onValueChange={(value: any) => {
+													setFieldValue("description", value);
+												}}
+											>
+												Descrição do perfil
+											</TextAreaFormik>
 											<div>
 												<input
 													id="image"
@@ -195,7 +203,7 @@ const EditCompanyButton = (props: { company: ICompany }) => {
 															htmlFor="banner"
 															className="block text-sm font-medium"
 														>
-															<div className="flex flex-col justify-center pb-16 items-center absolute inset-0 cursor-pointer opacity-0 hover:opacity-100">
+															<div className="flex flex-col sm:justify-center pb-16 items-center justify-start absolute top-0 w-full h-full cursor-pointer sm:opacity-0 hover:opacity-100">
 																<div className="hover:bg-gray-200 p-3 rounded-full">
 																	<UploadIcon
 																		className="size-6 text-black"
@@ -225,7 +233,7 @@ const EditCompanyButton = (props: { company: ICompany }) => {
 														</label>
 													)}
 
-													<div className="flex flex-col sm:flex-row items-center gap-5 absolute bottom-2  px-4">
+													<div className="flex flex-col mx-auto sm:flex-row items-center gap-5 absolute bottom-2 w-full px-4">
 														<div className="relative w-28 h-28 min-w-28 min-h-28">
 															{imagePreview ? (
 																<img
@@ -283,10 +291,7 @@ const EditCompanyButton = (props: { company: ICompany }) => {
 										</div>
 
 										<div className="flex justify-end">
-											<DialogClose
-												type="submit"
-												className="bg-gray-200 hover:bg-gray-200/60 text-black mr-4 py-2 px-4 rounded-md"
-											>
+											<DialogClose className="bg-gray-200 hover:bg-gray-200/60 text-black mr-4 py-2 px-4 rounded-md">
 												Cancelar
 											</DialogClose>
 											<Button
