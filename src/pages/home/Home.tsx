@@ -70,7 +70,7 @@ const Home = () => {
 	};
 
 	return (
-		<div className="max-w-screen-2xl mx-auto pb-10 min-h-screen">
+		<div className="mx-auto pb-10 min-h-screen">
 			{loading ? (
 				<LoadingSkeleton />
 			) : (
