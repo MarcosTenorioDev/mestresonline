@@ -38,6 +38,18 @@ class CompaniesService {
 		return response.data;
 	}
 
+	async updatePublicCode(payload:
+		{publicCode:string, companyId:string}
+	) {
+		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/companies/publicCode`, payload);
+		return response.data;
+	}
+
+	async isValidPublicCode(publicCode:string){
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/companies/publicCode/isValid/${publicCode}`);
+		return response.data;
+	}
+
 	/* async deleteCompany(id: string) {
 		const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`);
 		return response.data;

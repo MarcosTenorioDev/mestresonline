@@ -11,6 +11,7 @@ import { ICompany } from "@/core/interfaces/company.interface";
 import { IPost } from "@/core/interfaces/posts.interface";
 import placeholder from "@/assets/images/placeholder.png";
 import EditCompanyButton from "@/components/EditCompanyButton";
+import EditPublicCodeButton from "@/components/EditPublicCodeButton";
 
 const Home = () => {
 	const params = useParams();
@@ -46,6 +47,20 @@ const Home = () => {
 			}
 		}
 	};
+
+	const updatePublicCode = async (values:any) =>{
+		try{
+			const payload = {
+				companyId:id!,
+				publicCode:values.UpdatedPublicCode
+			}
+			await companyService.updatePublicCode(payload)
+			ToastService.showSuccess("URL pública alterada com sucesso!")
+			fetchAgency()
+		}catch(err){
+			ToastService.showError("Houve um erro ao editar a URL pública do perfil, por favor contate o suporte técnico")
+		}
+	}
 
 	const LoadingSkeleton = () => {
 		return (
@@ -105,9 +120,39 @@ const Home = () => {
 							</div>
 
 							<div className="border-b-2 pb-10 px-4 sm:px-10">
-								<h1 className="text-sm font-normal tracking-tight">
+								<p className="text-xl tracking-tight my-4">
+									URL para perfil público:{" "}
+									<a
+										className="text-sm hover:underline font-semibold"
+										href={`https://mestresonline.vercel.app/${company.publicCode}`}
+										target="blank"
+									>
+										https://mestresonline.vercel.app/{company.publicCode}
+									</a>
+									<div
+										id="alert-5"
+										className="flex items-center rounded-lg"
+										role="alert"
+									>
+										<svg
+											className="flex-shrink-0 w-4 h-4"
+											aria-hidden="true"
+											xmlns="http://www.w3.org/2000/svg"
+											fill="gray"
+											viewBox="0 0 20 20"
+										>
+											<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+										</svg>
+										<span className="sr-only">Info</span>
+										<div className="ms-3 text-sm font-medium text-muted-foreground">
+											<EditPublicCodeButton publicCode={company.publicCode} onSubmit={(values:any) => updatePublicCode(values)} isPaidSubscription={company.isPaidSubscription}/>
+										</div>
+									</div>
+								</p>
+
+								<h3 className="text-sm font-normal tracking-tight">
 									{company.description}
-								</h1>
+								</h3>
 								<h2 className="text-2xl mt-5">Minhas postagens</h2>
 
 								<p className="mt-6 text-sm font-semibold mb-2">

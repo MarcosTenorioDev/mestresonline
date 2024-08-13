@@ -34,4 +34,6 @@ export interface ICompany {
     description: string;
     owner: IOwner;
     posts: IPost[];
+    publicCode:string
+    isPaidSubscription:boolean
   }
