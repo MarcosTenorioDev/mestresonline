@@ -150,7 +150,7 @@ const Home = () => {
 									</div>
 								</p>
 
-								<h3 className="text-sm font-normal tracking-tight">
+								<h3 className="text-sm font-normal tracking-tight max-w-5xl">
 									{company.description}
 								</h3>
 								<h2 className="text-2xl mt-5">Minhas postagens</h2>

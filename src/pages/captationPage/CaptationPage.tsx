@@ -1,6 +1,9 @@
 import { Features } from "@/components/CaptationPage/Features";
 import HeroSectionComponent from "@/components/CaptationPage/HeroSectionCaptationPage";
+import { Post } from "@/components/CaptationPage/Post";
+import { Profile } from "@/components/CaptationPage/Profile";
 import { Services } from "@/components/CaptationPage/Services";
+import TopicsAndAuthors from "@/components/CaptationPage/TopicsAndAuthors";
 import CaptationPageNavbar from "@/components/shared/CaptationPageNavbar";
 import { FooterSection } from "@/components/shared/Footer";
 import StripePricingTable from "@/components/Stripe/StripePricingTable";
@@ -18,12 +21,15 @@ const CaptationPage = () => {
 
 	return (
 		<div>
-			<CaptationPageNavbar pricingRef={pricingRef} />
-			<div data-aos="fade-up">
+{/* 			<CaptationPageNavbar pricingRef={pricingRef} />
+ */}			<div data-aos="fade-down">
 				<HeroSectionComponent aboutRef={aboutRef} />
 			</div>
 			<div ref={aboutRef}>
 				<Features />
+				<Post />
+				<TopicsAndAuthors />
+				<Profile />
 			</div>
 
 			<Services />
