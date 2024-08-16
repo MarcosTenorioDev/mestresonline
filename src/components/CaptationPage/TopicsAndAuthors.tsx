@@ -1,4 +1,4 @@
-import { CheckCheckIcon, CheckIcon, Pilcrow, UserCheck2 } from "lucide-react";
+import { Pilcrow, UserCheck2 } from "lucide-react";
 import { Card, CardTitle } from "../ui/card";
 
 const TopicsAndAuthors = () => {

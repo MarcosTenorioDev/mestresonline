@@ -21,8 +21,8 @@ const CaptationPage = () => {
 
 	return (
 		<div>
-{/* 			<CaptationPageNavbar pricingRef={pricingRef} />
- */}			<div data-aos="fade-down">
+			<CaptationPageNavbar pricingRef={pricingRef} />
+			<div data-aos="fade-down">
 				<HeroSectionComponent aboutRef={aboutRef} />
 			</div>
 			<div ref={aboutRef}>
