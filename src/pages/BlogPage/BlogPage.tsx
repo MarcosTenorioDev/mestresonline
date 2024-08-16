@@ -38,42 +38,41 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export default function Component() {
 	return (
 		<>
-			<div className="relative w-full h-[400px]">
-				<img src="https://salvus-image-database.s3.amazonaws.com/asset-2024-08-12T23:08:27.383Z.dc64f5ee-d1bc-475d-8515-cc9780333124.image/jpeg" alt="Banner" className="object-cover w-full h-full" />
-				<div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 flex items-end p-6">
-					<div className="max-w-7xl w-full mx-auto">
-						<div className="w-full mx-auto sm:mx-0 sm:w-auto max-w-7xl">
-							<div className="flex items-center flex-col sm:flex-row sm:mx-0 mx-auto text-center">
-								<Avatar className="w-36 h-36 min-w-36 min-h-36 sm:mr-8">
-									<AvatarImage src="/placeholder-user.jpg" alt="Profile" />
-									<AvatarFallback>Nome do perfil</AvatarFallback>
-								</Avatar>
-								<div className="text-white">
-									<h2 className="text-2xl font-bold">@thatpetra</h2>
-									<p className="text-sm">Sweden | USA</p>
-									<p className="text-sm">@thatpetra</p>
-								</div>
-							</div>
-							<div className="flex flex-wrap justify-center sm:justify-start space-x-4 mt-4">
-								<PlayIcon className="sm:w-12 sm:h-12 text-white" />
-								<XIcon className="sm:w-12 sm:h-12 text-white" />
-								<YoutubeIcon className="sm:w-12 sm:h-12 text-white" />
-								<TwitchIcon className="sm:w-12 sm:h-12 text-white" />
-								<InstagramIcon className="sm:w-12 sm:h-12 text-white" />
-							</div>
+			<div
+				className="w-full bg-cover bg-center"
+				style={{ backgroundImage: "url('https://salvus-image-database.s3.amazonaws.com/asset-2024-08-12T23:08:27.383Z.dc64f5ee-d1bc-475d-8515-cc9780333124.image/jpeg')" }}
+			>
+				<div className="flex flex-col items-center p-6 space-y-4 text-white bg-gradient-to-t from-black/90 via-black/70 to-transparent">
+					<Avatar className="w-32 h-32 border-4 border-white rounded-full">
+						<AvatarImage src="/placeholder-user.jpg" alt="Profile Image" />
+						<AvatarFallback>TP</AvatarFallback>
+					</Avatar>
+					<div className="text-center">
+						<h1 className="text-2xl font-bold">@thatpetra</h1>
+						<p className="text-sm">Sweden | USA | @thatpetra</p>
+					</div>
+					<div className="flex flex-col items-center space-y-2">
+					
+						<div className="text-center">
+							<p className="text-sm">
+								Hi, my name is Petra! I'm a 26-year-old Swede who recently moved
+								to the USA. You can find me posting about gaming, tech, and
+								lifestyle content all over my social media accounts.
+							</p>
+							<p className="text-sm">
+								I have been doing this for over 4 years now, and have had the
+								pleasure to work with some of the biggest brands in gaming.
+							</p>
 						</div>
 					</div>
+					<div className="flex flex-wrap justify-center space-x-4">
+						<PlayIcon className="w-12 h-12 text-white" />
+						<XIcon className="w-12 h-12 text-white" />
+						<YoutubeIcon className="w-12 h-12 text-white" />
+						<TwitchIcon className="w-12 h-12 text-white" />
+						<InstagramIcon className="w-12 h-12 text-white" />
+					</div>
 				</div>
-			</div>
-			<div className="p-6 max-w-7xl mx-auto">
-				<p className="">
-					Hi, my name is Petra! I'm a 26-year-old Swede who recently moved to
-					the USA. You can find me posting about gaming, tech, and lifestyle
-					content all over my social media accounts.
-					<br />
-					I've been doing this for over 4 years now, and have had the pleasure
-					to work with some of the biggest brands in gaming.
-				</p>
 			</div>
 		</>
 	);

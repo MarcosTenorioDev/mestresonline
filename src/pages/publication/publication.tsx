@@ -118,7 +118,7 @@ const Publication = () => {
 					ToastService.showError(
 						"Não foi possível encontrar o respectivo post"
 					);
-					navigate(`/company/${params.id}`);
+					navigate(`/profile/${params.id}`);
 				}
 			}
 		} catch (err) {
@@ -217,7 +217,7 @@ const Publication = () => {
 		try {
 			await postService.createPost(payload);
 			ToastService.showSuccess("Postagem criada com sucesso");
-			navigate(`/company/${params.id}`);
+			navigate(`/profile/${params.id}`);
 		} catch (error: any) {
 			console.error("Erro ao criar o post", error);
 			ToastService.showError(`Erro ao criar o post: ${error.message}`);
@@ -362,7 +362,7 @@ const Publication = () => {
 			setIsDeleting(true)
 			await postService.deletePostById(id);
 			ToastService.showSuccess("Postagem excluída com sucesso");
-			navigate(`/company/${params.id}`);
+			navigate(`/profile/${params.id}`);
 		} catch (error: any) {
 			ToastService.showError(
 				`Houve um erro ao excluir a respectiva postagem ${error.message}`

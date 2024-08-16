@@ -6,7 +6,6 @@ import Home from "./pages/home/Home";
 import { LayoutAdmin } from "./components/shared/sidebarComponents";
 import ProducersPage from "./pages/producers/ProducersPage";
 import TopicsPage from "./pages/topics/TopicsPage";
-import CaptationPageNavbar from "./components/shared/CaptationPageNavbar";
 import CaptationPage from "./pages/captationPage/CaptationPage";
 import BlogPage from "./pages/BlogPage/BlogPage";
 
@@ -19,7 +18,6 @@ function App() {
 						path="/"
 						element={
 							<>
-								<CaptationPageNavbar />
 								<CaptationPage />
 							</>
 						}

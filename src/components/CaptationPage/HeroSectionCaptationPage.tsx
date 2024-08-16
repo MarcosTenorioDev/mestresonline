@@ -1,6 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
+import { Link } from "react-router-dom";
 
-export default function HeroSectionComponent() {
+interface HeroSectionProps {
+	aboutRef: React.RefObject<HTMLDivElement>;
+}
+
+export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
+	const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+		ref.current?.scrollIntoView({ behavior: "smooth" });
+	};
+
 	return (
 		<>
 			<div className="container py-24 lg:py-32">
@@ -8,16 +18,33 @@ export default function HeroSectionComponent() {
 					<div>
 						<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
 							Mestres_Online: Crie agora o seu blog personalizado e eleve sua
-							imagem
+							imagem <br />{" "}
+							<span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
+								Gratuitamente
+							</span>
 						</h1>
 						<p className="mt-3 text-xl text-muted-foreground">
-							Faça postagens, promova sua imagem, crie artigos e muitos mais com
-							Mestres_Online, a ferramenta ideal para quem deseja compartilhar
-							os seus conhecimentos para todos
+							Crie um perfil no Mestres_Online e faça postagens, promova sua
+							imagem, crie artigos e muitos mais com Mestres_Online, a
+							ferramenta ideal para quem deseja compartilhar os seus
+							conhecimentos para todos
 						</p>
 						<div className="mt-7 grid gap-3 w-full sm:inline-flex">
-							<Button size={"lg"}>Começar agora</Button>
-							<Button variant={"outline"} size={"lg"}>
+							<SignedIn>
+								<Link to="/myProfiles">
+									<Button size={"lg"}>Começar agora</Button>
+								</Link>
+							</SignedIn>
+							<SignedOut>
+								<SignInButton mode="modal">
+									<Button size={"lg"}>Começar agora</Button>
+								</SignInButton>
+							</SignedOut>
+							<Button
+								variant={"outline"}
+								size={"lg"}
+								onClick={() => scrollToSection(aboutRef)}
+							>
 								Mais informações
 							</Button>
 						</div>
