@@ -9,10 +9,10 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 
 interface CaptationPageNavbarProps {
-	pricingRef: React.RefObject<HTMLDivElement>;
+	integrationRef: React.RefObject<HTMLDivElement>;
 }
 
-const CaptationPageNavbar = ({ pricingRef }: CaptationPageNavbarProps) => {
+const CaptationPageNavbar = ({ integrationRef }: CaptationPageNavbarProps) => {
 	const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
 		ref.current?.scrollIntoView({ behavior: "smooth" });
 	};
@@ -32,22 +32,11 @@ const CaptationPageNavbar = ({ pricingRef }: CaptationPageNavbarProps) => {
 							<Button
 								variant={"link"}
 								className="text-[#333] text-md"
-								onClick={() => scrollToSection(pricingRef)}
+								onClick={() => scrollToSection(integrationRef)}
 							>
-								Planos para integração
+								Integração de API
 							</Button>
 						</li>
-						<li>
-							<Button variant={"link"} disabled={true} className="text-[#333] text-md">
-								Documentação de API
-							</Button>
-						</li>
-						<SignedIn>
-							<li>
-								<Button variant={"link"} disabled={true} className="text-[#333] text-md">
-									Meu plano
-								</Button>
-							</li>
 							<li>
 								<Link to={"/myProfiles"}>
 									<Button variant={"link"} className="text-[#333] text-md">
@@ -55,7 +44,6 @@ const CaptationPageNavbar = ({ pricingRef }: CaptationPageNavbarProps) => {
 									</Button>
 								</Link>
 							</li>
-						</SignedIn>
 					</ul>
 				</div>
 

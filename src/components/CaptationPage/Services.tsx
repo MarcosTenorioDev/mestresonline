@@ -21,24 +21,25 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
 	{
-		title: "Enpoint disponibilizado",
+		title: "Endpoint Disponibilizado",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Acesse facilmente nossos endpoints prontos para integração, otimizando seu desenvolvimento e acelerando o acesso aos dados.",
 		image: endpointIcon,
 	},
 	{
 		title: "Documentação de API",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Consulte nossa documentação clara e detalhada para uma integração sem esforço. Encontre exemplos e guias para aproveitar ao máximo nossa API.",
 		image: documentIcon,
 	},
 	{
 		title: "Segurança",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Garanta a proteção dos seus dados com nossos protocolos de segurança avançados. Confiança e segurança são prioridades para nós.",
 		image: securityIcon,
 	},
 ];
+
 
 export const Services = () => {
 	useEffect(() => {
@@ -57,8 +58,7 @@ export const Services = () => {
 					</h2>
 
 					<p className="text-muted-foreground text-xl mt-4 mb-8 ">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-						dolor.
+						Leia a nossa documentação de API e utilize nossos endpoints para integrar as postagens em qualquer sistema
 					</p>
 					<div className="flex flex-col gap-8 mt-10 lg:mt-4">
 						{features.map(({ image, title, description }: FeatureProps) => (

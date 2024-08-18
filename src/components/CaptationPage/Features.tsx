@@ -20,29 +20,32 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
 	{
-		title: "Design responsivo",
+		title: "Design Responsivo",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Experiência perfeita em qualquer dispositivo. Nosso design responsivo ajusta seu conteúdo para uma navegação fluida, seja no desktop ou smartphone.",
 		image: userInterface,
 	},
 	{
-		title: "Interface intuitiva",
+		title: "Interface Intuitiva",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Facilidade de uso com uma interface clara e acessível. Interaja rapidamente com elementos bem posicionados, ideal para quem busca simplicidade.",
 		image: handPhone,
 	},
 	{
-		title: "Perfil personalizado",
+		title: "Perfil Personalizado",
 		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+			"Personalize seu perfil adicionando suas redes sociais, imagens, arquivos e gerencie diferentes tópicos para refletir verdadeiramente sua personalidade.",
 		image: brand,
 	},
 ];
+
+
 
 const featureList: string[] = [
 	"Link para suas redes sociais",
     "Imagens/vídeos/gifs/trechos de sites",
     "Trabalhe a sua imagem profissional",
+	"Anexo de arquivos públicos"
 ];
 
 export const Features = () => {

@@ -12,7 +12,7 @@ import "aos/dist/aos.css";
 import { useEffect, useRef } from "react";
 
 const CaptationPage = () => {
-	const pricingRef = useRef<HTMLDivElement>(null);
+	const integrationRef = useRef<HTMLDivElement>(null);
 	const aboutRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -21,7 +21,7 @@ const CaptationPage = () => {
 
 	return (
 		<div>
-			<CaptationPageNavbar pricingRef={pricingRef} />
+			<CaptationPageNavbar integrationRef={integrationRef} />
 			<div data-aos="fade-down">
 				<HeroSectionComponent aboutRef={aboutRef} />
 			</div>
@@ -32,10 +32,10 @@ const CaptationPage = () => {
 				<Profile />
 			</div>
 
-			<Services />
-			<div ref={pricingRef}>
-				<StripePricingTable />
+			<div ref={integrationRef}>
+				<Services />
 			</div>
+			<StripePricingTable />
 			<FooterSection />
 		</div>
 	);

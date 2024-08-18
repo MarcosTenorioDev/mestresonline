@@ -48,10 +48,10 @@ export default function PricingSectionCards() {
 			<div className="container pb-24">
 				<div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
 					<h2 className="scroll-m-20 pb-2 tracking-tight transition-colors first:mt-0 text-3xl lg:text-4xl font-bold">
-						Planos para integração de <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">API</span>
+						Libere todo o potencial da plataforma <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">Mestres_Online</span>
 					</h2>
 					<p className="mt-1 text-muted-foreground">
-						Escolha o melhor plano para você que deseja usar suas postagens fora da plataforma Mestres_Online
+						Escolha o melhor plano para você
 					</p>
 				</div>
 
