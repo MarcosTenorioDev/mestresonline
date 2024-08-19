@@ -23,8 +23,10 @@ const Home = () => {
 	const navigate = useNavigate();
 	const [searchTerm, setSearchTerm] = useState<string>("");
 
-	const filteredPosts = posts.filter((post: IPost) =>
-		post.title.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredPosts = posts.filter(
+		(post: IPost) =>
+			post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			post.contentPreview.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	useEffect(() => {
@@ -48,18 +50,17 @@ const Home = () => {
 		}
 	};
 
-	const updatePublicCode = async (values:any) =>{
-		try{
+	const updatePublicCode = async (values: any) => {
+		try {
 			const payload = {
-				companyId:id!,
-				publicCode:values.UpdatedPublicCode
-			}
-			await companyService.updatePublicCode(payload)
-			ToastService.showSuccess("URL pública alterada com sucesso!")
-			fetchAgency()
-		}catch(err){
-		}
-	}
+				companyId: id!,
+				publicCode: values.UpdatedPublicCode,
+			};
+			await companyService.updatePublicCode(payload);
+			ToastService.showSuccess("URL pública alterada com sucesso!");
+			fetchAgency();
+		} catch (err) {}
+	};
 
 	const LoadingSkeleton = () => {
 		return (
@@ -144,7 +145,10 @@ const Home = () => {
 										</svg>
 										<span className="sr-only">Info</span>
 										<div className="ms-3 text-sm font-medium text-muted-foreground">
-											<EditPublicCodeButton publicCode={company.publicCode} onSubmit={(values:any) => updatePublicCode(values)}/>
+											<EditPublicCodeButton
+												publicCode={company.publicCode}
+												onSubmit={(values: any) => updatePublicCode(values)}
+											/>
 										</div>
 									</div>
 								</p>
@@ -161,7 +165,7 @@ const Home = () => {
 									<SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 ml-2" />
 									<Input
 										className="max-w-xl border-primary w-full py-2 pl-12 pr-16 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-										placeholder="Pesquisar tópicos..."
+										placeholder="Pesquise seus posts por título ou descrição..."
 										value={searchTerm}
 										onChange={(e) => setSearchTerm(e.target.value)}
 									/>
