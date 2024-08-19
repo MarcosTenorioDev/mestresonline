@@ -6,18 +6,32 @@ import { NavItems } from "@/components/constants/adminNavItems";
 import { SignOutButton, UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
+import { Spinner } from "@/components/ui/loading-spinner";
+import { UserService } from "@/core/services/user.service";
 
 export const MobileSidebar = () => {
 	const [open, setOpen] = useState(false);
 	const [isMounted, setIsMounted] = useState(false);
+	const userService = new UserService();
+	const [user, setUser] = useState<any>();
+	const [loading, setLoading] = useState<boolean>(true);
+
+	const fetchUser = async () => {
+		const user = await userService.findByToken();
+		setUser(user);
+		setLoading(false);
+	};
 
 	useEffect(() => {
 		setIsMounted(true);
+		fetchUser();
 	}, []);
 
 	if (!isMounted) {
 		return null;
 	}
+
+
 
 	return (
 		<>
@@ -44,8 +58,17 @@ export const MobileSidebar = () => {
 								Mestres_Online
 							</h2>
 						</div>
-						<div className=" flex justify-center mt-6 border-b-2 pb-6">
+						<div className=" flex flex-col items-center justify-center mt-6 border-b-2 pb-6">
 							<UserButton showName={true} />
+							{loading ? (
+								<Spinner size={"small"} />
+							) : user ? (
+								<p className="text-muted-foreground">
+									{user.isPaid ? "Plano pago" : "Teste grátis"}
+								</p>
+							) : (
+								<></>
+							)}
 						</div>
 						<div className="px-1 py-6 ">
 							<SideNav items={NavItems} setOpen={setOpen} />
