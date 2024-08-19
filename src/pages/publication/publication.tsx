@@ -219,8 +219,7 @@ const Publication = () => {
 			ToastService.showSuccess("Postagem criada com sucesso");
 			navigate(`/profile/${params.id}`);
 		} catch (error: any) {
-			console.error("Erro ao criar o post", error);
-			ToastService.showError(`Erro ao criar o post: ${error.message}`);
+
 		} finally {
 			setIsSending(false);
 		}
