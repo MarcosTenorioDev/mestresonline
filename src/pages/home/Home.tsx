@@ -58,7 +58,6 @@ const Home = () => {
 			ToastService.showSuccess("URL pública alterada com sucesso!")
 			fetchAgency()
 		}catch(err){
-			ToastService.showError("Houve um erro ao editar a URL pública do perfil, por favor contate o suporte técnico")
 		}
 	}
 
@@ -145,7 +144,7 @@ const Home = () => {
 										</svg>
 										<span className="sr-only">Info</span>
 										<div className="ms-3 text-sm font-medium text-muted-foreground">
-											<EditPublicCodeButton publicCode={company.publicCode} onSubmit={(values:any) => updatePublicCode(values)} isPaidSubscription={company.isPaidSubscription}/>
+											<EditPublicCodeButton publicCode={company.publicCode} onSubmit={(values:any) => updatePublicCode(values)}/>
 										</div>
 									</div>
 								</p>

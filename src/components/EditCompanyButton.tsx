@@ -78,9 +78,7 @@ const EditCompanyButton = (props: { company: ICompany }) => {
 			ToastService.showSuccess("Perfil editado com sucesso!");
 			navigate("/myProfiles");
 		} catch (err) {
-			ToastService.showError(
-				"Houve um erro ao editar os dados do seu perfil, por favor, contate o suporte técnico"
-			);
+			
 		} finally {
 			setIsLoading(false);
 		}

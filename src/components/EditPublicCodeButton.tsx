@@ -14,26 +14,40 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import CompaniesService from "@/core/services/companies.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "./ui/loading-spinner";
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react";
+import { UserService } from "@/core/services/user.service";
 
 interface EditPublicCodeButtonProps {
 	publicCode: string;
 	onSubmit: (values: { UpdatedPublicCode: string }) => void;
-	isPaidSubscription: boolean;
 }
 
 const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 	publicCode,
 	onSubmit,
-	isPaidSubscription,
 }) => {
 	const fixedUrl = "https://mestresonline.vercel.app/";
 	const companyService = new CompaniesService();
+	const userService = new UserService();
+	const [loading, setIsLoading] = useState(true);
 	const [verifiyingValidity, setVerifiyingValidity] = useState<
 		"verifiying" | "true" | "false"
 	>("true");
+	const [isPaidSubscription, setIsPaidSubscription] = useState<
+		boolean | undefined
+	>(undefined);
+
+	useEffect(() => {
+		fetchUserInfo();
+	}, []);
+
+	const fetchUserInfo = async () => {
+		const user = await userService.findByToken();
+		setIsPaidSubscription(user.isPaid);
+		setIsLoading(false);
+	};
 
 	const initialValues = {
 		UpdatedPublicCode: publicCode,
@@ -60,7 +74,9 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 
 	return (
 		<AlertDialog>
-			{isPaidSubscription ? (
+			{loading ? (
+				<Spinner size="small" className=" ml-2" />
+			) : isPaidSubscription ? (
 				<Button variant={"link"} className="p-0 my-2 w-auto h-auto text-wrap">
 					<AlertDialogTrigger className="font-semibold underline hover:underline cursor-pointer">
 						Editar link acima - Edite agora a URL de seu perfil público
@@ -68,11 +84,15 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 				</Button>
 			) : (
 				<p className="font-semibold cursor-default">
-					<Button variant={"link"} disabled={true} className="p-0 my-4 mr-2 w-auto h-auto text-muted-foreground text-wrap">
-						Editar link acima {!isPaidSubscription &&
-						"(Recurso disponível apenas para usuários com plano de API ativa)"}
+					<Button
+						variant={"link"}
+						disabled={true}
+						className="p-0 my-4 mr-2 w-auto h-auto text-muted-foreground text-wrap"
+					>
+						Editar link acima{" "}
+						{!isPaidSubscription &&
+							"(Recurso disponível apenas para usuários com plano de API ativa)"}
 					</Button>
-					
 				</p>
 			)}
 
