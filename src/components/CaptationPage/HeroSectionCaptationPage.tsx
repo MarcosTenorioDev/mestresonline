@@ -29,7 +29,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 							ferramenta ideal para quem deseja compartilhar os seus
 							conhecimentos para todos
 						</p>
-						<div className="mt-7 grid gap-3 w-full sm:inline-flex">
+						<div className="mt-7 grid gap-3 w-full sm:inline-flex md:max-w-[450px]">
 							<SignedIn>
 								<Link to="/myProfiles">
 									<Button size={"lg"} className="w-full">Começar agora</Button>
@@ -43,6 +43,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 							<Button
 								variant={"outline"}
 								size={"lg"}
+								className="w-full"
 								onClick={() => scrollToSection(aboutRef)}
 							>
 								Mais informações
