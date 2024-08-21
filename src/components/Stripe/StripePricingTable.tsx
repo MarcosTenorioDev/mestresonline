@@ -6,35 +6,95 @@ import PlanCard from "../PlanCards";
 
 const plans = [
 	{
-		link: import.meta.env.VITE_LINK_MONTHLY,
-		priceId: import.meta.env.VITE_PRICE_ID_MONTHLY,
-		price: 35,
-		duration: "/month",
-		mostEconomic: false,
-		cardTitle: "Mensal",
-		description:
-			"Tenha acesso agora a suas postagens e integre-as em qualquer sistema",
+		link: import.meta.env.VITE_LINK_BASIC_MONTHLY,
+		price: 15,
+		badge: "",
+		cardTitle: "Plano básico - Mensal",
+		description: "Tenha acesso ao uso da aplicação no seu próprio site",
 		features: [
-			"Até 100 postagens",
-			"Equipe de suporte disponível 24hrs",
-			"Endpoint de API único para você",
-			"Integração em qualquer sistema",
+			{ checked: true, description: "Até 50 postagens" },
+			{ checked: true, description: "Equipe de suporte disponível 24hrs" },
+			{
+				checked: true,
+				description: "Acesso liberado para utilizar no seu site",
+			},
+			{ checked: true, description: "Integração em qualquer sistema" },
+			{ checked: false, description: "Crie diversos perfis" },
+			{
+				checked: false,
+				description:
+					"Anexe documentos, pdfs, planilhas, o que você desejar em suas postagens e no seu perfil",
+			},
 		],
 		monthly: true,
 	},
 	{
-		link: import.meta.env.VITE_LINK_YEARLY,
-		priceId: import.meta.env.VITE_PRICE_ID_YEARLY,
-		price: 300,
-		duration: "/year",
-		mostEconomic: true,
-		cardTitle: "Anual",
-		description: "(ou, 25 reais por mês)",
+		link: import.meta.env.VITE_LINK_BASIC_YEARLY,
+		price: 130,
+		badge: "20% de desconto",
+		cardTitle: "Plano básico - Anual",
+		description: "Tenha acesso ao uso da aplicação no seu próprio site",
 		features: [
-			"Até 100 postagens",
-			"Equipe de suporte disponível 24hrs",
-			"Endpoint de API único para você",
-			"Integração em qualquer sistema",
+			{ checked: true, description: "Até 50 postagens" },
+			{ checked: true, description: "Equipe de suporte disponível 24hrs" },
+			{
+				checked: true,
+				description: "Acesso liberado para utilizar no seu site",
+			},
+			{ checked: true, description: "Integração em qualquer sistema" },
+			{ checked: false, description: "Crie diversos perfis" },
+			{
+				checked: false,
+				description:
+					"Anexe documentos, pdfs, planilhas, o que você desejar em suas postagens e no seu perfil",
+			},
+		],
+		monthly: false,
+	},
+	{
+		link: import.meta.env.VITE_LINK_PROFESSIONAL_MONTHLY,
+		price: 45,
+		badge: "",
+		cardTitle: "Plano profissional - Mensal",
+		description:
+			"Use a aplicação no seu próprio site e anexe arquivos e documentos às suas postagens, podendo compartilhá-los com quem desejar.",
+		features: [
+			{ checked: true, description: "Até 250 postagens" },
+			{ checked: true, description: "Equipe de suporte disponível 24hrs" },
+			{
+				checked: true,
+				description: "Acesso liberado para utilizar no seu site",
+			},
+			{ checked: true, description: "Integração em qualquer sistema" },
+			{ checked: true, description: "Crie diversos perfis" },
+			{
+				checked: true,
+				description:
+					"Anexe documentos, pdfs, planilhas, o que você desejar em suas postagens e no seu perfil",
+			},
+		],
+		monthly: true,
+	},
+	{
+		link: import.meta.env.VITE_LINK_PROFESSIONAL_YEARLY,
+		price: 430,
+		badge: "20% de desconto",
+		cardTitle: "Plano profissional - Anual",
+		description: "Tenha acesso ao uso da aplicação no seu próprio site",
+		features: [
+			{ checked: true, description: "Até 250 postagens" },
+			{ checked: true, description: "Equipe de suporte disponível 24hrs" },
+			{
+				checked: true,
+				description: "Acesso liberado para utilizar no seu site",
+			},
+			{ checked: true, description: "Integração em qualquer sistema" },
+			{ checked: true, description: "Crie diversos perfis" },
+			{
+				checked: true,
+				description:
+					"Anexe documentos, pdfs, planilhas, o que você desejar em suas postagens e no seu perfil",
+			},
 		],
 		monthly: false,
 	},
@@ -48,7 +108,10 @@ export default function PricingSectionCards() {
 			<div className="container pb-24">
 				<div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
 					<h2 className="scroll-m-20 pb-2 tracking-tight transition-colors first:mt-0 text-3xl lg:text-4xl font-bold">
-						Libere todo o potencial da plataforma <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">Mestres_Online</span>
+						Libere todo o potencial da plataforma{" "}
+						<span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
+							Mestres_Online
+						</span>
 					</h2>
 					<p className="mt-1 text-muted-foreground">
 						Escolha o melhor plano para você
@@ -81,13 +144,13 @@ export default function PricingSectionCards() {
 										className="text-muted-foreground"
 									/>
 								</svg>
-								<Badge className="mt-3 uppercase">Desconto de 20%</Badge>
+								<Badge className="mt-3 uppercase">Melhor opção</Badge>
 							</span>
 						</span>
 					</Label>
 				</div>
 
-				<div className="mt-12 flex w-full gap-6 lg:items-center">
+				<div className="mt-12 flex flex-wrap md:flex-row md:flex-nowrap w-full gap-6 lg:items-stretch">
 					{plans
 						.filter((plan) => plan.monthly !== isAnnual)
 						.map((plan, index) => (
