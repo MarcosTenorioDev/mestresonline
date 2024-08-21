@@ -13,16 +13,12 @@ import Hamburger from "hamburger-react";
 import { useEffect, useState } from "react";
 import {
 	Sheet,
-	SheetClose,
 	SheetContent,
-	SheetDescription,
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from "../ui/sheet";
-import { Label } from "@radix-ui/react-menubar";
-import { Input } from "./Inputs";
 import { UserService } from "@/core/services/user.service";
 import { Spinner } from "../ui/loading-spinner";
 
