@@ -128,7 +128,7 @@ export default function PricingSectionCards() {
 					/>
 					<Label htmlFor="payment-schedule" className="relative ms-3">
 						Plano anual
-						<span className="absolute -top-10 start-auto -end-28">
+						<span className="absolute -top-10 start-auto -end-28 hidden sm:block">
 							<span className="flex items-center">
 								<svg
 									className="w-14 h-8 -me-6"

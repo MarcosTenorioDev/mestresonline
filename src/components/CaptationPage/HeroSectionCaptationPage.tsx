@@ -32,12 +32,12 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 						<div className="mt-7 grid gap-3 w-full sm:inline-flex">
 							<SignedIn>
 								<Link to="/myProfiles">
-									<Button size={"lg"}>Começar agora</Button>
+									<Button size={"lg"} className="w-full">Começar agora</Button>
 								</Link>
 							</SignedIn>
 							<SignedOut>
 								<SignInButton mode="modal">
-									<Button size={"lg"}>Começar agora</Button>
+									<Button size={"lg"} className="w-full">Começar agora</Button>
 								</SignInButton>
 							</SignedOut>
 							<Button

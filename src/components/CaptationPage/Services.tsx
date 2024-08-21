@@ -88,8 +88,8 @@ export const Services = () => {
 						className="w-[300px] md:w-[500px] lg:w-[600px] object-contain"
 						alt="About services"
 					/>
-					<Button variant={"outlineWhite"} size={"lg"}>
-						Mais informações
+					<Button variant={"outlineWhite"} size={"lg"} disabled={true}>
+						Mais informações... (em breve)
 					</Button>
 				</div>
 			</div>
