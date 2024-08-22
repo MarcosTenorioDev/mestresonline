@@ -31,7 +31,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 						</p>
 						<div className="mt-7 grid gap-3 w-full sm:inline-flex md:max-w-[450px]">
 							<SignedIn>
-								<Link to="/myProfiles">
+								<Link to="/myProfiles" className="w-full">
 									<Button size={"lg"} className="w-full">Começar agora</Button>
 								</Link>
 							</SignedIn>
@@ -86,7 +86,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 							</div> */}
 						</div>
 					</div>
-					<div className="relative ms-4">
+					<div className="relative md:ms-4">
 						<img
 							className="w-full rounded-md"
 							src="https://placehold.co/800x700"
