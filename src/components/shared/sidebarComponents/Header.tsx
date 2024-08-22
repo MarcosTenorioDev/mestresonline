@@ -38,7 +38,7 @@ export default function Header() {
 							<Spinner size={"small"} />
 						) : user ? (
 							<p className="text-muted-foreground">
-								{user.isPaid ? "Plano pago" : "Teste grátis"}
+								{user.subscription ? user.subscription.description : "Teste grátis"}
 							</p>
 						) : (
 							<></>
