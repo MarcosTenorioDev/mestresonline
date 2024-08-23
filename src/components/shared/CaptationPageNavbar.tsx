@@ -143,7 +143,7 @@ const CaptationPageNavbar = ({ integrationRef }: CaptationPageNavbarProps) => {
 								</div>
 							</SheetHeader>
 
-							<SheetFooter className="w-full flex-col gap-4">
+							<SheetFooter className="w-full flex !flex-col gap-4">
 								<SignedIn>
 									<SignOutButton>
 										<Button

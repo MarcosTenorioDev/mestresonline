@@ -5,6 +5,7 @@ import {
 	UserCheck2,
 	Pilcrow,
 	HomeIcon,
+	DollarSign
 } from "lucide-react";
 
 export const NavItems: NavItem[] = [
@@ -15,11 +16,17 @@ export const NavItems: NavItem[] = [
 		color: "text-primary",
 	},
 	{
+		title: "Meu plano",
+		icon: DollarSign,
+		href: `https://billing.stripe.com/p/login/test_cN203taCFbNj3gkbII`,
+		color: "text-primary"
+	},
+	{
 		title: "Página inicial",
 		icon: HomeIcon,
 		href: "/profile",
 		color: "text-primary",
-    protected:true
+		protected: true,
 	},
 	{
 		title: "Nova publicação",
