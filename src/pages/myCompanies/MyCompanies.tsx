@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PostService } from "@/core/services/post.service";
 import MyProfileCard from "@/components/MyProfileCard";
+import { UserService } from "@/core/services/user.service";
 
 const MyCompanies = () => {
 	const initialValues = {
@@ -53,6 +54,7 @@ const MyCompanies = () => {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const postService = new PostService();
+	const userService = new UserService();
 
 	const handleImageChange = (event: any) => {
 		const file = event.currentTarget.files[0];
@@ -123,6 +125,17 @@ const MyCompanies = () => {
 				</CarouselItem>
 			</>
 		);
+	};
+
+	const [user, setUser] = useState<any>();
+
+	useEffect(() => {
+		fetchUser();
+	}, []);
+
+	const fetchUser = async () => {
+		const user = await userService.findByToken();
+		setUser(user);
 	};
 
 	return (
@@ -341,19 +354,37 @@ const MyCompanies = () => {
 																	</div>
 																</div>
 
-																<div className="flex justify-end">
-																	<DialogClose
-																		type="submit"
-																		className="bg-gray-200 hover:bg-gray-200/60 text-black mr-4 py-2 px-4 rounded-md"
-																	>
-																		Cancelar
-																	</DialogClose>
-																	<Button
-																		type="submit"
-																		className="bg-indigo-600 text-white py-2 px-4 rounded-md"
-																	>
-																		Criar
-																	</Button>
+																<div>
+																	<div className="flex justify-end">
+																		<DialogClose
+																			type="submit"
+																			className="bg-gray-200 hover:bg-gray-200/60 text-black mr-4 py-2 px-4 rounded-md"
+																		>
+																			Cancelar
+																		</DialogClose>
+																		<Button
+																			type="submit"
+																			className="bg-indigo-600 text-white py-2 px-4 rounded-md"
+																			disabled={
+																				!user ||
+																				(user &&
+																					!user?.subscriptionId &&
+																					myCompanies.length >= 1)
+																			}
+																		>
+																			Criar
+																		</Button>
+																	</div>
+																	{/* If has user and this user dont have a subscriptionId and his had one or more profiles, show the message. */}
+																	{user &&
+																		!user?.subscriptionId &&
+																		myCompanies.length >= 1 && (
+																			<p className="text-xs text-center font-semibold text-red-500 pt-4">
+																				{" "}
+																				Faça o upgrade do plano gratuito para
+																				obter acesso a criação diversos perfís
+																			</p>
+																		)}
 																</div>
 															</Form>
 														)}
