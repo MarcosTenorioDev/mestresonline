@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { IPublicTopic } from "@/core/interfaces/topic.interface";
 import { PublicService } from "@/core/services/public.service";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -50,13 +51,16 @@ interface ICompanyData {
 }
 export default function Component() {
 	const [companyData, setCompanyData] = useState<ICompanyData>();
+	const [topics, setTopics] = useState<IPublicTopic[]>();
 	const [isLoadingCompanyData, setIsLoadingCompanyData] =
 		useState<boolean>(true);
 	const publicService = new PublicService();
 	const params = useParams();
+	const [defaultValue, setDefaultValue] = useState();
 
 	useEffect(() => {
 		fetchCompany();
+		fetchTopics();
 	}, []);
 
 	const fetchCompany = async () => {
@@ -65,9 +69,32 @@ export default function Component() {
 			if (company) {
 				setIsLoadingCompanyData(false);
 			}
-			console.log(company);
 			setCompanyData(company);
 		}
+	};
+
+	const fetchTopics = async () => {
+		if (params.profile) {
+			const topics = await publicService.getTopicsByPublicId(params.profile);
+			if (topics) {
+				setTopics(topics);
+				setDefaultValue(topics[0].id);
+			}
+		}
+	};
+
+	const TopicsLoading = () => {
+		return (
+			<>
+				<div className="flex gap-4 justify-between py-4 px-10">
+					<Skeleton className="w-[200px] h-[25px] bg-muted" />
+					<Skeleton className="w-[200px] h-[25px] bg-muted" />
+					<Skeleton className="w-[200px] h-[25px] bg-muted" />
+					<Skeleton className="w-[200px] h-[25px] bg-muted" />
+					<Skeleton className="w-[200px] h-[25px] bg-muted" />
+				</div>
+			</>
+		);
 	};
 	return (
 		<>
@@ -109,18 +136,34 @@ export default function Component() {
 					</div>
 
 					<div className="w-full mx-auto max-w-7xl">
-					<Tabs defaultValue="account" className="w-[400px]">
-						<TabsList>
-							<TabsTrigger value="account">Account</TabsTrigger>
-							<TabsTrigger value="password">Password</TabsTrigger>
-						</TabsList>
-						<TabsContent value="account">
-							Make changes to your account here.
-						</TabsContent>
-						<TabsContent value="password">
-							Change your password here.
-						</TabsContent>
-					</Tabs>
+						{topics ? (
+							<>
+								<Tabs defaultValue={defaultValue}>
+									<TabsList
+										variant={"underline"}
+										className="overflow-x-auto py-6 overflow-y-hidden"
+									>
+										{topics.map((topic: IPublicTopic) => (
+											<TabsTrigger
+												variant={"underline"}
+												value={topic.id}
+												className="font-semibold text-black px-10 py-[13px]"
+											>
+												{topic.description}
+											</TabsTrigger>
+										))}
+									</TabsList>
+
+									{topics.map((topic: IPublicTopic) => (
+										<TabsContent value={topic.id}>
+											{topic.description}
+										</TabsContent>
+									))}
+								</Tabs>
+							</>
+						) : (
+							<TopicsLoading />
+						)}
 					</div>
 				</>
 			)}

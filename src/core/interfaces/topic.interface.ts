@@ -8,3 +8,8 @@ export interface ITopicCreate{
     description:string,
     companyId:string
 }
+
+export interface IPublicTopic{
+    id:string
+    description:string
+}
