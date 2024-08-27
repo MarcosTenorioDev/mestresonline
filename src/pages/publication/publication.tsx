@@ -39,6 +39,8 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { IUser } from "@/core/interfaces/user.interface";
+import { UserService } from "@/core/services/user.service";
 
 const Publication = () => {
 	const [hasImage, setHasImage] = useState(false);
@@ -53,7 +55,7 @@ const Publication = () => {
 	const [imagePreview, setImagePreview] = useState<any>("");
 	const [hasNewImage, setHasNewImage] = useState(false);
 	const paragraphInputRefs = useRef<any>([]);
-	const [postTitle, setPostTitle] = useState<string>("")
+	const [postTitle, setPostTitle] = useState<string>("");
 	const [focusedInput, setFocusedInput] = useState<number | null>(null);
 	const companiesService = new CompaniesService();
 	const postService = new PostService();
@@ -63,7 +65,10 @@ const Publication = () => {
 	const [author, setAuthor] = useState<any>();
 	const navigate = useNavigate();
 	const [isActive, setIsActive] = useState<boolean>(false);
-	const [isDeleting, setIsDeleting] = useState<boolean>(false)
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const userService = new UserService();
+	const [user, setUser] = useState<IUser | undefined>(undefined);
+	const [postsCount, setPostsCount] = useState<number | null>(null);
 
 	const initialValues = {
 		author: author,
@@ -82,7 +87,13 @@ const Publication = () => {
 
 	useEffect(() => {
 		fetchData();
+		fetchUser();
 	}, []);
+
+	const fetchUser = async () => {
+		const user = await userService.findByToken();
+		setUser(user);
+	};
 
 	const fetchData = async () => {
 		try {
@@ -97,7 +108,8 @@ const Publication = () => {
 					params.id
 				);
 				setProducers([...producers]);
-
+				const count = await postService.count(params.id as string);
+				setPostsCount(count);
 				try {
 					if (postId) {
 						const result = await postService.getPostById(postId);
@@ -111,7 +123,7 @@ const Publication = () => {
 						if (result.imagePreview) {
 							setHasImage(true);
 						}
-						setPostTitle(result.title)
+						setPostTitle(result.title);
 						setParagraphs(JSON.parse(result.content));
 					}
 				} catch (err) {
@@ -132,6 +144,31 @@ const Publication = () => {
 	};
 
 	const onSubmit = async (values: any) => {
+		if (postsCount === null) {
+			const count = await postService.count(params.id as string);
+			setPostsCount(count);
+			return;
+		}
+
+		if (!user) {
+			fetchUser();
+			ToastService.showError(
+				"Ocorreu um erro ao prosseguir com sua solicitação, por favor, tente novamente."
+			);
+			return;
+		}
+		if (!user.subscriptionId && postsCount >= 2) {
+			ToastService.showError(
+				"Usuário do plano gratuito só pode criar no máximo 2 postagens. Faça o upgrade do plano gratuito"
+			);
+			return;
+		}
+
+		if (user.subscription && postsCount >= user.subscription.maxPostNumber) {
+			ToastService.showError("Você atingiu a cota máxima permitida de criação de posts do seu plano atual, faça o upgrade do plano na nossa aba de planos ou contate o nosso suporte para um plano personalizado.");
+			return;
+		}
+		
 		if (!hasImage) {
 			setShowImageValidator(true);
 			return;
@@ -180,9 +217,9 @@ const Publication = () => {
 		// Aguarde a formatação da imagem
 		const formattedImageUrl = await formatedImage();
 
-		if(postId){
+		if (postId) {
 			const payload = {
-				id:postId,
+				id: postId,
 				imagePreview: formattedImageUrl,
 				contentPreview: contentPreview,
 				authorId: author?.id ? author?.id : author,
@@ -190,7 +227,7 @@ const Publication = () => {
 				companyId: params.id,
 				title: postTitle,
 				content: JSON.stringify(formatedParagraphs),
-				isActive: isActive
+				isActive: isActive,
 			};
 
 			try {
@@ -201,7 +238,7 @@ const Publication = () => {
 				ToastService.showError(`Erro ao editar o post: ${error.message}`);
 			} finally {
 				setIsSending(false);
-				return
+				return;
 			}
 		}
 		const payload = {
@@ -219,7 +256,6 @@ const Publication = () => {
 			ToastService.showSuccess("Postagem criada com sucesso");
 			navigate(`/profile/${params.id}`);
 		} catch (error: any) {
-
 		} finally {
 			setIsSending(false);
 		}
@@ -358,7 +394,7 @@ const Publication = () => {
 
 	const deletePostById = async (id: string) => {
 		try {
-			setIsDeleting(true)
+			setIsDeleting(true);
 			await postService.deletePostById(id);
 			ToastService.showSuccess("Postagem excluída com sucesso");
 			navigate(`/profile/${params.id}`);
@@ -366,8 +402,8 @@ const Publication = () => {
 			ToastService.showError(
 				`Houve um erro ao excluir a respectiva postagem ${error.message}`
 			);
-		}finally{
-			setIsDeleting(false)
+		} finally {
+			setIsDeleting(false);
 		}
 	};
 
@@ -375,7 +411,9 @@ const Publication = () => {
 		return (
 			<AlertDialog>
 				<Button asChild variant={"destructive"} disabled={isDeleting}>
-					<AlertDialogTrigger>{isDeleting ? "Excluindo..." : "Excluir postagem"}</AlertDialogTrigger>
+					<AlertDialogTrigger>
+						{isDeleting ? "Excluindo..." : "Excluir postagem"}
+					</AlertDialogTrigger>
 				</Button>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -581,7 +619,7 @@ const Publication = () => {
 									spellCheck={false}
 									placeholder="Título..."
 									className="border-l-2 pl-4 text-center font-semibold text-3xl w-full focus:outline-nonefocus:border-transparent text-wrap resize-none overflow-hidden focus:border-transparent focus:outline-none md:text-justify"
-									onChange={(e:any) => setPostTitle(e.target.value)}
+									onChange={(e: any) => setPostTitle(e.target.value)}
 									defaultValue={postTitle}
 									onKeyDown={(e) => {
 										if (e.key === "Enter") {

@@ -30,6 +30,11 @@ class PostService{
 		const response = await this.axios.put(`${import.meta.env.VITE_API_DEV_URL}/posts`, post);
 		return response.data;
 	}
+	
+	async count(companyId: string) {
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/posts/count/${companyId}`);
+		return response.data;
+	}
 }
 
 export {PostService}
