@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -86,12 +86,15 @@ const ProducersPage = () => {
 		office: Yup.string(),
 	});
 
-	const onSubmit = async (values: {
-		email: string;
-		name: string;
-		imageProfile: string;
-		office: string;
-	}) => {
+	const onSubmit = async (
+		values: {
+			email: string;
+			name: string;
+			imageProfile: string;
+			office: string;
+		},
+		actions: FormikHelpers<any> // add this parameter
+	) => {
 		if (id) {
 			setIsSending(true);
 			const formatedImage = async () => {
@@ -118,6 +121,8 @@ const ProducersPage = () => {
 			try {
 				await producerService.PostProducer(payload);
 				ToastService.showSuccess("Autor criado com sucesso");
+				setImagePreview(null)
+				actions.resetForm();
 			} catch (error: any) {
 				console.error("Erro ao criar o autor", error);
 				ToastService.showError(`Erro ao criar o autor: ${error.message}`);
@@ -218,7 +223,7 @@ const ProducersPage = () => {
 			);
 			return null;
 		};
-		const [newImage, setNewImage] = useState<File>()
+		const [newImage, setNewImage] = useState<File>();
 
 		const initialValues = {
 			UpdatedEmail: producer ? producer.email : "",
@@ -247,19 +252,21 @@ const ProducersPage = () => {
 				id: producer?.id || "",
 				email: values.UpdatedEmail,
 				name: values.UpdatedName,
-				imageProfile: newImage ? await formatedImage(newImage) : values.UpdatedImageProfile,
+				imageProfile: newImage
+					? await formatedImage(newImage)
+					: values.UpdatedImageProfile,
 				office: values.UpdatedOffice,
 				companyId: values.UpdatedCompanyId,
 			};
-			setIsLoading(true)
+			setIsLoading(true);
 			try {
 				await producerService.UpdateProducer(payload);
 				ToastService.showSuccess("Autor atualizado com sucesso");
 			} catch (error: any) {
 				console.error("Erro ao atualizar o autor", error);
 				ToastService.showError(`Erro ao atualizar o autor: ${error.message}`);
-			}finally{
-				fetchProducers()
+			} finally {
+				fetchProducers();
 			}
 		};
 
@@ -288,7 +295,11 @@ const ProducersPage = () => {
 										<div className="flex flex-col justify-center mx-auto">
 											<Avatar className="w-24 h-24 lg:w-32 lg:h-32 mx-auto rounded-full">
 												<AvatarImage
-													src={newImage? URL.createObjectURL(newImage) : producer?.imageProfile || ''}
+													src={
+														newImage
+															? URL.createObjectURL(newImage)
+															: producer?.imageProfile || ""
+													}
 													alt="Imagem de perfil"
 												/>
 												<AvatarFallback>null</AvatarFallback>
@@ -322,7 +333,7 @@ const ProducersPage = () => {
 															"UpdatedImageProfile",
 															URL.createObjectURL(file)
 														);
-														setNewImage(file)
+														setNewImage(file);
 													}
 												}}
 											/>
