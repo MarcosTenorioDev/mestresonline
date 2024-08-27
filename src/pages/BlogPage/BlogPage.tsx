@@ -141,13 +141,20 @@ export default function Component() {
 								<Tabs defaultValue={defaultValue}>
 									<TabsList
 										variant={"underline"}
-										className="overflow-x-auto py-6 overflow-y-hidden"
+										className="overflow-x-auto py-10 overflow-y-hidden"
 									>
+										<TabsTrigger
+											variant={"underline"}
+											value="all"
+											className="font-semibold text-black px-10 py-[29px]"
+										>
+											Todos
+										</TabsTrigger>
 										{topics.map((topic: IPublicTopic) => (
 											<TabsTrigger
 												variant={"underline"}
 												value={topic.id}
-												className="font-semibold text-black px-10 py-[13px]"
+												className="font-semibold text-black px-10 py-[29px]"
 											>
 												{topic.description}
 											</TabsTrigger>
@@ -159,6 +166,7 @@ export default function Component() {
 											{topic.description}
 										</TabsContent>
 									))}
+									<TabsContent value="all">terecutete</TabsContent>
 								</Tabs>
 							</>
 						) : (
