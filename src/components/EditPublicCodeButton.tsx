@@ -45,7 +45,7 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 
 	const fetchUserInfo = async () => {
 		const user = await userService.findByToken();
-		setIsPaidSubscription(user.isPaid);
+		setIsPaidSubscription(!!user.subscriptionId);
 		setIsLoading(false);
 	};
 
