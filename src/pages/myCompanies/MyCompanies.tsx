@@ -139,6 +139,20 @@ const MyCompanies = () => {
 		console.log(user);
 	};
 
+	const verifyValiditySubscription = (): boolean => {
+		if (!user) {
+			return false;
+		}
+		if (!user?.subscriptionId && myCompanies.length <= 0) {
+			return true;
+		}
+		if (user.subscription) {
+			return user.subscription.canHaveManyProfiles;
+		}
+
+		return false;
+	};
+
 	return (
 		<div className="max-w-7xl mx-auto px-10 lg:px-0">
 			<h1 className="font-semibold text-2xl sm:text-4xl sm:px-14 py-20">
@@ -366,25 +380,19 @@ const MyCompanies = () => {
 																		<Button
 																			type="submit"
 																			className="bg-indigo-600 text-white py-2 px-4 rounded-md"
-																			disabled={
-																				!user ||
-																				(user && !user?.subscriptionId) ||
-																				!user.subscription.canHaveManyProfiles
-																			}
+																			disabled={!verifyValiditySubscription()}
 																		>
 																			Criar
 																		</Button>
 																	</div>
 																	{/* If has user and this user dont have a subscriptionId and his had one or more profiles, show the message. */}
-																	{user &&
-																		!user?.subscriptionId ||
-																		!user.subscription.canHaveManyProfiles && (
-																			<p className="text-xs text-center font-semibold text-red-500 pt-4">
-																				{user.subscriptionId
-																					? "Faça o upgrade do plano básico para obter acesso a criação diversos perfís"
-																					: "Faça o upgrade do plano gratuito para obter acesso a criação diversos perfís"}
-																			</p>
-																		)}
+																	{!verifyValiditySubscription() && (
+																		<p className="text-xs text-center font-semibold text-red-500 pt-4">
+																			{user.subscriptionId
+																				? "Faça o upgrade do plano básico para obter acesso a criação diversos perfís"
+																				: "Faça o upgrade do plano gratuito para obter acesso a criação diversos perfís"}
+																		</p>
+																	)}
 																</div>
 															</Form>
 														)}
