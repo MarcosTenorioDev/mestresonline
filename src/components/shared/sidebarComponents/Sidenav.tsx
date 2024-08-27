@@ -26,6 +26,9 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 	const [openItem, setOpenItem] = useState("");
 	const [lastOpenItem, setLastOpenItem] = useState("");
 
+	console.log(path.split('/'))
+
+
 	useEffect(() => {
 		if (isOpen) {
 			setOpenItem(lastOpenItem);
@@ -36,7 +39,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 	}, [isOpen]);
 
 	return (
-		<nav className="space-y-2">
+		<nav className="space-y-2 px-3">
 			{items.map((item) =>
 				item.isChidren ? (
 					<Accordion
@@ -107,10 +110,11 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						onClick={() => {
 							if (setOpen) setOpen(false);
 						}}
+						target={`${item.href.includes('https://') ? "_blank" : "_self"}`}
 						className={cn(
 							buttonVariants({ variant: "ghost" }),
 							"group relative flex h-12 justify-start",
-							path === item.href && "bg-muted font-bold hover:bg-muted"
+							`/${path.split('/')[1]}` === item.href && "bg-muted font-bold hover:bg-muted pointer-events-none border border-primary"
 						)}
 					>
 						<item.icon className={cn("h-5 w-5", item.color)} />
