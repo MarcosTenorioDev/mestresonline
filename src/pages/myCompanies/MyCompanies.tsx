@@ -31,6 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PostService } from "@/core/services/post.service";
 import MyProfileCard from "@/components/MyProfileCard";
 import { UserService } from "@/core/services/user.service";
+import ToastService from "@/core/services/toast.service";
 
 const MyCompanies = () => {
 	const initialValues = {
@@ -90,6 +91,7 @@ const MyCompanies = () => {
 		};
 		companiesService.createCompany(payload).then(() => {
 			getCompanies();
+			ToastService.showSuccess("Perfil criado com sucesso.")
 		});
 	};
 
