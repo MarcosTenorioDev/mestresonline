@@ -15,9 +15,10 @@ interface FormikMultiSelectProps {
 	className?: string;
 	fieldClassName?: string;
 	info?: React.ReactNode;
-	defaultValue?: string[]
+	defaultValue?: string[];
 	componentClassName?: string;
 	children?: any;
+	isEmptyMessage?: string;
 	onValueChange?: (value: any[]) => void; // Função personalizada recebida via props
 }
 
@@ -52,52 +53,52 @@ const Input = (props: any) => {
 };
 
 const TextAreaFormik = (props: any) => {
-  const {
-    componentClassName,
-    onValueChange,
-    control,
-    className,
-    children,
-    fieldClassName,
-    placeholder,
-    info,
-    rows,
-  } = props;
+	const {
+		componentClassName,
+		onValueChange,
+		control,
+		className,
+		children,
+		fieldClassName,
+		placeholder,
+		info,
+		rows,
+	} = props;
 
-  const handleValueChange = (input: any) => {
-    if (onValueChange) {
-      onValueChange(input.target.value);
-    }
-  };
+	const handleValueChange = (input: any) => {
+		if (onValueChange) {
+			onValueChange(input.target.value);
+		}
+	};
 
-  return (
-    <div className={`flex flex-col w-full ${componentClassName}`}>
-      <label
-        htmlFor={control}
-        className={cn("font-primary font-semibold mb-1", className)}
-      >
-        {children}
-      </label>
-      <Field
-        as="textarea"
-        id={control}
-        name={control}
-        className={cn(
-          "border-2 border-primary rounded-lg px-2",
-          fieldClassName
-        )}
-        placeholder={placeholder}
-        onChange={handleValueChange}
-        rows={rows} // Passando a prop rows
-      />
-      {info ? info : ""}
-      <ErrorMessage
-        name={control}
-        component="p"
-        className="text-red-500 font-medium"
-      />
-    </div>
-  );
+	return (
+		<div className={`flex flex-col w-full ${componentClassName}`}>
+			<label
+				htmlFor={control}
+				className={cn("font-primary font-semibold mb-1", className)}
+			>
+				{children}
+			</label>
+			<Field
+				as="textarea"
+				id={control}
+				name={control}
+				className={cn(
+					"border-2 border-primary rounded-lg px-2",
+					fieldClassName
+				)}
+				placeholder={placeholder}
+				onChange={handleValueChange}
+				rows={rows} // Passando a prop rows
+			/>
+			{info ? info : ""}
+			<ErrorMessage
+				name={control}
+				component="p"
+				className="text-red-500 font-medium"
+			/>
+		</div>
+	);
 };
 
 const FormikMultiSelect = (props: FormikMultiSelectProps) => {
@@ -112,6 +113,7 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 		info,
 		onValueChange,
 		defaultValue,
+		isEmptyMessage,
 	} = props;
 	const [field]: any = useField(control);
 
@@ -137,11 +139,11 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 				placeholder={placeholder}
 				variant={variant}
 				animation={animation}
+				isEmptyMessage={isEmptyMessage}
 				className={
 					fieldClassName ? fieldClassName : "border-2 border-primary rounded-lg"
 				}
 			/>
-			{info ? info : ""}
 			<ErrorMessage
 				name={control}
 				component="p"

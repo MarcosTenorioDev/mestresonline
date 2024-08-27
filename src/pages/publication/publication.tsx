@@ -519,7 +519,7 @@ const Publication = () => {
 																{producers.length === 0 && (
 																	<div
 																		id="alert-5"
-																		className="flex items-center rounded-lg"
+																		className="flex items-center rounded-lg p-2"
 																		role="alert"
 																	>
 																		<svg
@@ -533,7 +533,7 @@ const Publication = () => {
 																		</svg>
 																		<span className="sr-only">Info</span>
 																		<div className="ms-3 text-sm font-medium text-muted-foreground">
-																			Você não tem nenhum Autor criado para esse
+																			Você não tem nenhum autor criado para esse
 																			perfil
 																		</div>
 																	</div>
@@ -546,7 +546,7 @@ const Publication = () => {
 										</Field>
 									</div>
 									<div className="mb-5">
-										<h2>Assunto da publicação</h2>
+										<h2>Tópico da publicação</h2>
 										<FormikMultiSelect
 											control="topic"
 											options={topics.map((topic: ITopic) => {
@@ -562,6 +562,7 @@ const Publication = () => {
 											onValueChange={(topicIds: string[]) => {
 												onTopicsChange(topicIds);
 											}}
+											isEmptyMessage="Você não tem nenhum tópico criado para esse perfil"
 										></FormikMultiSelect>
 									</div>
 									{postId && (
