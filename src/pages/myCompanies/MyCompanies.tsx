@@ -136,6 +136,7 @@ const MyCompanies = () => {
 	const fetchUser = async () => {
 		const user = await userService.findByToken();
 		setUser(user);
+		console.log(user);
 	};
 
 	return (
@@ -367,9 +368,8 @@ const MyCompanies = () => {
 																			className="bg-indigo-600 text-white py-2 px-4 rounded-md"
 																			disabled={
 																				!user ||
-																				(user &&
-																					!user?.subscriptionId &&
-																					myCompanies.length >= 1)
+																				(user && !user?.subscriptionId) ||
+																				!user.subscription.canHaveManyProfiles
 																			}
 																		>
 																			Criar
@@ -377,12 +377,12 @@ const MyCompanies = () => {
 																	</div>
 																	{/* If has user and this user dont have a subscriptionId and his had one or more profiles, show the message. */}
 																	{user &&
-																		!user?.subscriptionId &&
-																		myCompanies.length >= 1 && (
+																		!user?.subscriptionId ||
+																		!user.subscription.canHaveManyProfiles && (
 																			<p className="text-xs text-center font-semibold text-red-500 pt-4">
-																				{" "}
-																				Faça o upgrade do plano gratuito para
-																				obter acesso a criação diversos perfís
+																				{user.subscriptionId
+																					? "Faça o upgrade do plano básico para obter acesso a criação diversos perfís"
+																					: "Faça o upgrade do plano gratuito para obter acesso a criação diversos perfís"}
 																			</p>
 																		)}
 																</div>
