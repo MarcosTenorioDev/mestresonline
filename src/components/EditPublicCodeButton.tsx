@@ -91,7 +91,7 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 					>
 						Editar link acima{" "}
 						{!isPaidSubscription &&
-							"(Recurso disponível apenas para usuários com plano de API ativa)"}
+							"(Recurso indisponível para usuários em teste grátis)"}
 					</Button>
 				</p>
 			)}
