@@ -110,7 +110,6 @@ const FormikMultiSelect = (props: FormikMultiSelectProps) => {
 		animation,
 		className,
 		fieldClassName,
-		info,
 		onValueChange,
 		defaultValue,
 		isEmptyMessage,
