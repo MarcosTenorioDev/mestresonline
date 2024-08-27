@@ -50,6 +50,11 @@ class CompaniesService {
 		return response.data;
 	}
 
+	async delete(companyId:string){
+		const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/companies/${companyId}`);
+		return response.data;
+	}
+
 	/* async deleteCompany(id: string) {
 		const response = await this.axios.delete(`${import.meta.env.VITE_API_DEV_URL}/companies/${id}`);
 		return response.data;

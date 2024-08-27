@@ -1,7 +1,7 @@
 import PostPreview from "@/components/PostPreview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SearchIcon, XIcon } from "lucide-react";
+import { SearchIcon, Trash2Icon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CompaniesService from "@/core/services/companies.service";
@@ -12,6 +12,7 @@ import { IPost } from "@/core/interfaces/posts.interface";
 import placeholder from "@/assets/images/placeholder.png";
 import EditCompanyButton from "@/components/EditCompanyButton";
 import EditPublicCodeButton from "@/components/EditPublicCodeButton";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 const Home = () => {
 	const params = useParams();
@@ -22,6 +23,7 @@ const Home = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const [searchTerm, setSearchTerm] = useState<string>("");
+	const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
 	const filteredPosts = posts.filter(
 		(post: IPost) =>
@@ -42,7 +44,6 @@ const Home = () => {
 				setPosts(result.posts);
 				setLoading(false);
 			} catch (error: any) {
-				ToastService.showError(`Houve um erro ao abrir a seguradora`);
 				setTimeout(() => {
 					navigate("/myProfiles");
 				}, 2000);
@@ -84,6 +85,53 @@ const Home = () => {
 		);
 	};
 
+	const deleteCompany = async () => {
+		setIsDeleting(true);
+		try {
+			await companyService.delete(id!);
+			ToastService.showSuccess("Perfil excluído com sucesso");
+			navigate("/myProfiles");
+		} catch (error: any) {
+			ToastService.showError(
+				`Houve um erro ao excluir o seu perfil ${error.message}`
+			);
+		}finally{
+			setIsDeleting(false);
+		}
+	}
+
+	const DeleteDialogButton = () => {
+		return (
+			<AlertDialog>
+				<Button asChild variant={"destructive"} className="px-2" disabled={isDeleting}>
+					<AlertDialogTrigger>
+						<Trash2Icon />
+					</AlertDialogTrigger>
+				</Button>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Você tem certeza que deseja excluir esse perfil?</AlertDialogTitle>
+						<AlertDialogDescription>
+							Essa ação não pode ser desfeita, uma vez que o seu perfil tenha sido
+							excluído, todos os posts criados pelo mesmo também serão, assim como os autores e tópicos.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancelar</AlertDialogCancel>
+						<Button
+							asChild
+							variant={"destructive"}
+							onClick={() => deleteCompany()}
+						>
+							<AlertDialogAction>Confirmar Exclusão</AlertDialogAction>
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		);
+	};
+
+
 	return (
 		<div className="mx-auto pb-10 min-h-screen">
 			{loading ? (
@@ -115,6 +163,7 @@ const Home = () => {
 											{company.name}
 										</h1>
 										<EditCompanyButton company={company} />
+										<DeleteDialogButton />
 									</div>
 								</div>
 							</div>
