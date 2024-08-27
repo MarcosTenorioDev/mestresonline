@@ -55,6 +55,7 @@ const MyCompanies = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const postService = new PostService();
 	const userService = new UserService();
+	const [open, setOpen] = useState<boolean>(false)
 
 	const handleImageChange = (event: any) => {
 		const file = event.currentTarget.files[0];
@@ -71,6 +72,7 @@ const MyCompanies = () => {
 	};
 
 	const onSubmit = async (values: any) => {
+		setOpen(false)
 		const { name, description } = values;
 
 		const formatedImage = async (file: File) => {
@@ -184,7 +186,10 @@ const MyCompanies = () => {
 							))}
 							<CarouselItem className="lg:basis-1/2 xl:basis-1/3">
 								<div className="p-1">
-									<Dialog onOpenChange={handleDialogClose}>
+									<Dialog onOpenChange={() => {
+										handleDialogClose();
+										setOpen(!open)
+									}} open={open} defaultOpen={open}>
 										<DialogTrigger className="w-full h-full">
 											<Card>
 												<CardContent className="flex aspect-square items-center justify-center p-6 hover:bg-gray-400/10">
