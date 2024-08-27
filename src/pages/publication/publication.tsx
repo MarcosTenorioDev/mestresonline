@@ -165,10 +165,12 @@ const Publication = () => {
 		}
 
 		if (user.subscription && postsCount >= user.subscription.maxPostNumber) {
-			ToastService.showError("Você atingiu a cota máxima permitida de criação de posts do seu plano atual, faça o upgrade do plano na nossa aba de planos ou contate o nosso suporte para um plano personalizado.");
+			ToastService.showError(
+				"Você atingiu a cota máxima permitida de criação de posts do seu plano atual, faça o upgrade do plano na nossa aba de planos ou contate o nosso suporte para um plano personalizado."
+			);
 			return;
 		}
-		
+
 		if (!hasImage) {
 			setShowImageValidator(true);
 			return;
@@ -493,29 +495,53 @@ const Publication = () => {
 										<h2>Autor da publicação</h2>
 										<Field name="author">
 											{({ field, form }: any) => (
-												<Select
-													value={author?.id}
-													onValueChange={(value: any) => {
-														form.setFieldValue(field.name, value.id);
-														setAuthor(value);
-													}}
-												>
-													<SelectTrigger className="border-2 border-primary rounded-lg focus:ring-0 focus:ring-transparent">
-														<SelectValue placeholder="Selecione um autor" />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectGroup>
-															{producers.map((producer) => (
-																<SelectItem
-																	key={producer.id}
-																	value={producer.id}
-																>
-																	{producer.name}
-																</SelectItem>
-															))}
-														</SelectGroup>
-													</SelectContent>
-												</Select>
+												<>
+													<Select
+														value={author?.id}
+														onValueChange={(value: any) => {
+															form.setFieldValue(field.name, value.id);
+															setAuthor(value);
+														}}
+													>
+														<SelectTrigger className="border-2 border-primary rounded-lg focus:ring-0 focus:ring-transparent">
+															<SelectValue placeholder="Selecione um autor" />
+														</SelectTrigger>
+														<SelectContent>
+															<SelectGroup>
+																{producers.map((producer) => (
+																	<SelectItem
+																		key={producer.id}
+																		value={producer.id}
+																	>
+																		{producer.name}
+																	</SelectItem>
+																))}
+																{producers.length === 0 && (
+																	<div
+																		id="alert-5"
+																		className="flex items-center rounded-lg"
+																		role="alert"
+																	>
+																		<svg
+																			className="flex-shrink-0 w-4 h-4"
+																			aria-hidden="true"
+																			xmlns="http://www.w3.org/2000/svg"
+																			fill="gray"
+																			viewBox="0 0 20 20"
+																		>
+																			<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+																		</svg>
+																		<span className="sr-only">Info</span>
+																		<div className="ms-3 text-sm font-medium text-muted-foreground">
+																			Você não tem nenhum Autor criado para esse
+																			perfil
+																		</div>
+																	</div>
+																)}
+															</SelectGroup>
+														</SelectContent>
+													</Select>
+												</>
 											)}
 										</Field>
 									</div>
