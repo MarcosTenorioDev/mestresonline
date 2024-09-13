@@ -21,7 +21,7 @@ const CaptationPage = () => {
 
 	return (
 		<div>
-			<CaptationPageNavbar integrationRef={integrationRef} />
+			<CaptationPageNavbar />
 			<div data-aos="fade-down">
 				<HeroSectionComponent aboutRef={aboutRef} />
 			</div>
