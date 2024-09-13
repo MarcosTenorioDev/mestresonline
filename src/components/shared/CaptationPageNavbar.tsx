@@ -22,15 +22,15 @@ import {
 import { UserService } from "@/core/services/user.service";
 import { Spinner } from "../ui/loading-spinner";
 
-interface CaptationPageNavbarProps {
-	integrationRef: React.RefObject<HTMLDivElement>;
-}
+/* interface CaptationPageNavbarProps {
+	integrationRef?: React.RefObject<HTMLDivElement>;
+} */
 
-const CaptationPageNavbar = ({ integrationRef }: CaptationPageNavbarProps) => {
+const CaptationPageNavbar = (/* { integrationRef }: CaptationPageNavbarProps */) => {
 	const [isOpen, setOpen] = useState(false);
-	const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+/* 	const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
 		ref.current?.scrollIntoView({ behavior: "smooth" });
-	};
+	}; */
 	const userService = new UserService();
 	const [user, setUser] = useState<any>();
 	const [loading, setLoading] = useState<boolean>(true);
@@ -60,15 +60,15 @@ const CaptationPageNavbar = ({ integrationRef }: CaptationPageNavbarProps) => {
 				<div className="hidden md:flex">
 					<div>
 						<ul className="flex gap-6">
-							<li>
+			{/* 				<li>
 								<Button
 									variant={"link"}
 									className="text-[#333] text-md"
-									onClick={() => scrollToSection(integrationRef)}
+									onClick={() => integrationRef? scrollToSection(integrationRef) : ''}
 								>
 									Integração de API
 								</Button>
-							</li>
+							</li> */}
 							<li>
 								<Link to={"/myProfiles"}>
 									<Button variant={"link"} className="text-[#333] text-md">
