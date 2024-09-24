@@ -13,7 +13,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 
 	return (
 		<>
-			<div className="container py-24 lg:py-32">
+			<div className="container pb-24 md:py-24 lg:py-32">
 				<div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
 					<div>
 						<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">

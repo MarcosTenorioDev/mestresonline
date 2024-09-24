@@ -36,3 +36,15 @@ export interface ICompany {
     posts: IPost[];
     publicCode:string
   }
+
+export interface CompanySearch {
+	id: string;
+	name: string;
+	description: string;
+	banner: string;
+	image: string;
+	publicCode:string;
+    _count:{
+        posts:number
+    }
+}
