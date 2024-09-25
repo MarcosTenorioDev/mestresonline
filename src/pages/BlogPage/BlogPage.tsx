@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IPublicTopic } from "@/core/interfaces/topic.interface";
 import { PublicService } from "@/core/services/public.service";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const LoadingSkeleton = () => {
 	return (
@@ -61,7 +61,7 @@ export default function Component() {
 	const [isLoadingPosts, setIsLoadingPosts] = useState<boolean>(false);
 	const publicService = new PublicService();
 	const params = useParams();
-
+	const navigate = useNavigate();
 	useEffect(() => {
 		fetchCompany();
 		fetchTopics();
@@ -69,10 +69,14 @@ export default function Component() {
 
 	const fetchCompany = async () => {
 		if (params.profile) {
-			const company = await publicService.getCompanyByPublicId(params.profile);
-			if (company) {
+			try {
+				const company = await publicService.getCompanyByPublicId(
+					params.profile
+				);
 				setCompanyData(company);
 				setIsLoadingCompanyData(false);
+			} catch {
+				navigate("/");
 			}
 		}
 	};
@@ -221,10 +225,10 @@ export default function Component() {
 												<PostsLoading />
 											) : (
 												<div className="flex flex-col gap-10 mt-10 items-center px-6">
-												{posts.map((post) => (
-													<PublicPostCard post={post}/>
-												))}
-											</div>
+													{posts.map((post) => (
+														<PublicPostCard post={post} />
+													))}
+												</div>
 											)}
 										</TabsContent>
 									))}
@@ -234,7 +238,7 @@ export default function Component() {
 										) : (
 											<div className="flex flex-col gap-10 mt-10  items-center px-6">
 												{posts.map((post) => (
-													<PublicPostCard post={post}/>
+													<PublicPostCard post={post} />
 												))}
 											</div>
 										)}

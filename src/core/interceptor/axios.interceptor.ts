@@ -49,7 +49,12 @@ export class AxiosInterceptor {
 
 	private handleResponseError(error: any) {
 		console.log("handle response error", error);
-		ToastService.showError(error.response.data.message)
+		switch (error.response.data.message) {
+			case "No Company found":
+				break;
+			default:
+				ToastService.showError(error.response.data.message);
+		}
 		Promise.reject(error);
 	}
 
