@@ -52,13 +52,13 @@ const CaptationPageNavbar =
 		}, [userClerk]);
 
 		return (
-			<div>
+			<div className="fixed bg-white w-full z-[1] shadow-lg">
 				<nav className="max-w-7xl flex justify-between items-center font-poppins font-normal text-[#333] mx-auto p-4 px-10 md:px-12 xl:px-0">
-					<div>
+					<Link to={'/'}>
 						<h1 className="flex items-center justify-center gap-2 text-sm sm:text-xl">
 							Mestres_Online <img src={logo} alt="logo" className="w-6 h-6 sm:w-10 sm:h-10" />
 						</h1>
-					</div>
+					</Link>
 
 					<div className="hidden md:flex justify-end items-center md:ml-10 w-full">
 						<div className="w-full">
@@ -78,7 +78,7 @@ const CaptationPageNavbar =
 								<li>
 									<Link to={"/myProfiles"}>
 										<Button variant={"link"} className="text-[#333] text-md">
-											Minhas postagens
+										Nova Publicação
 										</Button>
 									</Link>
 								</li>
@@ -149,7 +149,7 @@ const CaptationPageNavbar =
 												<li>
 													<Link to={"/myProfiles"}>
 														<Button variant={"default"} className="w-full">
-															Meus perfis
+															Nova publicação
 														</Button>
 													</Link>
 												</li>

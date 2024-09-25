@@ -1,4 +1,5 @@
 import PublicPostCard from "@/components/PublicPostCard";
+import CaptationPageNavbar from "@/components/shared/CaptationPageNavbar";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -155,12 +156,13 @@ export default function Component() {
 
 	return (
 		<div className="pb-10">
+			<CaptationPageNavbar />
 			{isLoadingCompanyData && companyData ? (
 				<LoadingSkeleton />
 			) : (
 				<>
 					<div
-						className="w-full bg-cover bg-center"
+						className="w-full bg-cover bg-center pt-28"
 						style={{
 							backgroundImage: `url(${companyData?.banner})`,
 						}}
