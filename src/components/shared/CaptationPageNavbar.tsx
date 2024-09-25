@@ -55,7 +55,7 @@ const CaptationPageNavbar =
 			<div className="fixed bg-white w-full z-[1] shadow-lg">
 				<nav className="max-w-7xl flex justify-between items-center font-poppins font-normal text-[#333] mx-auto p-4 px-10 md:px-12 xl:px-0">
 					<Link to={'/'}>
-						<h1 className="flex items-center justify-center gap-2 text-sm sm:text-xl">
+						<h1 className="flex items-center justify-center gap-2 text-md sm:text-xl">
 							Mestres_Online <img src={logo} alt="logo" className="w-6 h-6 sm:w-10 sm:h-10" />
 						</h1>
 					</Link>
@@ -100,7 +100,7 @@ const CaptationPageNavbar =
 					<div className="flex justify-center items-center">
 						<div className="md:hidden">
 							<SearchProfileModal>
-								<MagnifyingGlassIcon className="w-10 h-10 mt-2 mr-6" />
+								<MagnifyingGlassIcon className="w-8 h-8 mt-2 mr-2" />
 							</SearchProfileModal>
 						</div>
 						<Sheet open={isOpen}>
