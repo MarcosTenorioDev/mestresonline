@@ -169,7 +169,7 @@ const Home = () => {
 							</div>
 
 							<div className="border-b-2 pb-10 px-4 sm:px-10">
-								<p className="text-xl tracking-tight my-4">
+								<div className="text-xl tracking-tight my-4">
 									URL para perfil público:{" "}
 									<a
 										className="text-sm hover:underline font-semibold"
@@ -200,7 +200,7 @@ const Home = () => {
 											/>
 										</div>
 									</div>
-								</p>
+								</div>
 
 								<h3 className="text-sm font-normal tracking-tight max-w-5xl">
 									{company.description}

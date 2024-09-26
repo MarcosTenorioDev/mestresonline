@@ -77,7 +77,7 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 			{loading ? (
 				<Spinner size="small" className=" ml-2" />
 			) : isPaidSubscription ? (
-				<Button variant={"link"} className="p-0 my-2 w-auto h-auto text-wrap">
+				<Button variant={"link"} asChild className="p-0 my-2 w-auto h-auto text-wrap">
 					<AlertDialogTrigger className="font-semibold underline hover:underline cursor-pointer">
 						Editar link acima - Edite agora a URL de seu perfil público
 					</AlertDialogTrigger>
