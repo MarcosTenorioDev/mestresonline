@@ -24,7 +24,7 @@ const TopicsAndAuthors = () => {
 						<Card className="rounded-full w-fit p-5">
 							<CardTitle className="flex items-center gap-2">
 								<Pilcrow className="w-10 h-10 text-primary" />
-								<h3 >Crie diferentes tópicos</h3>
+							Crie diferentes tópicos
 							</CardTitle>
 						</Card>
 						<div className=" py-4 sm:p-4 lg:max-w-[550px]">
@@ -52,7 +52,7 @@ const TopicsAndAuthors = () => {
 						<Card className="rounded-full w-fit p-5 flex">
 							<CardTitle className="flex items-center gap-2">
 								<UserCheck2 className="w-10 h-10 text-primary" />
-								<h3 className="">Crie diferentes autores</h3>
+								Crie diferentes autores
 							</CardTitle>
 						</Card>
 						<div className=" py-4 sm:p-4 lg:max-w-[550px]">
