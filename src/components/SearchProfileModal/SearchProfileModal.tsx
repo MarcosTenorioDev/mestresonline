@@ -27,7 +27,6 @@ export function SearchProfileModal({ children }:any) {
 					const result = await companyService.getCompanyByName(searchTerm);
 					setCompanies(result);
 				} catch (error) {
-					console.error("Error fetching companies:", error);
 				} finally {
 					setLoading(false);
 				}

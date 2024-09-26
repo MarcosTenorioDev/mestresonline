@@ -236,8 +236,6 @@ const Publication = () => {
 				await postService.updatePost(payload);
 				ToastService.showSuccess("Postagem editada com sucesso");
 			} catch (error: any) {
-				console.error("Erro ao editar o post", error);
-				ToastService.showError(`Erro ao editar o post: ${error.message}`);
 			} finally {
 				setIsSending(false);
 				return;

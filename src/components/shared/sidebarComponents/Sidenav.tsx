@@ -26,8 +26,6 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 	const [openItem, setOpenItem] = useState("");
 	const [lastOpenItem, setLastOpenItem] = useState("");
 
-	console.log(path.split('/'))
-
 
 	useEffect(() => {
 		if (isOpen) {

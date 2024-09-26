@@ -140,7 +140,6 @@ const MyCompanies = () => {
 	const fetchUser = async () => {
 		const user = await userService.findByToken();
 		setUser(user);
-		console.log(user);
 	};
 
 	const verifyValiditySubscription = (): boolean => {
@@ -395,7 +394,7 @@ const MyCompanies = () => {
 																	{/* If has user and this user dont have a subscriptionId and his had one or more profiles, show the message. */}
 																	{!verifyValiditySubscription() && (
 																		<p className="text-xs text-center font-semibold text-red-500 pt-4">
-																			{user.subscriptionId
+																			{user?.subscriptionId
 																				? "Faça o upgrade do plano básico para obter acesso a criação diversos perfís"
 																				: "Faça o upgrade do plano gratuito para obter acesso a criação diversos perfís"}
 																		</p>
