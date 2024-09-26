@@ -37,7 +37,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 	}, [isOpen]);
 
 	return (
-		<nav className="space-y-2 px-3">
+		<nav className={`${isOpen && 'space-y-2 px-3'}`}>
 			{items.map((item) =>
 				item.isChidren ? (
 					<Accordion
