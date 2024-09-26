@@ -205,6 +205,7 @@ const Publication = () => {
 				return paragraph;
 			})
 		);
+		setParagraphs(formatedParagraphs)
 
 		const formatedImage = async () => {
 			if (image instanceof File) {
