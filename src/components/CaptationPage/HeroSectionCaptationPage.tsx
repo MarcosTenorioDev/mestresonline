@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
+import iMacImage from "@/assets/images/iMac.png"
 
 interface HeroSectionProps {
 	aboutRef: React.RefObject<HTMLDivElement>;
@@ -88,8 +89,8 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 					</div>
 					<div className="relative md:ms-4">
 						<img
-							className="w-full rounded-md"
-							src="https://placehold.co/800x700"
+							className="rounded-md"
+							src={iMacImage}
 							alt="Image Description"
 						/>
 					</div>
