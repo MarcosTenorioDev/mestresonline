@@ -52,6 +52,8 @@ export class AxiosInterceptor {
 		switch (error.response.data.message) {
 			case "No Company found":
 				break;
+			case "No Post found":
+				break;
 			default:
 				ToastService.showError(error.response.data.message);
 		}

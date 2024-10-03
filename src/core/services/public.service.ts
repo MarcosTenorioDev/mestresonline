@@ -21,6 +21,16 @@ class PublicService {
 		return response.data
 	}
 
+	async getPublicPostsById(publicId:string, postId:string){
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/public/${publicId}/post/${postId}`)
+		return response.data
+	}
+
+	async getRecomendations(postId:string){
+		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/public/recommendations/${postId}`)
+		return response.data
+	}
+
 	async getPostsByPublicId(publicId:string){
 		const response = await this.axios.get(`${import.meta.env.VITE_API_DEV_URL}/public/posts/${publicId}`)
 		return response.data

@@ -17,17 +17,17 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 				<div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
 					<div>
 						<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-							Mestres_Online: Crie agora o seu blog personalizado e eleve sua
-							imagem <br />{" "}
-							<span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-								Gratuitamente
+							Mestres_Online: Crie agora o seu blog
+							<span className="px-2 bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
+								personalizado
 							</span>
+							e eleve sua imagem
 						</h1>
 						<p className="mt-3 text-xl text-muted-foreground">
 							Crie um perfil no Mestres_Online e faça postagens, promova sua
 							imagem, crie artigos e muitos mais com Mestres_Online, a
 							ferramenta ideal para quem deseja compartilhar os seus
-							conhecimentos para todos
+							conhecimentos para todos.
 						</p>
 						<div className="mt-7 grid gap-3 w-full sm:inline-flex md:max-w-[450px]">
 							<SignedIn>

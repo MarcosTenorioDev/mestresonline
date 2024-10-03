@@ -31,7 +31,7 @@ const plans = [
 	{
 		link: import.meta.env.VITE_LINK_BASIC_YEARLY,
 		price: 130,
-		badge: "20% de desconto",
+		badge: "27% de desconto",
 		cardTitle: "Plano básico - Anual",
 		description: "Tenha acesso ao uso da aplicação no seu próprio site",
 		features: [

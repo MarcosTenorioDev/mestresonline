@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-/* import NavBar from "./components/shared/Navbar";
- */ import Publication from "./pages/publication/publication";
+import Publication from "./pages/publication/publication";
 import MyCompanies from "./pages/myCompanies/MyCompanies";
 import Home from "./pages/home/Home";
 import { LayoutAdmin } from "./components/shared/sidebarComponents";
@@ -8,6 +7,7 @@ import ProducersPage from "./pages/producers/ProducersPage";
 import TopicsPage from "./pages/topics/TopicsPage";
 import CaptationPage from "./pages/captationPage/CaptationPage";
 import BlogPage from "./pages/BlogPage/BlogPage";
+import PostPage from "./pages/PostPage/PostPage";
 
 function App() {
 	return (
@@ -65,6 +65,14 @@ function App() {
 							<LayoutAdmin>
 								<TopicsPage />
 							</LayoutAdmin>
+						}
+					/>
+						<Route
+						path="/:publicCode/post/:postId"
+						element={
+							<>
+								<PostPage />
+							</>
 						}
 					/>
 				</Routes>

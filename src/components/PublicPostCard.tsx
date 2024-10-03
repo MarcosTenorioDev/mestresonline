@@ -2,9 +2,11 @@ import { DotFilledIcon } from "@radix-ui/react-icons";
 import { Card, CardHeader } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface PublicPostCardProps {
   post: {
+    id:string
     author: {
       imageProfile: string;
       name: string;
@@ -18,12 +20,14 @@ interface PublicPostCardProps {
       id: string;
       description: string;
     }[];
+    publicCode:string
   };
 }
 
-const PublicPostCard: React.FC<PublicPostCardProps> = ({ post }) => {
+const PublicPostCard: React.FC<PublicPostCardProps> = ({ post } ) => {
+  const navigate = useNavigate()
   return (
-    <Card className="lg:max-w-[1000px] border-2 px-4 sm:px-10 py-6 lg:flex-row items-center w-full justify-between transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
+    <Card className="lg:max-w-[1000px] border-2 px-4 sm:px-10 py-6 lg:flex-row items-center w-full justify-between transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer" onClick={() => navigate(`/${post.publicCode}/post/${post.id}`)}>
       <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between w-full">
         {/* Informação principal do post */}
         <div className="mr-6 w-full sm:w-auto sm:mx-0 mx-auto">
@@ -54,7 +58,7 @@ const PublicPostCard: React.FC<PublicPostCardProps> = ({ post }) => {
               {/* Tópicos associados ao post */}
               <div className="flex gap-1 mt-1 flex-wrap justify-center sm:justify-start">
                 {post.topics.map((topic) => (
-                  <Badge variant={"outline"} key={topic.id}>
+                  <Badge variant={"outline"} key={topic.id} className="border-primary text-primary">
                     {topic.description}
                   </Badge>
                 ))}

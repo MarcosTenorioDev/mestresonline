@@ -11,7 +11,7 @@ export interface IPost {
 	contentPreview: string;
 	isActive: boolean;
 	author: IProducer;
-	topics: {topic:{description:string, id:string}}[]
+	topics: { topic: { description: string; id: string } }[];
 }
 
 export interface IOwner {
@@ -22,4 +22,53 @@ export interface IOwner {
 	email: string;
 	phone: string | null;
 	role: string;
+}
+
+export type IParagraph = {
+	type: "text" | "image";
+	content: string;
+};
+
+type PostTopic = {
+	id: string;
+	description: string;
+};
+
+type PostAuthor = {
+	id: string;
+	email: string;
+	name: string;
+	imageProfile: string;
+	office: string;
+};
+
+export type Post = {
+	id: string;
+	content: IParagraph[] | string;
+	contentPreview: string;
+	imagePreview: string;
+	publishedAt: string;
+	title: string;
+	company: {
+		name: string;
+		publicCode: string;
+	};
+	author: PostAuthor;
+	topics: PostTopic[];
+};
+
+export interface IRecommendationCard {
+	id:string
+	imagePreview: string;
+	publishedAt:Date
+	author: {
+		imageProfile: string | null;
+		name: string;
+	};
+	company: {
+		name: string;
+		publicCode: string;
+	};
+	title: string;
+	contentPreview: string;
 }

@@ -228,7 +228,7 @@ export default function Component() {
 											) : (
 												<div className="flex flex-col gap-10 mt-10 items-center px-6">
 													{posts.map((post) => (
-														<PublicPostCard post={post} />
+														<PublicPostCard post={{...post, publicCode:params.profile}} key={post.id}/>
 													))}
 												</div>
 											)}
@@ -240,7 +240,7 @@ export default function Component() {
 										) : (
 											<div className="flex flex-col gap-10 mt-10  items-center px-6">
 												{posts.map((post) => (
-													<PublicPostCard post={post} />
+													<PublicPostCard post={{...post, publicCode:params.profile}}key={post.id} />
 												))}
 											</div>
 										)}
