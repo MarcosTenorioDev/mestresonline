@@ -1,18 +1,18 @@
-# Mestres_Online - Crie seu blog pessoal, faça suas postagens e seja mestre.
+# Mestres_Online - Create Your Personal Blog, Make Your Posts, and Become a Master
 
-### Mestres_Online é uma aplicação fullstack que é destinada a todos que desejam criar conteúdo informativo, com as funcionalidades de criar posts totalmente customizados, com imagens, gifs, trechos do youtube, etc.. 
+### Mestres_Online is a fullstack application designed for anyone who wants to create informative content, with the functionality to create fully customized posts, including images, GIFs, YouTube snippets, and more.
 ![image](https://github.com/user-attachments/assets/ebb13d78-9f2b-44f1-b4c5-549d5448cf8c)
 
-### Com a possibilidade de adicionar tópicos para filtragem de conteúdos, adicionar diferentes autores para a sua compania, clínica, curso ou até mesmo grupo produtor de conteúdo.
+### With the ability to add topics for content filtering and include different authors for your company, clinic, course, or even a content-producing group.
 ![image](https://github.com/user-attachments/assets/e7f56e1b-5ec3-49f8-9aa0-782f56327576)
 
-### Na homepage é possível visualizar seus posts, modificá-los, desativá-los ou até mesmo excluí-los, o que fará com que ele não possa mais ser exibido às pessoas que acessam o seu blog.
+### On the homepage, you can view your posts, modify them, deactivate them, or even delete them, which will prevent them from being displayed to people who access your blog.
 ![image](https://github.com/user-attachments/assets/2e3375d0-129c-41d4-bc83-73dca41ee113)
 
-## Crie os seus Autores e tópicos e os visualize nas suas respectivas sessões:
+## Create Your Authors and Topics and View Them in Their Respective Sections:
 ![image](https://github.com/user-attachments/assets/1f406a24-5c36-4b7f-b4c6-a91fdbe7b004)
 
-## Tecnologias usadas:
+## Technologies Used:
 - **TypeScript**
 - **React.js**
 - **Prisma**
@@ -21,12 +21,12 @@
 
 ## Roadmap:
 
-- [ ] **Adição de vídeos** : Implementar a adição de vídeos .mp4 no post
-- [ ] **Adição de iframe** : Implementar a possibilidade de adicionar pedaços de outros sites na sua postagem
-- [ ] **Listas** : Implementar a construção de listas
-- [ ] **Links**: Adicioanr links em determinados trechos de texto
-- [ ] **Perfil público** : Criar uma sessão + link personalizado para exibição do seu blog, postagens e perfil
-- [ ] **API** : Criação de uma API pública com os seus posts para que seja possível desenvolvedores ou pessoas adicionarem os posts a seus blogs pessoais da forma como desejar.
-- [ ] **Meios de pagamento** : Criação de planos e meios de pagamentos para que seja possível a disponibilização da API pública.
+- [ ] **Video Addition**: Implement the ability to add .mp4 videos to posts
+- [ ] **Iframe Addition**: Implement the ability to add snippets from other websites in your posts
+- [ ] **Lists**: Implement list building
+- [ ] **Links**: Add links to specific text snippets
+- [x] **Public Profile**: Create a section + personalized link to display your blog, posts, and profile
+- [x] **API**: Create a public API with your posts so that developers or individuals can add posts to their personal blogs as they wish.
+- [x] **Payment Methods**: Create plans and payment methods to make the public API available.
 
-## Feito com carinho &#10084; por MarcosTenorio &#128640;
+## Made with love 💖 by MarcosTenorio 🚀
