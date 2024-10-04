@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { Button, ButtonProps } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
@@ -20,13 +19,11 @@ const CompaniesProfilePreview: React.FC<CompaniesProfilePreviewProps> = ({
 	postsCount,
 	...buttonProps
 }) => {
-	const navigate = useNavigate()
 	return (
 		<Button
 			{...buttonProps}
 			variant={"ghost"}
 			className="h-16 flex justify-start space-x-4 p-4"
-			onClick={() => navigate(`/${publicCode}`)}
 		>
 			<Avatar>
 				<AvatarImage

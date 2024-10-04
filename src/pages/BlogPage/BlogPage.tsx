@@ -55,7 +55,7 @@ interface ICompanyData {
 
 export default function Component() {
 	const [companyData, setCompanyData] = useState<ICompanyData>();
-	const [topics, setTopics] = useState<IPublicTopic[]>();
+	const [topics, setTopics] = useState<IPublicTopic[] | null>();
 	const [posts, setPosts] = useState<any[]>([]); // Adjust the type based on your post data
 	const [isLoadingCompanyData, setIsLoadingCompanyData] =
 		useState<boolean>(true);
@@ -64,9 +64,11 @@ export default function Component() {
 	const params = useParams();
 	const navigate = useNavigate();
 	useEffect(() => {
+		setTopics(null)
+		setPosts([])
 		fetchCompany();
 		fetchTopics();
-	}, []);
+	}, [params]);
 
 	const fetchCompany = async () => {
 		if (params.profile) {

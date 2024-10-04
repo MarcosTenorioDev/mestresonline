@@ -12,13 +12,15 @@ import { CompanySearch } from "@/core/interfaces/company.interface";
 import CompaniesProfilePreview from "../CompaniesProfilePreview/CompaniesProfilePreview";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Spinner } from "../ui/loading-spinner";
+import { useNavigate } from "react-router-dom";
 
-export function SearchProfileModal({ children }:any) {
+export function SearchProfileModal({ children }: any) {
 	const companyService = new CompaniesService();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [companies, setCompanies] = useState([]);
 	const [loading, setLoading] = useState<boolean>(false);
-
+	const [open, setOpen] = useState<boolean>(false);
+	const navigate = useNavigate();
 	useEffect(() => {
 		const debounceTimeout = setTimeout(async () => {
 			if (searchTerm.trim() !== "") {
@@ -39,7 +41,7 @@ export function SearchProfileModal({ children }:any) {
 	}, [searchTerm]);
 
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger className="w-full">
 				{children ?? (
 					<SearchInput
@@ -78,6 +80,10 @@ export function SearchProfileModal({ children }:any) {
 								image={company.image}
 								name={company.name}
 								publicCode={company.publicCode}
+								onClick={() => {
+									navigate(`/${company.publicCode}`);
+									setOpen(false)
+								}}
 							/>
 						))
 					) : (
