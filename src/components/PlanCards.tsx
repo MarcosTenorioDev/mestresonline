@@ -87,7 +87,7 @@ const PlanCard = ({ plan }: any) => {
 					)}
 				</SignedIn>
 				<SignedOut>
-					<SignInButton mode="modal">
+					<SignInButton mode="modal" forceRedirectUrl={"/"} signUpForceRedirectUrl={"/"}>
 						<Button className="w-full">Assinar agora</Button>
 					</SignInButton>
 				</SignedOut>

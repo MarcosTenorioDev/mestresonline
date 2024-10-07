@@ -90,7 +90,7 @@ const CaptationPageNavbar =
 								<UserButton></UserButton>
 							</SignedIn>
 							<SignedOut>
-								<SignInButton mode="modal">
+								<SignInButton mode="modal" forceRedirectUrl={"/"} signUpForceRedirectUrl={"/"}>
 									<Button variant={"outlineWhite"}>login</Button>
 								</SignInButton>
 							</SignedOut>
@@ -173,7 +173,7 @@ const CaptationPageNavbar =
 											</SignOutButton>
 										</SignedIn>
 										<SignedOut>
-											<SignInButton mode="modal">
+											<SignInButton mode="modal" forceRedirectUrl={"/"} signUpForceRedirectUrl={"/"}>
 												<Button
 													variant={"outlineWhite"}
 													className="w-full"

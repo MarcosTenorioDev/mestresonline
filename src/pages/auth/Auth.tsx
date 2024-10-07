@@ -10,7 +10,7 @@ export function Auth() {
         <h1 className="text-6xl text-center">Mestres Online</h1>
       </div>
       <div className="flex md:w-7/12 items-center justify-center py-12 bg-primary w-screen md:rounded-l-3xl">
-        <SignIn forceRedirectUrl={"/myProfiles"}/>
+        <SignIn forceRedirectUrl={"/myProfiles"} signUpForceRedirectUrl={"/myProfiles"}/>
       </div>
       
     </div>

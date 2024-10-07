@@ -37,7 +37,7 @@ export default function HeroSectionComponent({ aboutRef }: HeroSectionProps) {
 								</Link>
 							</SignedIn>
 							<SignedOut>
-								<SignInButton mode="modal">
+								<SignInButton mode="modal" forceRedirectUrl={"/myProfiles"} signUpForceRedirectUrl={"/myProfiles"}>
 									<Button size={"lg"} className="w-full">Começar agora</Button>
 								</SignInButton>
 							</SignedOut>
