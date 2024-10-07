@@ -146,7 +146,7 @@ const MyCompanies = () => {
 		if (!user) {
 			return false;
 		}
-		if (!user?.subscriptionId && myCompanies.length <= 0) {
+		if (myCompanies.length === 0) {
 			return true;
 		}
 		if (user.subscription) {
