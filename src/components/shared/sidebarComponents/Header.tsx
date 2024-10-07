@@ -5,6 +5,7 @@ import { UserButton } from "@clerk/clerk-react";
 import { UserService } from "@/core/services/user.service";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/loading-spinner";
+import { SearchProfileModal } from "@/components/SearchProfileModal/SearchProfileModal";
 
 export default function Header() {
 	const userService = new UserService();
@@ -32,13 +33,18 @@ export default function Header() {
 				<div className={cn("md:!hidden w-full flex")}>
 					<MobileSidebar />
 				</div>
-				<div className="flex items-center justify-center gap-10">
+				<div className="flex items-center justify-end gap-10 md:w-full">
+					<div className="max-w-[400px] ml-14 hidden md:flex w-full ">
+						<SearchProfileModal />
+					</div>
 					<div className="hidden md:flex gap-4">
 						{loading ? (
 							<Spinner size={"small"} />
 						) : user ? (
-							<p className="text-muted-foreground">
-								{user.subscription ? user.subscription.description : "Teste grátis"}
+							<p className="text-muted-foreground text-nowrap">
+								{user.subscription
+									? user.subscription.description
+									: "Teste grátis"}
 							</p>
 						) : (
 							<></>

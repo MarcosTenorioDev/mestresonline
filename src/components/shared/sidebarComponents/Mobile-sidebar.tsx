@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { UserService } from "@/core/services/user.service";
+import { SearchProfileModal } from "@/components/SearchProfileModal/SearchProfileModal";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 export const MobileSidebar = () => {
 	const [open, setOpen] = useState(false);
@@ -31,20 +33,25 @@ export const MobileSidebar = () => {
 		return null;
 	}
 
-
-
 	return (
 		<>
 			<Sheet open={open} onOpenChange={setOpen}>
 				<SheetTrigger asChild>
-					<div className="w-full flex items-center justify-between gap-2">
+					<div className="flex items-center justify-between gap-2">
 						<MenuIcon className="cursor-pointer" />
-						<h1 className="text-lg font-semibold flex items-center justify-center">
-							Mestres_Online
-							<img src={logo} alt="logo" className="w-10 ml-5" />
-						</h1>
 					</div>
 				</SheetTrigger>
+				<div className="flex items-center w-full justify-end">
+					<div className="md:hidden mr-3">
+						<SearchProfileModal>
+							<MagnifyingGlassIcon className="w-7 h-7 mt-2 mr-1" />
+						</SearchProfileModal>
+					</div>
+					<h1 className="text-lg font-semibold flex items-center justify-center">
+						Mestres_Online
+						<img src={logo} alt="logo" className="w-10 ml-5" />
+					</h1>
+				</div>
 				<SheetContent
 					side="left"
 					className="w-72 flex flex-col justify-between"
@@ -64,7 +71,9 @@ export const MobileSidebar = () => {
 								<Spinner size={"small"} />
 							) : user ? (
 								<p className="text-muted-foreground">
-									{user.subscription ? user.subscription.description : "Teste grátis"}
+									{user.subscription
+										? user.subscription.description
+										: "Teste grátis"}
 								</p>
 							) : (
 								<></>
