@@ -160,7 +160,7 @@ const EditPublicCodeButton: React.FC<EditPublicCodeButtonProps> = ({
 											!isValid ||
 											verifiyingValidity === "verifiying" ||
 											verifiyingValidity === "false"
-										} // Botão desabilitado quando o formulário não for válido
+										}
 									>
 										<AlertDialogAction>Editar</AlertDialogAction>
 									</Button>

@@ -19,7 +19,7 @@ interface FormikMultiSelectProps {
 	componentClassName?: string;
 	children?: any;
 	isEmptyMessage?: string;
-	onValueChange?: (value: any[]) => void; // Função personalizada recebida via props
+	onValueChange?: (value: any[]) => void;
 }
 
 const Input = (props: any) => {

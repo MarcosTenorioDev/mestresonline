@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card'; // Substitua pelo caminho correto dos componentes Card e CardContent
+import { Card, CardContent } from '@/components/ui/card';
 
 interface MyProfileCardProps {
   company: {
